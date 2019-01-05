@@ -57,6 +57,7 @@ void AUnnamedCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerI
 
 	// TEST
 	PlayerInputComponent->BindAction("MoveUp", IE_Pressed, this, &AUnnamedCharacter::MoveUp);
+	PlayerInputComponent->BindAction("MoveDown", IE_Pressed, this, &AUnnamedCharacter::MoveDown);
 
 
 	PlayerInputComponent->BindTouch(IE_Pressed, this, &AUnnamedCharacter::TouchStarted);
@@ -71,18 +72,26 @@ void AUnnamedCharacter::MoveRight(float Value)
 
 void AUnnamedCharacter::MoveUp()
 {
-	// add movement in that direction
-	AddMovementInput(FVector(1.f, 0.f, 0.f));
 	UE_LOG(LogTemp, Warning, TEXT("Move Up!!!"));
 
 	IsMoveUp = true;
-	MoveUpDelay = 0.5f;
+	MoveUpDelay = 0.20f;
+	XVector = -5.f;
+}
+
+void AUnnamedCharacter::MoveDown()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Move Down!!!"));
+
+	IsMoveUp = true;
+	MoveUpDelay = 0.20f;
+	XVector = 5.f;
 }
 
 void AUnnamedCharacter::Tick(float DeltaTime)
 {
 	if (IsMoveUp) {
-		AddMovementInput(FVector(-5.f, 0.f, 0.f));
+		AddMovementInput(FVector(XVector, 0.f, 0.f));
 		MoveUpDelay -= DeltaTime;
 
 		if (MoveUpDelay < 0)

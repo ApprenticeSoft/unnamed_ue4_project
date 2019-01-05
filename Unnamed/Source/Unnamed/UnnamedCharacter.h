@@ -26,8 +26,10 @@ protected:
 	
 	// TEST
 	void MoveUp();
+	void MoveDown();
 	bool IsMoveUp = false;
 	float MoveUpDelay = 0.5f;
+	float XVector = 5.f;
 	virtual void Tick(float DeltaTime) override;
 
 	/** Handle touch inputs. */
