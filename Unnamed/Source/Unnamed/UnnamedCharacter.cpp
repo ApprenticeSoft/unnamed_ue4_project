@@ -111,3 +111,4 @@ void AUnnamedCharacter::TouchStopped(const ETouchIndex::Type FingerIndex, const 
 {
 	StopJumping();
 }
+
