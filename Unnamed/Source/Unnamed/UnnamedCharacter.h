@@ -25,13 +25,14 @@ protected:
 	void MoveRight(float Val);
 
 	// TEST
+	virtual void Tick(float DeltaTime) override;
+	virtual void BeginPlay() override;
 	void MoveUp();
 	void MoveDown();
 	bool IsMoveUp = false;
 	float MoveUpDelay = 0.5f;
 	float XVector = 5.f;
-	virtual void Tick(float DeltaTime) override;
-	virtual void BeginPlay() override;
+	float InitialXPosition = 0.f;
 
 	/** Handle touch inputs. */
 	void TouchStarted(const ETouchIndex::Type FingerIndex, const FVector Location);
