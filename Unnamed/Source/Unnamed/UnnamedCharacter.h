@@ -11,23 +11,25 @@ class AUnnamedCharacter : public ACharacter
 {
 	GENERATED_BODY()
 
-	/** Side view camera */
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-	class UCameraComponent* SideViewCameraComponent;
+		/** Side view camera */
+		UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
+		class UCameraComponent* SideViewCameraComponent;
 
 	/** Camera boom positioning the camera beside the character */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-	class USpringArmComponent* CameraBoom;
+		class USpringArmComponent* CameraBoom;
 
 protected:
 
 	/** Called for side to side input */
 	void MoveRight(float Val);
-	
+
 	// TEST
 	void MoveUp();
+	void MoveDown();
 	bool IsMoveUp = false;
 	float MoveUpDelay = 0.5f;
+	float XVector = 5.f;
 	virtual void Tick(float DeltaTime) override;
 
 	/** Handle touch inputs. */

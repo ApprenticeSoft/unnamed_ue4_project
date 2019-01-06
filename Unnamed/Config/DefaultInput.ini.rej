@@ -1,0 +1,16 @@
+diff a/Unnamed/Config/DefaultInput.ini b/Unnamed/Config/DefaultInput.ini	(rejected hunks)
+@@ -44,11 +44,12 @@
+ DefaultViewportMouseLockMode=LockOnCapture
+ FOVScale=0.011110
+ DoubleClickTime=0.200000
+-+ActionMappings=(ActionName="Jump",bShift=False,bCtrl=False,bAlt=False,bCmd=False,Key=W)
+++ActionMappings=(ActionName="Jump",bShift=False,bCtrl=False,bAlt=False,bCmd=False,Key=E)
+ +ActionMappings=(ActionName="Jump",bShift=False,bCtrl=False,bAlt=False,bCmd=False,Key=Up)
+ +ActionMappings=(ActionName="Jump",bShift=False,bCtrl=False,bAlt=False,bCmd=False,Key=SpaceBar)
+ +ActionMappings=(ActionName="Jump",bShift=False,bCtrl=False,bAlt=False,bCmd=False,Key=Gamepad_FaceButton_Bottom)
+-+ActionMappings=(ActionName="MoveUp",bShift=False,bCtrl=False,bAlt=False,bCmd=False,Key=E)
+++ActionMappings=(ActionName="MoveUp",bShift=False,bCtrl=False,bAlt=False,bCmd=False,Key=W)
+++ActionMappings=(ActionName="MoveDown",bShift=False,bCtrl=False,bAlt=False,bCmd=False,Key=S)
+ +AxisMappings=(AxisName="MoveRight",Scale=-1.000000,Key=A)
+ +AxisMappings=(AxisName="MoveRight",Scale=1.000000,Key=D)
+ +AxisMappings=(AxisName="MoveRight",Scale=1.000000,Key=Gamepad_LeftX)
