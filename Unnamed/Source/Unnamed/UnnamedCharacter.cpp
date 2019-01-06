@@ -68,38 +68,12 @@ void AUnnamedCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	if (IsMoveUp) {
-		/*
-		AddMovementInput(FVector(XVector, 0.f, 0.f));
-		MoveUpDelay -= DeltaTime;
-
-		if (MoveUpDelay < 0)
-			IsMoveUp = false;
-
-		UE_LOG(LogTemp, Warning, TEXT("MoveUpDelay: %f"), MoveUpDelay);
-		*/
-		/*
-		if (FMath().Sign(XVector)*GetActorLocation().X < FMath().Sign(XVector)*InitialXPosition) {
-			AddMovementInput(FVector(XVector, 0.f, 0.f));
-			UE_LOG(LogTemp, Warning, TEXT("RUNNING: PositionX = %f || ActorLocationX = %f"), InitialXPosition, GetActorLocation().X);
-		}
-		else
-		{
-			SetActorLocation(FVector(InitialXPosition, GetActorLocation().Y, GetActorLocation().Z));
-			IsMoveUp = false;
-			UE_LOG(LogTemp, Warning, TEXT("FINISHED: PositionX = %f || ActorLocationX = %f"), InitialXPosition, GetActorLocation().X);
-		}
-		*/
-
-	}
-
-	if (GetActorLocation().X < InitialXPosition - 10 || GetActorLocation().X  > InitialXPosition + 10) {
-
-		//int sign = FMath().Sign(InitialXPosition - GetActorLocation().X);
-		float factor = (InitialXPosition - GetActorLocation().X)/500;
+	if (GetActorLocation().X < PositionX - 10 || GetActorLocation().X  > PositionX + 10) {
+		int sign = FMath().Sign(PositionX - GetActorLocation().X);
+		float factor = sign*FMath().Square(PositionX - GetActorLocation().X)/10000;
 
 		AddMovementInput(FVector(factor*XVector, 0.f, 0.f));
-		UE_LOG(LogTemp, Warning, TEXT("RUNNING: PositionX = %f || ActorLocationX = %f || factor = %f"), InitialXPosition, GetActorLocation().X, factor);
+		UE_LOG(LogTemp, Warning, TEXT("RUNNING: PositionX = %f || ActorLocationX = %f || factor = %f"), PositionX, GetActorLocation().X, factor);
 	}
 }
 
@@ -107,9 +81,9 @@ void AUnnamedCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	InitialXPosition = GetActorLocation().X;
+	PositionX = GetActorLocation().X;
 
-	UE_LOG(LogTemp, Warning, TEXT("PositionX = %f"), InitialXPosition);
+	UE_LOG(LogTemp, Warning, TEXT("PositionX = %f"), PositionX);
 }
 
 void AUnnamedCharacter::MoveRight(float Value)
@@ -119,21 +93,13 @@ void AUnnamedCharacter::MoveRight(float Value)
 }
 
 void AUnnamedCharacter::MoveUp()
-{	/*
-	IsMoveUp = true;
-	MoveUpDelay = 0.20f;
-	XVector = -5.f;
-	*/
-	InitialXPosition -= 100;
+{
+	PositionX -= 100;
 }
 
 void AUnnamedCharacter::MoveDown()
-{	/*
-	IsMoveUp = true;
-	MoveUpDelay = 0.20f;
-	XVector = 5.f;
-	*/
-	InitialXPosition += 100;
+{	
+	PositionX += 100;
 }
 
 void AUnnamedCharacter::TouchStarted(const ETouchIndex::Type FingerIndex, const FVector Location)

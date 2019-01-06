@@ -29,10 +29,8 @@ protected:
 	virtual void BeginPlay() override;
 	void MoveUp();
 	void MoveDown();
-	bool IsMoveUp = false;
-	float MoveUpDelay = 0.5f;
 	float XVector = 5.f;
-	float InitialXPosition = 0.f;
+	float PositionX = 0.f;
 
 	/** Handle touch inputs. */
 	void TouchStarted(const ETouchIndex::Type FingerIndex, const FVector Location);
