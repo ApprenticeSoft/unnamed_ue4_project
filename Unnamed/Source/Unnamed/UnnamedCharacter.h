@@ -31,6 +31,7 @@ protected:
 	float MoveUpDelay = 0.5f;
 	float XVector = 5.f;
 	virtual void Tick(float DeltaTime) override;
+	virtual void BeginPlay() override;
 
 	/** Handle touch inputs. */
 	void TouchStarted(const ETouchIndex::Type FingerIndex, const FVector Location);

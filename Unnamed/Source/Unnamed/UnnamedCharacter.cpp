@@ -90,6 +90,8 @@ void AUnnamedCharacter::MoveDown()
 
 void AUnnamedCharacter::Tick(float DeltaTime)
 {
+	Super::Tick(DeltaTime);
+
 	if (IsMoveUp) {
 		AddMovementInput(FVector(XVector, 0.f, 0.f));
 		MoveUpDelay -= DeltaTime;
@@ -99,6 +101,13 @@ void AUnnamedCharacter::Tick(float DeltaTime)
 
 		UE_LOG(LogTemp, Warning, TEXT("MoveUpDelay: %f"), MoveUpDelay);
 	}
+}
+
+void AUnnamedCharacter::BeginPlay() 
+{
+	Super::BeginPlay();
+
+	UE_LOG(LogTemp, Warning, TEXT("BEGIN PLAY"));
 }
 
 void AUnnamedCharacter::TouchStarted(const ETouchIndex::Type FingerIndex, const FVector Location)
