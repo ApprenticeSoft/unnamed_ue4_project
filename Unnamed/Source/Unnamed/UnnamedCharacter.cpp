@@ -64,6 +64,30 @@ void AUnnamedCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerI
 	PlayerInputComponent->BindTouch(IE_Released, this, &AUnnamedCharacter::TouchStopped);
 }
 
+void AUnnamedCharacter::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+	if (IsMoveUp) {
+		AddMovementInput(FVector(XVector, 0.f, 0.f));
+		MoveUpDelay -= DeltaTime;
+
+		if (MoveUpDelay < 0)
+			IsMoveUp = false;
+
+		UE_LOG(LogTemp, Warning, TEXT("MoveUpDelay: %f"), MoveUpDelay);
+	}
+}
+
+void AUnnamedCharacter::BeginPlay()
+{
+	Super::BeginPlay();
+
+	auto PositionX = GetActorLocation().X;
+
+	UE_LOG(LogTemp, Warning, TEXT("PositionX = %f"), PositionX);
+}
+
 void AUnnamedCharacter::MoveRight(float Value)
 {
 	// add movement in that direction
@@ -86,28 +110,6 @@ void AUnnamedCharacter::MoveDown()
 	IsMoveUp = true;
 	MoveUpDelay = 0.20f;
 	XVector = 5.f;
-}
-
-void AUnnamedCharacter::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
-	if (IsMoveUp) {
-		AddMovementInput(FVector(XVector, 0.f, 0.f));
-		MoveUpDelay -= DeltaTime;
-
-		if (MoveUpDelay < 0)
-			IsMoveUp = false;
-
-		UE_LOG(LogTemp, Warning, TEXT("MoveUpDelay: %f"), MoveUpDelay);
-	}
-}
-
-void AUnnamedCharacter::BeginPlay() 
-{
-	Super::BeginPlay();
-
-	UE_LOG(LogTemp, Warning, TEXT("BEGIN PLAY"));
 }
 
 void AUnnamedCharacter::TouchStarted(const ETouchIndex::Type FingerIndex, const FVector Location)
