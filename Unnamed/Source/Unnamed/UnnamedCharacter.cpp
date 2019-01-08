@@ -73,7 +73,7 @@ void AUnnamedCharacter::Tick(float DeltaTime)
 		float factor = sign*FMath().Square(PositionX - GetActorLocation().X)/10000;
 
 		AddMovementInput(FVector(factor*XVector, 0.f, 0.f));
-		UE_LOG(LogTemp, Warning, TEXT("RUNNING: PositionX = %f || ActorLocationX = %f || factor = %f"), PositionX, GetActorLocation().X, factor);
+		//UE_LOG(LogTemp, Warning, TEXT("RUNNING: PositionX = %f || ActorLocationX = %f || factor = %f"), PositionX, GetActorLocation().X, factor);
 	}
 }
 
