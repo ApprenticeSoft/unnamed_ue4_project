@@ -3,6 +3,8 @@
 #include "InteractionDetectorComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/Actor.h"
+#include "GameFramework/PlayerController.h"
+#include "Engine/World.h"
 
 // Sets default values for this component's properties
 UInteractionDetectorComponent::UInteractionDetectorComponent()
@@ -33,11 +35,23 @@ void UInteractionDetectorComponent::TickComponent(float DeltaTime, ELevelTick Ti
 	TArray<AActor*> OverlappingActors;
 	CapsuleDetector->GetOverlappingActors(OUT OverlappingActors);
 
+	setInteractionName("");
+
 	for (const auto* Actor : OverlappingActors)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Nom de l'acteur: %s"), *Actor->GetName());
+		if (Actor == nullptr) { return; }
+		setInteractionName(getInteractionName() + Actor->GetName() + "\n");
 	}
+	UE_LOG(LogTemp, Warning, TEXT("Nom de l'acteur: %s"), *getInteractionName());
+}
 
-	UE_LOG(LogTemp, Warning, TEXT("TAILLE DU TABLEAU: %i"), OverlappingActors.Num());
+void UInteractionDetectorComponent::setInteractionName(FString Name)
+{
+	InteractionName = Name;
+}
+
+FString UInteractionDetectorComponent::getInteractionName()
+{
+	return InteractionName;
 }
 

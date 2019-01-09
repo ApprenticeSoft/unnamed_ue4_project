@@ -6,6 +6,7 @@
 #include "Components/InputComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "InteractionDetectorComponent.h"
 
 AUnnamedCharacter::AUnnamedCharacter()
 {
@@ -75,6 +76,19 @@ void AUnnamedCharacter::Tick(float DeltaTime)
 		AddMovementInput(FVector(factor*XVector, 0.f, 0.f));
 		//UE_LOG(LogTemp, Warning, TEXT("RUNNING: PositionX = %f || ActorLocationX = %f || factor = %f"), PositionX, GetActorLocation().X, factor);
 	}
+
+	auto detector = AActor::FindComponentByClass<class UInteractionDetectorComponent>();
+	if (!detector)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("PAS DE DETECTEUR"));
+	}
+	else
+	{
+		auto Nom = detector->getInteractionName();
+		UE_LOG(LogTemp, Warning, TEXT("Nom: %s"), *Nom);
+		setPossibleInteractionName(Nom);
+		UE_LOG(LogTemp, Warning, TEXT("objet: %s"), *getPossibleInteractionName());
+	}
 }
 
 void AUnnamedCharacter::BeginPlay()
@@ -84,6 +98,9 @@ void AUnnamedCharacter::BeginPlay()
 	PositionX = GetActorLocation().X;
 
 	UE_LOG(LogTemp, Warning, TEXT("PositionX = %f"), PositionX);
+	UE_LOG(LogTemp, Warning, TEXT("objet = %s"), *PossibleInteractions);
+
+	
 }
 
 void AUnnamedCharacter::MoveRight(float Value)
@@ -111,5 +128,15 @@ void AUnnamedCharacter::TouchStarted(const ETouchIndex::Type FingerIndex, const 
 void AUnnamedCharacter::TouchStopped(const ETouchIndex::Type FingerIndex, const FVector Location)
 {
 	StopJumping();
+}
+
+void AUnnamedCharacter::setPossibleInteractionName(FString Name)
+{
+	PossibleInteractions = Name;
+}
+
+FString AUnnamedCharacter::getPossibleInteractionName()
+{
+	return PossibleInteractions;
 }
 

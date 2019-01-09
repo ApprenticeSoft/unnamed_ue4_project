@@ -29,5 +29,10 @@ public:
 private:
 	UPROPERTY(EditAnywhere)
 	UCapsuleComponent* CapsuleDetector = nullptr;
-		
+
+public:
+	UPROPERTY(BlueprintReadOnly)
+	FString InteractionName = "NOM";
+	void setInteractionName(FString Name);
+	FString getInteractionName();	
 };
