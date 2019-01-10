@@ -6,6 +6,8 @@
 #include "GameFramework/Character.h"
 #include "UnnamedCharacter.generated.h"
 
+class UInteractionDetectorComponent;
+
 UCLASS(config=Game)
 class AUnnamedCharacter : public ACharacter
 {
@@ -20,17 +22,18 @@ class AUnnamedCharacter : public ACharacter
 	class USpringArmComponent* CameraBoom;
 
 protected:
-
 	/** Called for side to side input */
 	void MoveRight(float Val);
 
 	// TEST
 	virtual void Tick(float DeltaTime) override;
+	void DisplacementOnX();
 	virtual void BeginPlay() override;
 	void MoveUp();
 	void MoveDown();
 	float XVector = 5.f;
 	float PositionX = 0.f;
+	UInteractionDetectorComponent* Detector;
 
 	/** Handle touch inputs. */
 	void TouchStarted(const ETouchIndex::Type FingerIndex, const FVector Location);
@@ -51,7 +54,7 @@ public:
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
-	FString PossibleInteractions = "TEST OBJET";
+	FString PossibleInteractions = "";
 
 	void setPossibleInteractionName(FString Name);
 	FString getPossibleInteractionName();

@@ -42,7 +42,6 @@ void UInteractionDetectorComponent::TickComponent(float DeltaTime, ELevelTick Ti
 		if (Actor == nullptr) { return; }
 		setInteractionName(getInteractionName() + Actor->GetName() + "\n");
 	}
-	UE_LOG(LogTemp, Warning, TEXT("Nom de l'acteur: %s"), *getInteractionName());
 }
 
 void UInteractionDetectorComponent::setInteractionName(FString Name)

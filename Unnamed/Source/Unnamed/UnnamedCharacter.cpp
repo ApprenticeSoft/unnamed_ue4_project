@@ -65,42 +65,35 @@ void AUnnamedCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerI
 	PlayerInputComponent->BindTouch(IE_Released, this, &AUnnamedCharacter::TouchStopped);
 }
 
-void AUnnamedCharacter::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
-	if (GetActorLocation().X < PositionX - 10 || GetActorLocation().X  > PositionX + 10) {
-		int sign = FMath().Sign(PositionX - GetActorLocation().X);
-		float factor = sign*FMath().Square(PositionX - GetActorLocation().X)/10000;
-
-		AddMovementInput(FVector(factor*XVector, 0.f, 0.f));
-		//UE_LOG(LogTemp, Warning, TEXT("RUNNING: PositionX = %f || ActorLocationX = %f || factor = %f"), PositionX, GetActorLocation().X, factor);
-	}
-
-	auto detector = AActor::FindComponentByClass<class UInteractionDetectorComponent>();
-	if (!detector)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("PAS DE DETECTEUR"));
-	}
-	else
-	{
-		auto Nom = detector->getInteractionName();
-		UE_LOG(LogTemp, Warning, TEXT("Nom: %s"), *Nom);
-		setPossibleInteractionName(Nom);
-		UE_LOG(LogTemp, Warning, TEXT("objet: %s"), *getPossibleInteractionName());
-	}
-}
-
 void AUnnamedCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
 	PositionX = GetActorLocation().X;
+	Detector = AActor::FindComponentByClass<class UInteractionDetectorComponent>();
+}
 
-	UE_LOG(LogTemp, Warning, TEXT("PositionX = %f"), PositionX);
-	UE_LOG(LogTemp, Warning, TEXT("objet = %s"), *PossibleInteractions);
+void AUnnamedCharacter::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
 
-	
+	DisplacementOnX();
+
+	if (Detector != nullptr)
+	{
+		setPossibleInteractionName(Detector->getInteractionName());
+		UE_LOG(LogTemp, Warning, TEXT("Nom de l'acteur: %s"), *getPossibleInteractionName());
+	}
+}
+
+void AUnnamedCharacter::DisplacementOnX()
+{
+	if (GetActorLocation().X < PositionX - 10 || GetActorLocation().X  > PositionX + 10) {
+		int sign = FMath().Sign(PositionX - GetActorLocation().X);
+		float factor = sign * FMath().Square(PositionX - GetActorLocation().X) / 10000;
+
+		AddMovementInput(FVector(factor*XVector, 0.f, 0.f));
+	}
 }
 
 void AUnnamedCharacter::MoveRight(float Value)

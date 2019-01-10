@@ -32,7 +32,7 @@ private:
 
 public:
 	UPROPERTY(BlueprintReadOnly)
-	FString InteractionName = "NOM";
+	FString InteractionName = "";
 	void setInteractionName(FString Name);
 	FString getInteractionName();	
 };
