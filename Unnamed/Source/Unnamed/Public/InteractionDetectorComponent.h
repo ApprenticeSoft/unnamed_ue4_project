@@ -7,7 +7,7 @@
 #include "InteractionDetectorComponent.generated.h"
 
 class UCapsuleComponent;
-
+class AActor;
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class UNNAMED_API UInteractionDetectorComponent : public UActorComponent
@@ -29,10 +29,12 @@ public:
 private:
 	UPROPERTY(EditAnywhere)
 	UCapsuleComponent* CapsuleDetector = nullptr;
+	TArray<AActor*> OverlappingActors;
 
 public:
 	UPROPERTY(BlueprintReadOnly)
 	FString InteractionName = "";
 	void setInteractionName(FString Name);
-	FString getInteractionName();	
+	FString getInteractionName();
+	TArray<AActor*> getOverlappingActors();
 };

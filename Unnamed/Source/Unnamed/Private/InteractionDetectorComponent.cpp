@@ -32,7 +32,6 @@ void UInteractionDetectorComponent::TickComponent(float DeltaTime, ELevelTick Ti
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	TArray<AActor*> OverlappingActors;
 	CapsuleDetector->GetOverlappingActors(OUT OverlappingActors);
 
 	setInteractionName("");
@@ -52,5 +51,10 @@ void UInteractionDetectorComponent::setInteractionName(FString Name)
 FString UInteractionDetectorComponent::getInteractionName()
 {
 	return InteractionName;
+}
+
+TArray<AActor*> UInteractionDetectorComponent::getOverlappingActors() {
+	UE_LOG(LogTemp, Warning, TEXT("Size: %i"), OverlappingActors.Num())
+	return OverlappingActors;
 }
 

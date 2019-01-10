@@ -31,6 +31,7 @@ protected:
 	virtual void BeginPlay() override;
 	void MoveUp();
 	void MoveDown();
+	void PickUp();
 	float XVector = 5.f;
 	float PositionX = 0.f;
 	UInteractionDetectorComponent* Detector;
