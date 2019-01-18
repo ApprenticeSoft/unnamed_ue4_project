@@ -16,6 +16,7 @@ class UNNAMED_API AMySkeletalMeshActor : public ASkeletalMeshActor
 	
 
 protected:
+	AMySkeletalMeshActor();
 	// Called when the game starts
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;

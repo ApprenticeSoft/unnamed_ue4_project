@@ -4,12 +4,12 @@
 #include "Components/SkeletalMeshComponent.h"
 
 
-/*
+
 AMySkeletalMeshActor::AMySkeletalMeshActor() 
 {
-
+	PrimaryActorTick.bCanEverTick = true;
 }
-*/
+
 
 // Called when the game starts
 void AMySkeletalMeshActor::BeginPlay()
@@ -20,7 +20,6 @@ void AMySkeletalMeshActor::BeginPlay()
 	UE_LOG(LogTemp, Warning, TEXT("Test skeletal mesh!"));
 	//SetMorphTarget
 
-	PrimaryActorTick.bCanEverTick = true;
 	KeyValue = 0;
 
 }
