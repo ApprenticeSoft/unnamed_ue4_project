@@ -17,4 +17,11 @@ class UNNAMED_API APlantSkeletalMeshActor : public ASkeletalMeshActor
 
 public:
 	APlantSkeletalMeshActor();
+	void Interact();
+
+protected:
+	virtual void Tick(float DeltaTime) override;
+	float KeyValue = 0.f;
+	bool harvested = false;
+
 };

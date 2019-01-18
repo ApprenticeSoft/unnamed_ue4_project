@@ -7,6 +7,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "InteractionDetectorComponent.h"
+#include "PlantSkeletalMeshActor.h"
 
 AUnnamedCharacter::AUnnamedCharacter()
 {
@@ -134,7 +135,9 @@ void AUnnamedCharacter::PickUp()
 		}
 
 		if (!UsedItem) { return; }
-		UE_LOG(LogTemp, Warning, TEXT("Intéraction avec %s"), *UsedItem->GetName());
+		APlantSkeletalMeshActor* Plante = dynamic_cast<APlantSkeletalMeshActor*>(UsedItem);
+		if (!Plante) { return; }
+		Plante->Interact();
 	}
 }
 
