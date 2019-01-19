@@ -8,6 +8,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "InteractionDetectorComponent.h"
 #include "PlantSkeletalMeshActor.h"
+#include "Sol.h"
 
 AUnnamedCharacter::AUnnamedCharacter()
 {
@@ -136,8 +137,17 @@ void AUnnamedCharacter::PickUp()
 
 		if (!UsedItem) { return; }
 		APlantSkeletalMeshActor* Plante = dynamic_cast<APlantSkeletalMeshActor*>(UsedItem);
-		if (!Plante) { return; }
-		Plante->Interact();
+		if (Plante) {
+			Plante->Interact();
+		}
+		else 
+		{
+			ASol* Sol = dynamic_cast<ASol*>(UsedItem);
+			if (Sol) 
+			{
+				Sol->Interact();
+			}
+		}
 	}
 }
 
