@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Sol.h"
+#include "PlantSkeletalMeshActor.h"
 
 // Sets default values
 ASol::ASol()
@@ -27,5 +28,8 @@ void ASol::Tick(float DeltaTime)
 void ASol::Interact()
 {
 	UE_LOG(LogTemp, Warning, TEXT("Interaction avec le sol %s!!!!"), *GetName());
+	auto Mais = GetWorld()->SpawnActor<APlantSkeletalMeshActor>(MaisBlueprint,
+																GetActorLocation(),
+																GetActorRotation());
 }
 
