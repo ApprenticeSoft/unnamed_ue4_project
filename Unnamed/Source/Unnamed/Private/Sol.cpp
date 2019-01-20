@@ -27,9 +27,19 @@ void ASol::Tick(float DeltaTime)
 
 void ASol::Interact()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Interaction avec le sol %s!!!!"), *GetName());
-	auto Mais = GetWorld()->SpawnActor<APlantSkeletalMeshActor>(MaisBlueprint,
-																GetActorLocation(),
-																GetActorRotation());
+	if (PlanteSurLeSol.Num() == 0) 
+	{
+		auto Mais = GetWorld()->SpawnActor<APlantSkeletalMeshActor>(MaisBlueprint,
+			GetActorLocation(),
+			GetActorRotation());
+		PlanteSurLeSol.Add(Mais);
+		UE_LOG(LogTemp, Warning, TEXT("PlanteSurLeSol: %i"), PlanteSurLeSol.Num());
+	}
+	else 
+	{
+		PlanteSurLeSol[0]->Interact();
+		PlanteSurLeSol.RemoveAt(0);
+		UE_LOG(LogTemp, Warning, TEXT("PlanteSurLeSol: %i"), PlanteSurLeSol.Num());
+	}
 }
 
