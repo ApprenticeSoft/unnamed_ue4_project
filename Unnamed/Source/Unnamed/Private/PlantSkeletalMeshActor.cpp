@@ -32,6 +32,10 @@ void APlantSkeletalMeshActor::Tick(float DeltaTime)
 			//UE_LOG(LogTemp, Warning, TEXT("KeyValue = %f"), KeyValue);
 			KeyValue += GetWorld()->DeltaTimeSeconds;
 		}
+		else 
+		{
+			Destroy();
+		}
 
 		GetSkeletalMeshComponent()->SetGenerateOverlapEvents(false);
 		GetSkeletalMeshComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
