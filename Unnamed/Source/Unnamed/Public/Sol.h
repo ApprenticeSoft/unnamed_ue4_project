@@ -7,6 +7,7 @@
 #include "Sol.generated.h"
 
 class APlantSkeletalMeshActor;
+class UMaterialInstanceDynamic;
 
 UCLASS()
 class UNNAMED_API ASol : public AActor
@@ -31,5 +32,6 @@ private:
 	//UClass* ProjectileBluePrint;		// UClass* va afficher la totalités des classes disponibles dans le blueprint alors que TSubclassOf<> n'affiche que la classe choisie
 	TSubclassOf<APlantSkeletalMeshActor> MaisBlueprint;
 	TArray<APlantSkeletalMeshActor*> PlanteSurLeSol;
+	UMaterialInstanceDynamic* DynamicMaterial;
 
 };

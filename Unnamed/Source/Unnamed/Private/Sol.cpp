@@ -2,6 +2,10 @@
 
 #include "Sol.h"
 #include "PlantSkeletalMeshActor.h"
+#include "Components/StaticMeshComponent.h"
+#include "Materials/MaterialInterface.h"
+#include "Materials/MaterialInstanceDynamic.h"
+#include "Math/Color.h"
 
 // Sets default values
 ASol::ASol()
@@ -15,6 +19,13 @@ ASol::ASol()
 void ASol::BeginPlay()
 {
 	Super::BeginPlay();
+	// Retourne le premier components de la class voulue
+	auto Plane = FindComponentByClass<UStaticMeshComponent>();
+	auto material = Plane->GetMaterial(0);
+
+	// Création du Dynamic Material Instance
+	DynamicMaterial = UMaterialInstanceDynamic::Create(material, NULL);
+	Plane->SetMaterial(0, DynamicMaterial);
 	
 }
 
@@ -22,6 +33,9 @@ void ASol::BeginPlay()
 void ASol::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	float test = 0.5f + FMath::Cos(GetWorld()->TimeSeconds)/2;
+	DynamicMaterial->SetScalarParameterValue(TEXT("Blend"), test);
 
 }
 
