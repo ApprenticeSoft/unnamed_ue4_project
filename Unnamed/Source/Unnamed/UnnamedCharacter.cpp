@@ -61,7 +61,7 @@ void AUnnamedCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerI
 	// TEST
 	PlayerInputComponent->BindAction("MoveUp", IE_Pressed, this, &AUnnamedCharacter::MoveUp);
 	PlayerInputComponent->BindAction("MoveDown", IE_Pressed, this, &AUnnamedCharacter::MoveDown);
-	PlayerInputComponent->BindAction("PickUp", IE_Pressed, this, &AUnnamedCharacter::PickUp);
+	//PlayerInputComponent->BindAction("PickUp", IE_Pressed, this, &AUnnamedCharacter::PickUp);
 
 
 	PlayerInputComponent->BindTouch(IE_Pressed, this, &AUnnamedCharacter::TouchStarted);
@@ -115,6 +115,7 @@ void AUnnamedCharacter::MoveDown()
 	PositionX += 100;
 }
 
+/*
 void AUnnamedCharacter::PickUp()
 {
 	auto ItemsInReach = Detector->getOverlappingActors();
@@ -144,6 +145,43 @@ void AUnnamedCharacter::PickUp()
 		{
 			ASol* Sol = dynamic_cast<ASol*>(UsedItem);
 			if (Sol) 
+			{
+				Sol->Interact();
+			}
+		}
+	}
+}
+*/
+
+// TEST
+void AUnnamedCharacter::Attraper() {
+	auto ItemsInReach = Detector->getOverlappingActors();
+	AActor* UsedItem = nullptr;
+	float ItemDistance = 1000;
+
+	if (ItemsInReach.Num() > 0) {
+		for (const auto* Actor : ItemsInReach)
+		{
+			if (Actor == nullptr) { return; }
+			float Distance = FVector::Distance(Actor->GetActorLocation(), GetActorLocation());
+			UE_LOG(LogTemp, Warning, TEXT("Distance avec %s: %f"), *Actor->GetName(), Distance);
+
+			if (FVector::Distance(Actor->GetActorLocation(), GetActorLocation()) < ItemDistance)
+			{
+				ItemDistance = FVector::Distance(Actor->GetActorLocation(), GetActorLocation());
+				UsedItem = const_cast<AActor*>(Actor); // const_cast permet de convertir un const AActor* en AActor*
+			}
+		}
+
+		if (!UsedItem) { return; }
+		APlantSkeletalMeshActor* Plante = dynamic_cast<APlantSkeletalMeshActor*>(UsedItem);
+		if (Plante) {
+			Plante->Interact();
+		}
+		else
+		{
+			ASol* Sol = dynamic_cast<ASol*>(UsedItem);
+			if (Sol)
 			{
 				Sol->Interact();
 			}

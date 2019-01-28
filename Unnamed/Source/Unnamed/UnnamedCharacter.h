@@ -31,7 +31,11 @@ protected:
 	virtual void BeginPlay() override;
 	void MoveUp();
 	void MoveDown();
-	void PickUp();
+
+	UFUNCTION(Blueprintcallable)
+	void Attraper();
+
+	//void PickUp();
 	float XVector = 5.f;
 	float PositionX = 0.f;
 	UInteractionDetectorComponent* Detector;
