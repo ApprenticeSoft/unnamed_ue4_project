@@ -61,7 +61,7 @@ void AUnnamedCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerI
 	// TEST
 	PlayerInputComponent->BindAction("MoveUp", IE_Pressed, this, &AUnnamedCharacter::MoveUp);
 	PlayerInputComponent->BindAction("MoveDown", IE_Pressed, this, &AUnnamedCharacter::MoveDown);
-	//PlayerInputComponent->BindAction("PickUp", IE_Pressed, this, &AUnnamedCharacter::PickUp);
+	PlayerInputComponent->BindAction("Interact", IE_Pressed, this, &AUnnamedCharacter::Interact);
 
 
 	PlayerInputComponent->BindTouch(IE_Pressed, this, &AUnnamedCharacter::TouchStarted);
@@ -154,6 +154,11 @@ void AUnnamedCharacter::PickUp()
 */
 
 // TEST
+void AUnnamedCharacter::Interact() {
+	UE_LOG(LogTemp, Warning, TEXT("TEST"));
+	Test();
+}
+
 void AUnnamedCharacter::Attraper() {
 	auto ItemsInReach = Detector->getOverlappingActors();
 	AActor* UsedItem = nullptr;

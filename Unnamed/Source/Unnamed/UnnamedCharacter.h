@@ -7,6 +7,7 @@
 #include "UnnamedCharacter.generated.h"
 
 class UInteractionDetectorComponent;
+class UAnimSequence;
 
 UCLASS(config=Game)
 class AUnnamedCharacter : public ACharacter
@@ -35,10 +36,15 @@ protected:
 	UFUNCTION(Blueprintcallable)
 	void Attraper();
 
-	//void PickUp();
+	void Interact();
 	float XVector = 5.f;
 	float PositionX = 0.f;
 	UInteractionDetectorComponent* Detector;
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Anims")
+	UAnimSequence *MyAnimSequence;
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "ZZZ")
+	void Test();
 
 	/** Handle touch inputs. */
 	void TouchStarted(const ETouchIndex::Type FingerIndex, const FVector Location);

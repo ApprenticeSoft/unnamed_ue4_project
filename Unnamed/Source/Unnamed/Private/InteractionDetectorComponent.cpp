@@ -32,7 +32,15 @@ void UInteractionDetectorComponent::TickComponent(float DeltaTime, ELevelTick Ti
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	CapsuleDetector->GetOverlappingActors(OUT OverlappingActors);
+	if (!CapsuleDetector) 
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Capsule de detection de collision absente!"));
+		return;
+	}
+	else 
+	{
+		CapsuleDetector->GetOverlappingActors(OUT OverlappingActors);
+	}
 
 	setInteractionName("");
 
