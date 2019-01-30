@@ -9,6 +9,8 @@
 #include "InteractionDetectorComponent.h"
 #include "PlantSkeletalMeshActor.h"
 #include "Sol.h"
+#include "Components/SkeletalMeshComponent.h"
+#include "Engine/SkeletalMeshSocket.h"
 
 AUnnamedCharacter::AUnnamedCharacter()
 {
@@ -74,6 +76,14 @@ void AUnnamedCharacter::BeginPlay()
 
 	PositionX = GetActorLocation().X;
 	Detector = AActor::FindComponentByClass<class UInteractionDetectorComponent>();
+
+	auto HandSocket = GetMesh()->GetSocketByName(FName("Hand_LSocket"));
+	if (HandSocket) 
+	{
+		auto localTransform = GetMesh()->GetSocketTransform(FName("Hand_LSocket"));
+		auto localRotation = localTransform.GetRotation();
+		UE_LOG(LogTemp, Warning, TEXT("localRotation %s"), *localRotation.ToString());
+	}
 }
 
 void AUnnamedCharacter::Tick(float DeltaTime)
@@ -115,8 +125,8 @@ void AUnnamedCharacter::MoveDown()
 	PositionX += 100;
 }
 
-/*
-void AUnnamedCharacter::PickUp()
+
+void AUnnamedCharacter::Interact()
 {
 	auto ItemsInReach = Detector->getOverlappingActors();
 	AActor* UsedItem = nullptr;
@@ -138,59 +148,61 @@ void AUnnamedCharacter::PickUp()
 
 		if (!UsedItem) { return; }
 		APlantSkeletalMeshActor* Plante = dynamic_cast<APlantSkeletalMeshActor*>(UsedItem);
+		if(!Plante)
+			UE_LOG(LogTemp, Warning, TEXT("CE N'EST PAS UNE PLANTE !!!!"));
+
 		if (Plante) {
-			Plante->Interact();
+			InteractionTarget = Plante;
+			Test();
 		}
 		else 
 		{
 			ASol* Sol = dynamic_cast<ASol*>(UsedItem);
 			if (Sol) 
 			{
+				UE_LOG(LogTemp, Warning, TEXT("TEST"));
 				Sol->Interact();
 			}
 		}
 	}
 }
-*/
 
-// TEST
-void AUnnamedCharacter::Interact() {
-	UE_LOG(LogTemp, Warning, TEXT("TEST"));
-	Test();
-}
+void AUnnamedCharacter::PickPlants(AActor * Plante)
+{
+	auto HandSocket = GetMesh()->GetSocketByName(FName("Hand_LSocket"));
+	if (HandSocket) {
 
-void AUnnamedCharacter::Attraper() {
-	auto ItemsInReach = Detector->getOverlappingActors();
-	AActor* UsedItem = nullptr;
-	float ItemDistance = 1000;
+		auto planteActorTransform = Plante->GetActorTransform();
+		UE_LOG(LogTemp, Warning, TEXT("planteActorTransform %s"), *planteActorTransform.GetRotation().ToString());
+		auto planteTransform = Plante->GetTransform();
+		UE_LOG(LogTemp, Warning, TEXT("localRotation %s"), *planteTransform.GetRotation().ToString());
 
-	if (ItemsInReach.Num() > 0) {
-		for (const auto* Actor : ItemsInReach)
-		{
-			if (Actor == nullptr) { return; }
-			float Distance = FVector::Distance(Actor->GetActorLocation(), GetActorLocation());
-			UE_LOG(LogTemp, Warning, TEXT("Distance avec %s: %f"), *Actor->GetName(), Distance);
+		//HandSocket->AttachActor(Plante, GetMesh());
+		Plante->SetActorEnableCollision(false);
+		Plante->K2_AttachRootComponentTo(GetMesh(), FName("Hand_LSocket"), EAttachLocation::SnapToTarget, true);
 
-			if (FVector::Distance(Actor->GetActorLocation(), GetActorLocation()) < ItemDistance)
-			{
-				ItemDistance = FVector::Distance(Actor->GetActorLocation(), GetActorLocation());
-				UsedItem = const_cast<AActor*>(Actor); // const_cast permet de convertir un const AActor* en AActor*
-			}
-		}
+		auto localTransform = GetMesh()->GetSocketTransform(FName("Hand_LSocket"));
+		auto localRotation = localTransform.GetRotation();
+		UE_LOG(LogTemp, Warning, TEXT("localRotation %s"), *localRotation.ToString());
 
-		if (!UsedItem) { return; }
-		APlantSkeletalMeshActor* Plante = dynamic_cast<APlantSkeletalMeshActor*>(UsedItem);
-		if (Plante) {
-			Plante->Interact();
-		}
-		else
-		{
-			ASol* Sol = dynamic_cast<ASol*>(UsedItem);
-			if (Sol)
-			{
-				Sol->Interact();
-			}
-		}
+
+		//Plante->SetActorRelativeLocation(localRotation.RotateVector(FVector(0, 0, -50)));
+		Plante->SetActorRelativeLocation(FVector(0, 0, -50));
+		Plante->SetActorRotation(FRotator(0.0f, 0.0f, 0.0f));
+		/*
+		auto socketLocation = Plante->FindComponentByClass<class USkeletalMeshComponent>()->GetSocketLocation("Socket");
+		auto actorLocation = Plante->GetActorLocation();
+		Plante->SetActorRotation(FRotator(0.0f, 0.0f, 0.0f));
+		FVector socketOffset = socketLocation - actorLocation;
+		Plante->SetActorRelativeLocation(-socketOffset);
+
+		FRotator Rot(Plante->GetRootComponent()->GetRelativeTransform().GetRotation());
+		Rot.Yaw -= 90;
+		FVector NewOfs = Rot.RotateVector(socketOffset);
+		Plante->SetActorRelativeRotation(Rot);
+		Plante->SetActorRelativeLocation(NewOfs);
+		//dynamic_cast<APlantSkeletalMeshActor*>(Plante)->Interact();
+		*/
 	}
 }
 

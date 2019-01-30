@@ -8,6 +8,7 @@
 
 class UInteractionDetectorComponent;
 class UAnimSequence;
+//class APlantSkeletalMeshActor;
 
 UCLASS(config=Game)
 class AUnnamedCharacter : public ACharacter
@@ -33,9 +34,7 @@ protected:
 	void MoveUp();
 	void MoveDown();
 
-	UFUNCTION(Blueprintcallable)
-	void Attraper();
-
+	//UFUNCTION(Blueprintcallable)
 	void Interact();
 	float XVector = 5.f;
 	float PositionX = 0.f;
@@ -43,6 +42,10 @@ protected:
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Anims")
 	UAnimSequence *MyAnimSequence;
 
+	UFUNCTION(BlueprintCallable)
+	void PickPlants(AActor * Plante);
+	UPROPERTY(BlueprintReadWrite)
+	AActor* InteractionTarget = nullptr;
 	UFUNCTION(BlueprintImplementableEvent, Category = "ZZZ")
 	void Test();
 
