@@ -11,6 +11,7 @@
 #include "Sol.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Engine/SkeletalMeshSocket.h"
+#include "Kismet/KismetMathLibrary.h"
 
 AUnnamedCharacter::AUnnamedCharacter()
 {
@@ -147,6 +148,13 @@ void AUnnamedCharacter::Interact()
 		}
 
 		if (!UsedItem) { return; }
+
+		// Effectue une rotation du personnage vers la plante à cueillir
+		FRotator RotationTowardsTarget = UKismetMathLibrary::FindLookAtRotation(this->GetActorLocation(), UsedItem->GetActorLocation());
+		AngleRotation = RotationTowardsTarget.Yaw;
+		UE_LOG(LogTemp, Warning, TEXT("Rotation %s"), *RotationTowardsTarget.ToString());
+		//this->SetActorRotation(FRotator(0, Rotation.Yaw, 0));
+
 		APlantSkeletalMeshActor* Plante = dynamic_cast<APlantSkeletalMeshActor*>(UsedItem);
 		if(!Plante)
 			UE_LOG(LogTemp, Warning, TEXT("CE N'EST PAS UNE PLANTE !!!!"));

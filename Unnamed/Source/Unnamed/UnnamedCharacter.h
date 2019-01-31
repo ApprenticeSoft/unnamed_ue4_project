@@ -46,6 +46,8 @@ protected:
 	void PickPlants(AActor * Plante);
 	UPROPERTY(BlueprintReadWrite)
 	AActor* InteractionTarget = nullptr;
+	UPROPERTY(BlueprintReadWrite)
+	float AngleRotation = 0;
 	UFUNCTION(BlueprintImplementableEvent, Category = "ZZZ")
 	void Test();
 
