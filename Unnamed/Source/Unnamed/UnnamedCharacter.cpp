@@ -61,7 +61,7 @@ void AUnnamedCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerI
 	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
 	PlayerInputComponent->BindAxis("MoveRight", this, &AUnnamedCharacter::MoveRight);
 
-	// TEST
+	// Personal actions
 	PlayerInputComponent->BindAction("MoveUp", IE_Pressed, this, &AUnnamedCharacter::MoveUp);
 	PlayerInputComponent->BindAction("MoveDown", IE_Pressed, this, &AUnnamedCharacter::MoveDown);
 	PlayerInputComponent->BindAction("Interact", IE_Pressed, this, &AUnnamedCharacter::Interact);
@@ -153,7 +153,6 @@ void AUnnamedCharacter::Interact()
 		FRotator RotationTowardsTarget = UKismetMathLibrary::FindLookAtRotation(this->GetActorLocation(), UsedItem->GetActorLocation());
 		AngleRotation = RotationTowardsTarget.Yaw;
 		UE_LOG(LogTemp, Warning, TEXT("Rotation %s"), *RotationTowardsTarget.ToString());
-		//this->SetActorRotation(FRotator(0, Rotation.Yaw, 0));
 
 		APlantSkeletalMeshActor* Plante = dynamic_cast<APlantSkeletalMeshActor*>(UsedItem);
 		if(!Plante)
@@ -161,7 +160,9 @@ void AUnnamedCharacter::Interact()
 
 		if (Plante) {
 			InteractionTarget = Plante;
-			Test();
+			
+			if(Plante->IsRipe())
+				InteractWithPlant();
 		}
 		else 
 		{

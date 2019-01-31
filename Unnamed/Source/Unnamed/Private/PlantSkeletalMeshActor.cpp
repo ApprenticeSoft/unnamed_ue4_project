@@ -20,7 +20,7 @@ void APlantSkeletalMeshActor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	if (harvested) 
+	if (Harvested) 
 	{
 		if (KeyValue < 1) {
 			GetSkeletalMeshComponent()->SetMorphTarget(FName("Key 1"), KeyValue);
@@ -42,8 +42,16 @@ void APlantSkeletalMeshActor::Tick(float DeltaTime)
 	}
 }
 
-void APlantSkeletalMeshActor::Interact() 
+bool APlantSkeletalMeshActor::IsRipe()
+{
+	if (GetSkeletalMeshComponent()->GetMorphTarget(FName("Key 1")) < 0.5f)
+		return true;
+	else
+		return false;
+}
+
+void APlantSkeletalMeshActor::Interact()
 {
 	UE_LOG(LogTemp, Warning, TEXT("Interaction avec le mais %s!!!!"), *GetName());
-	harvested = true;
+	Harvested = true;
 }

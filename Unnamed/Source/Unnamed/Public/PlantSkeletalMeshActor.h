@@ -17,11 +17,12 @@ class UNNAMED_API APlantSkeletalMeshActor : public ASkeletalMeshActor
 
 public:
 	APlantSkeletalMeshActor();
+	bool IsRipe();
 	void Interact();
 
 protected:
 	virtual void Tick(float DeltaTime) override;
 	float KeyValue = 0.f;
-	bool harvested = false;
+	bool Harvested = false;
 
 };

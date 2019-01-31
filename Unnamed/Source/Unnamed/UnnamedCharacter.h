@@ -48,8 +48,8 @@ protected:
 	AActor* InteractionTarget = nullptr;
 	UPROPERTY(BlueprintReadWrite)
 	float AngleRotation = 0;
-	UFUNCTION(BlueprintImplementableEvent, Category = "ZZZ")
-	void Test();
+	UFUNCTION(BlueprintImplementableEvent, Category = "Interactions")
+	void InteractWithPlant();
 
 	/** Handle touch inputs. */
 	void TouchStarted(const ETouchIndex::Type FingerIndex, const FVector Location);
