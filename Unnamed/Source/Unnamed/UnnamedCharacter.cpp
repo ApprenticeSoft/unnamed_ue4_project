@@ -171,31 +171,35 @@ void AUnnamedCharacter::PickPlants(AActor * Plante)
 {
 	auto HandSocket = GetMesh()->GetSocketByName(FName("Hand_LSocket"));
 	if (HandSocket) {
+		auto PlantSocket = Plante->FindComponentByClass<class USkeletalMeshComponent>()->GetSocketByName(FName("Socket"));
+		if (PlantSocket) {
+			// Détermination de la position local du socket de la plante (Position du socket par rapport à la plante)
+			auto PlantSocketLocalTransform = PlantSocket->GetSocketLocalTransform();
+			FVector PlantSocketLocalLocation = PlantSocketLocalTransform.GetLocation();
 
-		auto planteActorTransform = Plante->GetActorTransform();
-		UE_LOG(LogTemp, Warning, TEXT("planteActorTransform %s"), *planteActorTransform.GetRotation().ToString());
-		auto planteTransform = Plante->GetTransform();
-		UE_LOG(LogTemp, Warning, TEXT("localRotation %s"), *planteTransform.GetRotation().ToString());
+			// Détermination de l'échelle de la plante
+			auto PlantSocketTransform = PlantSocket->GetSocketTransform(Plante->FindComponentByClass<class USkeletalMeshComponent>());
+			FVector PlantScale = PlantSocketTransform.GetScale3D();
 
-		//HandSocket->AttachActor(Plante, GetMesh());
-		Plante->SetActorEnableCollision(false);
-		Plante->K2_AttachRootComponentTo(GetMesh(), FName("Hand_LSocket"), EAttachLocation::SnapToTarget, true);
+			// On attache la plante au socket dans la main du personnage
+			Plante->K2_AttachRootComponentTo(GetMesh(), FName("Hand_LSocket"), EAttachLocation::SnapToTarget, true);
+			Plante->SetActorEnableCollision(false);
 
-		auto localTransform = GetMesh()->GetSocketTransform(FName("Hand_LSocket"));
-		auto localRotation = localTransform.GetRotation();
-		UE_LOG(LogTemp, Warning, TEXT("localRotation %s"), *localRotation.ToString());
+			// On déplace repositione la plante dans la main en prenant en compte la position du socket et l'échelle de la plante
+			Plante->SetActorRelativeLocation(-PlantSocketLocalLocation * PlantScale);
 
+			/*
+			auto localTransform = GetMesh()->GetSocketTransform(FName("Hand_LSocket"));
+			auto localRotation = localTransform.GetRotation();
+			UE_LOG(LogTemp, Warning, TEXT("localRotation %s"), *localRotation.ToString());
+			*/			
+		}
+		else {
+			UE_LOG(LogTemp, Warning, TEXT("Pas Socket!!"));
+		}
 
-		//Plante->SetActorRelativeLocation(localRotation.RotateVector(FVector(0, 0, -50)));
-		Plante->SetActorRelativeLocation(FVector(0, 0, -50));
-		Plante->SetActorRotation(FRotator(0.0f, 0.0f, 0.0f));
+		//Plante->SetActorRelativeLocation(-socketOffset);
 		/*
-		auto socketLocation = Plante->FindComponentByClass<class USkeletalMeshComponent>()->GetSocketLocation("Socket");
-		auto actorLocation = Plante->GetActorLocation();
-		Plante->SetActorRotation(FRotator(0.0f, 0.0f, 0.0f));
-		FVector socketOffset = socketLocation - actorLocation;
-		Plante->SetActorRelativeLocation(-socketOffset);
-
 		FRotator Rot(Plante->GetRootComponent()->GetRelativeTransform().GetRotation());
 		Rot.Yaw -= 90;
 		FVector NewOfs = Rot.RotateVector(socketOffset);
