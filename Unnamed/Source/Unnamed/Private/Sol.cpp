@@ -6,6 +6,8 @@
 #include "Materials/MaterialInterface.h"
 #include "Materials/MaterialInstanceDynamic.h"
 #include "Math/Color.h"
+#include "GameFramework/PlayerController.h"
+#include "UnnamedCharacter.h"
 
 // Sets default values
 ASol::ASol()
@@ -44,9 +46,10 @@ void ASol::Interact()
 	if (PlanteSurLeSol.Num() == 0) 
 	{
 		auto Mais = GetWorld()->SpawnActor<APlantSkeletalMeshActor>(MaisBlueprint,
-			GetActorLocation(),
-			GetActorRotation());
+																	GetActorLocation(),
+																	GetActorRotation());
 		PlanteSurLeSol.Add(Mais);
+		dynamic_cast<AUnnamedCharacter*>(GetWorld()->GetFirstPlayerController()->GetPawn())->Sow();
 		UE_LOG(LogTemp, Warning, TEXT("PlanteSurLeSol: %i"), PlanteSurLeSol.Num());
 	}
 	else 

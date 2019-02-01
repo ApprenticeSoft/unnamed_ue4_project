@@ -79,4 +79,7 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	bool MoveToLocation(AActor* Target, float Treshold = 10.0f, bool ColideWithTarget = false);
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "Interactions")
+	void Sow();
 };
