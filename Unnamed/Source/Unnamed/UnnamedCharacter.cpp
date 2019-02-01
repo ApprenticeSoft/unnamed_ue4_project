@@ -150,9 +150,8 @@ void AUnnamedCharacter::Interact()
 		if (!UsedItem) { return; }
 
 		// Effectue une rotation du personnage vers la plante à cueillir
-		FRotator RotationTowardsTarget = UKismetMathLibrary::FindLookAtRotation(this->GetActorLocation(), UsedItem->GetActorLocation());
+		RotationTowardsTarget = UKismetMathLibrary::FindLookAtRotation(this->GetActorLocation(), UsedItem->GetActorLocation());
 		AngleRotation = RotationTowardsTarget.Yaw;
-		UE_LOG(LogTemp, Warning, TEXT("Rotation %s"), *RotationTowardsTarget.ToString());
 
 		APlantSkeletalMeshActor* Plante = dynamic_cast<APlantSkeletalMeshActor*>(UsedItem);
 		if(!Plante)
@@ -238,5 +237,16 @@ void AUnnamedCharacter::setPossibleInteractionName(FString Name)
 FString AUnnamedCharacter::getPossibleInteractionName()
 {
 	return PossibleInteractions;
+}
+
+bool AUnnamedCharacter::MoveToLocation(AActor * Target, float Treshold, bool ColideWithTarget)
+{
+	Target->SetActorEnableCollision(ColideWithTarget);
+
+	float Distance = FVector::Distance(Target->GetActorLocation(), GetActorLocation());
+	if (Distance > Treshold) 
+		AddMovementInput(UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), Target->GetActorLocation()).Vector());
+
+	return Distance > Treshold;
 }
 

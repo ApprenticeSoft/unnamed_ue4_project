@@ -38,6 +38,8 @@ protected:
 	void Interact();
 	float XVector = 5.f;
 	float PositionX = 0.f;
+	//bool MoveTowardsTarget = false;
+	FRotator RotationTowardsTarget;
 	UInteractionDetectorComponent* Detector;
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Anims")
 	UAnimSequence *MyAnimSequence;
@@ -75,4 +77,6 @@ public:
 	void setPossibleInteractionName(FString Name);
 	FString getPossibleInteractionName();
 
+	UFUNCTION(BlueprintCallable)
+	bool MoveToLocation(AActor* Target, float Treshold = 10.0f, bool ColideWithTarget = false);
 };
