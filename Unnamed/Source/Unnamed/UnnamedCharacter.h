@@ -27,10 +27,9 @@ protected:
 	/** Called for side to side input */
 	void MoveRight(float Val);
 
-	// TEST
+	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
 	void DisplacementOnX();
-	virtual void BeginPlay() override;
 	void MoveUp();
 	void MoveDown();
 
@@ -38,7 +37,6 @@ protected:
 	void Interact();
 	float XVector = 5.f;
 	float PositionX = 0.f;
-	//bool MoveTowardsTarget = false;
 	FRotator RotationTowardsTarget;
 	UInteractionDetectorComponent* Detector;
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Anims")
