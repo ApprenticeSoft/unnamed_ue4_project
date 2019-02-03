@@ -41,22 +41,23 @@ void ASol::Tick(float DeltaTime)
 
 }
 
-void ASol::Interact()
+int32 ASol::GetPlantNumber()
 {
-	if (PlanteSurLeSol.Num() == 0) 
-	{
-		auto Mais = GetWorld()->SpawnActor<APlantSkeletalMeshActor>(MaisBlueprint,
-																	GetActorLocation(),
-																	GetActorRotation());
-		PlanteSurLeSol.Add(Mais);
-		dynamic_cast<AUnnamedCharacter*>(GetWorld()->GetFirstPlayerController()->GetPawn())->Sow();
-		UE_LOG(LogTemp, Warning, TEXT("PlanteSurLeSol: %i"), PlanteSurLeSol.Num());
-	}
-	else 
-	{
-		PlanteSurLeSol[0]->Interact();
-		PlanteSurLeSol.RemoveAt(0);
-		UE_LOG(LogTemp, Warning, TEXT("PlanteSurLeSol: %i"), PlanteSurLeSol.Num());
-	}
+	return PlanteSurLeSol.Num();
+}
+
+void ASol::AddPlant(APlantSkeletalMeshActor* Plant)
+{
+	PlanteSurLeSol.Add(Plant);
+}
+
+APlantSkeletalMeshActor* ASol::PopPlant()
+{
+	return PlanteSurLeSol.Pop();
+}
+
+APlantSkeletalMeshActor* ASol::GetPlant()
+{
+	return PlanteSurLeSol[0];
 }
 

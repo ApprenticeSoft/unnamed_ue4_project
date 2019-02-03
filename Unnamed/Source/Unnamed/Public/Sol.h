@@ -17,6 +17,10 @@ class UNNAMED_API ASol : public AActor
 public:	
 	// Sets default values for this actor's properties
 	ASol();
+	int32 GetPlantNumber();
+	void AddPlant(APlantSkeletalMeshActor* Plant);
+	APlantSkeletalMeshActor* PopPlant();
+	APlantSkeletalMeshActor* GetPlant();
 
 protected:
 	// Called when the game starts or when spawned
@@ -25,7 +29,6 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-	void Interact();
 
 private:
 	UPROPERTY(EditDefaultsOnly, Category = Setup)

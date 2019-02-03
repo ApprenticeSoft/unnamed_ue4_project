@@ -79,6 +79,7 @@ void AUnnamedCharacter::BeginPlay()
 	PositionX = GetActorLocation().X;
 	Detector = AActor::FindComponentByClass<class UInteractionDetectorComponent>();
 
+	/*
 	auto HandSocket = GetMesh()->GetSocketByName(FName("Hand_LSocket"));
 	if (HandSocket) 
 	{
@@ -86,6 +87,7 @@ void AUnnamedCharacter::BeginPlay()
 		auto localRotation = localTransform.GetRotation();
 		UE_LOG(LogTemp, Warning, TEXT("localRotation %s"), *localRotation.ToString());
 	}
+	*/
 }
 
 void AUnnamedCharacter::Tick(float DeltaTime)
@@ -130,14 +132,47 @@ void AUnnamedCharacter::MoveDown()
 
 void AUnnamedCharacter::Interact()
 {
-	auto ItemsInReach = Detector->getOverlappingActors();
 	AActor* UsedItem = nullptr;
+	UsedItem = FindTarget();
+
+	if (!UsedItem) { return; }
+
+	ASol* Sol = dynamic_cast<ASol*>(UsedItem);
+	if (!Sol) 
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Ce n'est pas un sol!!"));
+		return;
+	}
+
+	if (Sol->GetPlantNumber() == 0)
+	{
+		SetInteractionTarget(Sol);
+		auto Mais = GetWorld()->SpawnActor<APlantSkeletalMeshActor>(MaisBlueprint,
+																	Sol->GetActorLocation(),
+																	Sol->GetActorRotation());
+		Sol->AddPlant(Mais);
+		Sow();
+	}
+	else if (Sol->GetPlantNumber() > 0)
+	{
+		if (Sol->GetPlant()->IsRipe()) {
+			SetInteractionTarget(Sol->PopPlant());
+			InteractWithPlant();
+		}
+	}
+}
+
+AActor* AUnnamedCharacter::FindTarget()
+{
+	AActor* UsedItem = nullptr;
+
+	auto ItemsInReach = Detector->getOverlappingActors();
 	float ItemDistance = 1000;
 
 	if (ItemsInReach.Num() > 0) {
 		for (const auto* Actor : ItemsInReach)
 		{
-			if (Actor == nullptr) { return; }
+			if (Actor == nullptr) { return nullptr; }
 			float Distance = FVector::Distance(Actor->GetActorLocation(), GetActorLocation());
 			UE_LOG(LogTemp, Warning, TEXT("Distance avec %s: %f"), *Actor->GetName(), Distance);
 
@@ -147,34 +182,16 @@ void AUnnamedCharacter::Interact()
 				UsedItem = const_cast<AActor*>(Actor); // const_cast permet de convertir un const AActor* en AActor*
 			}
 		}
-
-		if (!UsedItem) { return; }
-		SetInteractionTarget(UsedItem);
-
-		// Effectue une rotation du personnage vers la plante à cueillir
-		RotationTowardsTarget = UKismetMathLibrary::FindLookAtRotation(this->GetActorLocation(), UsedItem->GetActorLocation());
-		AngleRotation = RotationTowardsTarget.Yaw;
-
-		APlantSkeletalMeshActor* Plante = dynamic_cast<APlantSkeletalMeshActor*>(UsedItem);
-		if(!Plante)
-			UE_LOG(LogTemp, Warning, TEXT("CE N'EST PAS UNE PLANTE !!!!"));
-
-		if (Plante) {
-			//InteractionTarget = Plante;
-			
-			if(Plante->IsRipe())
-				InteractWithPlant();
-		}
-		else 
-		{
-			ASol* Sol = dynamic_cast<ASol*>(UsedItem);
-			if (Sol) 
-			{
-				UE_LOG(LogTemp, Warning, TEXT("TEST"));
-				Sol->Interact();
-			}
-		}
 	}
+
+	return UsedItem;
+}
+
+void AUnnamedCharacter::SetInteractionTarget(AActor* Target)
+{
+	InteractionTarget = Target;
+	RotationTowardsTarget = UKismetMathLibrary::FindLookAtRotation(this->GetActorLocation(), InteractionTarget->GetActorLocation());
+	AngleRotation = RotationTowardsTarget.Yaw;
 }
 
 void AUnnamedCharacter::PickPlants(AActor * Plante)
@@ -262,10 +279,5 @@ bool AUnnamedCharacter::MoveToLocation(AActor * Target, float Treshold, bool Col
 		AddMovementInput(UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), Target->GetActorLocation()).Vector());
 
 	return Distance > Treshold;
-}
-
-void AUnnamedCharacter::SetInteractionTarget(AActor * Target)
-{
-	InteractionTarget = Target;
 }
 

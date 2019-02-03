@@ -7,6 +7,7 @@
 #include "UnnamedCharacter.generated.h"
 
 class UInteractionDetectorComponent;
+class APlantSkeletalMeshActor;
 class UAnimSequence;
 class ASeed;
 //class APlantSkeletalMeshActor;
@@ -36,6 +37,8 @@ protected:
 
 	//UFUNCTION(Blueprintcallable)
 	void Interact();
+	AActor* FindTarget();
+	void SetInteractionTarget(AActor* Target);
 	float XVector = 5.f;
 	float PositionX = 0.f;
 	FRotator RotationTowardsTarget;
@@ -57,6 +60,8 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = Setup)
 	//UClass* ProjectileBluePrint;		// UClass* va afficher la totalités des classes disponibles dans le blueprint alors que TSubclassOf<> n'affiche que la classe choisie
 	TSubclassOf<ASeed> SeedBluePrint;
+	UPROPERTY(EditDefaultsOnly, Category = Setup)
+	TSubclassOf<APlantSkeletalMeshActor> MaisBlueprint;
 
 	/** Handle touch inputs. */
 	void TouchStarted(const ETouchIndex::Type FingerIndex, const FVector Location);
@@ -87,5 +92,4 @@ public:
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "Interactions")
 	void Sow();
-	void SetInteractionTarget(AActor* Target);
 };
