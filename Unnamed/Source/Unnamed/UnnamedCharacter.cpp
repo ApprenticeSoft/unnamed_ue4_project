@@ -153,6 +153,12 @@ void AUnnamedCharacter::Interact()
 		Sol->AddPlant(Mais);
 		Sow();
 	}
+	else if (Sol->IsReadyToHarvest())
+	{
+		SetInteractionTarget(Sol->PopPlant());
+		InteractWithPlant();
+	}
+	/*
 	else if (Sol->GetPlantNumber() > 0)
 	{
 		if (Sol->GetPlant()->IsRipe()) {
@@ -160,6 +166,7 @@ void AUnnamedCharacter::Interact()
 			InteractWithPlant();
 		}
 	}
+	*/
 }
 
 AActor* AUnnamedCharacter::FindTarget()

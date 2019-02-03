@@ -36,9 +36,7 @@ void ASol::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	float test = 0.5f + FMath::Cos(GetWorld()->TimeSeconds)/2;
-	DynamicMaterial->SetScalarParameterValue(TEXT("Blend"), test);
-
+	UpdateHumidity();
 }
 
 int32 ASol::GetPlantNumber()
@@ -59,5 +57,29 @@ APlantSkeletalMeshActor* ASol::PopPlant()
 APlantSkeletalMeshActor* ASol::GetPlant()
 {
 	return PlanteSurLeSol[0];
+}
+
+void ASol::UpdateHumidity()
+{
+	Humidity -= GetWorld()->DeltaTimeSeconds;
+	if (Humidity < 0)
+		Humidity = 0;
+	DynamicMaterial->SetScalarParameterValue(TEXT("Blend"), Humidity / HumidityMax);
+}
+
+void ASol::UpdateHumidity(float value)
+{
+	Humidity += value;
+	if (Humidity > 100)
+		Humidity = 100;
+}
+
+bool ASol::IsReadyToHarvest()
+{
+	if (PlanteSurLeSol.Num() > 0)
+		if (PlanteSurLeSol[0]->IsRipe())
+			return true;
+
+	return  false;
 }
 

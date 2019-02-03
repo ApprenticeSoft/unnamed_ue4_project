@@ -22,6 +22,9 @@ public:
 	APlantSkeletalMeshActor* PopPlant();
 	APlantSkeletalMeshActor* GetPlant();
 
+	void UpdateHumidity(float value);
+	bool IsReadyToHarvest();
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -36,5 +39,8 @@ private:
 	TSubclassOf<APlantSkeletalMeshActor> MaisBlueprint;
 	TArray<APlantSkeletalMeshActor*> PlanteSurLeSol;
 	UMaterialInstanceDynamic* DynamicMaterial;
+	float const HumidityMax = 100.0f;
+	float Humidity = 100.0f;
+	void UpdateHumidity();
 
 };
