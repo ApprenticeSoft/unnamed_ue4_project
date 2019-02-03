@@ -9,6 +9,7 @@
 #include "InteractionDetectorComponent.h"
 #include "PlantSkeletalMeshActor.h"
 #include "Sol.h"
+#include "Seed.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Engine/SkeletalMeshSocket.h"
 #include "Kismet/KismetMathLibrary.h"
@@ -148,6 +149,7 @@ void AUnnamedCharacter::Interact()
 		}
 
 		if (!UsedItem) { return; }
+		SetInteractionTarget(UsedItem);
 
 		// Effectue une rotation du personnage vers la plante à cueillir
 		RotationTowardsTarget = UKismetMathLibrary::FindLookAtRotation(this->GetActorLocation(), UsedItem->GetActorLocation());
@@ -158,7 +160,7 @@ void AUnnamedCharacter::Interact()
 			UE_LOG(LogTemp, Warning, TEXT("CE N'EST PAS UNE PLANTE !!!!"));
 
 		if (Plante) {
-			InteractionTarget = Plante;
+			//InteractionTarget = Plante;
 			
 			if(Plante->IsRipe())
 				InteractWithPlant();
@@ -218,6 +220,18 @@ void AUnnamedCharacter::PickPlants(AActor * Plante)
 	}
 }
 
+void AUnnamedCharacter::LaunchSeeds()
+{
+	for (int i = 0; i < 5; i++) {
+		auto Seed = GetWorld()->SpawnActor<ASeed>(SeedBluePrint,
+			GetActorLocation(),
+			GetActorRotation());
+
+		int32 Speed = UKismetMathLibrary::RandomIntegerInRange(150, 280);
+		Seed->LaunchSeed(Speed);
+	}
+}
+
 void AUnnamedCharacter::TouchStarted(const ETouchIndex::Type FingerIndex, const FVector Location)
 {
 	// jump on any touch
@@ -248,5 +262,10 @@ bool AUnnamedCharacter::MoveToLocation(AActor * Target, float Treshold, bool Col
 		AddMovementInput(UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), Target->GetActorLocation()).Vector());
 
 	return Distance > Treshold;
+}
+
+void AUnnamedCharacter::SetInteractionTarget(AActor * Target)
+{
+	InteractionTarget = Target;
 }
 

@@ -8,6 +8,7 @@
 
 class UInteractionDetectorComponent;
 class UAnimSequence;
+class ASeed;
 //class APlantSkeletalMeshActor;
 
 UCLASS(config=Game)
@@ -44,12 +45,18 @@ protected:
 
 	UFUNCTION(BlueprintCallable)
 	void PickPlants(AActor * Plante);
+	UFUNCTION(BlueprintCallable)
+	void LaunchSeeds();
 	UPROPERTY(BlueprintReadWrite)
 	AActor* InteractionTarget = nullptr;
 	UPROPERTY(BlueprintReadWrite)
 	float AngleRotation = 0;
 	UFUNCTION(BlueprintImplementableEvent, Category = "Interactions")
 	void InteractWithPlant();
+
+	UPROPERTY(EditDefaultsOnly, Category = Setup)
+	//UClass* ProjectileBluePrint;		// UClass* va afficher la totalités des classes disponibles dans le blueprint alors que TSubclassOf<> n'affiche que la classe choisie
+	TSubclassOf<ASeed> SeedBluePrint;
 
 	/** Handle touch inputs. */
 	void TouchStarted(const ETouchIndex::Type FingerIndex, const FVector Location);
@@ -80,4 +87,5 @@ public:
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "Interactions")
 	void Sow();
+	void SetInteractionTarget(AActor* Target);
 };
