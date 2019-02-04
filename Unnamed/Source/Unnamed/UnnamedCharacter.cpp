@@ -13,6 +13,7 @@
 #include "Components/SkeletalMeshComponent.h"
 #include "Engine/SkeletalMeshSocket.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "WateringCan.h"
 
 AUnnamedCharacter::AUnnamedCharacter()
 {
@@ -88,6 +89,16 @@ void AUnnamedCharacter::BeginPlay()
 		UE_LOG(LogTemp, Warning, TEXT("localRotation %s"), *localRotation.ToString());
 	}
 	*/
+	TArray< AActor* > tempChildActors;
+	GetAttachedActors(tempChildActors);
+	AWateringCan* Watering_can = nullptr; 
+	tempChildActors.FindItemByClass<class AWateringCan>(&Watering_can);
+	
+	if (Watering_can)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Watering can name: %s"), *Watering_can->GetFullName());
+	}
+	
 }
 
 void AUnnamedCharacter::Tick(float DeltaTime)
