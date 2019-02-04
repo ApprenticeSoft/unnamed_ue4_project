@@ -134,7 +134,6 @@ void AUnnamedCharacter::Interact()
 {
 	AActor* UsedItem = nullptr;
 	UsedItem = FindTarget();
-
 	if (!UsedItem) { return; }
 
 	ASol* Sol = dynamic_cast<ASol*>(UsedItem);
@@ -144,20 +143,25 @@ void AUnnamedCharacter::Interact()
 		return;
 	}
 
-	if (Sol->GetPlantNumber() == 0)
-	{
-		SetInteractionTarget(Sol);
-		auto Mais = GetWorld()->SpawnActor<APlantSkeletalMeshActor>(MaisBlueprint,
-																	Sol->GetActorLocation(),
-																	Sol->GetActorRotation());
-		Sol->AddPlant(Mais);
-		Sow();
-	}
-	else if (Sol->IsReadyToHarvest())
+	if (Sol->IsReadyToHarvest())
 	{
 		SetInteractionTarget(Sol->PopPlant());
 		InteractWithPlant();
 	}
+	else if (Sol->GetHumidity() < 30)
+	{
+		Sol->SetHumidity(100);
+	}
+	else if (Sol->GetPlantNumber() == 0)
+	{
+		SetInteractionTarget(Sol);
+		auto Mais = GetWorld()->SpawnActor<APlantSkeletalMeshActor>(MaisBlueprint,
+			Sol->GetActorLocation(),
+			Sol->GetActorRotation());
+		Sol->AddPlant(Mais);
+		Sow();
+	} 
+
 	/*
 	else if (Sol->GetPlantNumber() > 0)
 	{
@@ -196,6 +200,7 @@ AActor* AUnnamedCharacter::FindTarget()
 
 void AUnnamedCharacter::SetInteractionTarget(AActor* Target)
 {
+	if (!Target) { return; }
 	InteractionTarget = Target;
 	RotationTowardsTarget = UKismetMathLibrary::FindLookAtRotation(this->GetActorLocation(), InteractionTarget->GetActorLocation());
 	AngleRotation = RotationTowardsTarget.Yaw;
@@ -203,6 +208,7 @@ void AUnnamedCharacter::SetInteractionTarget(AActor* Target)
 
 void AUnnamedCharacter::PickPlants(AActor * Plante)
 {
+	if (!Plante) { return; }
 	auto HandSocket = GetMesh()->GetSocketByName(FName("Hand_LSocket"));
 	if (HandSocket) {
 		auto PlantSocket = Plante->FindComponentByClass<class USkeletalMeshComponent>()->GetSocketByName(FName("Socket"));
@@ -279,6 +285,7 @@ FString AUnnamedCharacter::getPossibleInteractionName()
 
 bool AUnnamedCharacter::MoveToLocation(AActor * Target, float Treshold, bool ColideWithTarget)
 {
+	if (!Target) { return false; }
 	Target->SetActorEnableCollision(ColideWithTarget);
 
 	float Distance = FVector::Distance(Target->GetActorLocation(), GetActorLocation());

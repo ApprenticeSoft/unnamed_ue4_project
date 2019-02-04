@@ -92,4 +92,6 @@ public:
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "Interactions")
 	void Sow();
+	UFUNCTION(BlueprintImplementableEvent, Category = "Interactions")
+	void Water();
 };

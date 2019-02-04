@@ -22,7 +22,8 @@ public:
 	APlantSkeletalMeshActor* PopPlant();
 	APlantSkeletalMeshActor* GetPlant();
 
-	void UpdateHumidity(float value);
+	void SetHumidity(float value);
+	float GetHumidity();
 	bool IsReadyToHarvest();
 
 protected:

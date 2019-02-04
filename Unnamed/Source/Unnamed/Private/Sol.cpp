@@ -46,6 +46,7 @@ int32 ASol::GetPlantNumber()
 
 void ASol::AddPlant(APlantSkeletalMeshActor* Plant)
 {
+	if (!Plant) { return; }
 	PlanteSurLeSol.Add(Plant);
 }
 
@@ -67,11 +68,16 @@ void ASol::UpdateHumidity()
 	DynamicMaterial->SetScalarParameterValue(TEXT("Blend"), Humidity / HumidityMax);
 }
 
-void ASol::UpdateHumidity(float value)
+void ASol::SetHumidity(float value)
 {
 	Humidity += value;
 	if (Humidity > 100)
 		Humidity = 100;
+}
+
+float ASol::GetHumidity()
+{
+	return Humidity;
 }
 
 bool ASol::IsReadyToHarvest()
