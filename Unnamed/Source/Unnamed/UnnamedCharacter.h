@@ -10,6 +10,7 @@ class UInteractionDetectorComponent;
 class APlantSkeletalMeshActor;
 class UAnimSequence;
 class ASeed;
+class AWateringCan;
 //class APlantSkeletalMeshActor;
 
 UCLASS(config=Game)
@@ -42,7 +43,8 @@ protected:
 	float XVector = 5.f;
 	float PositionX = 0.f;
 	FRotator RotationTowardsTarget;
-	UInteractionDetectorComponent* Detector;
+	UInteractionDetectorComponent* Detector = nullptr;
+	AWateringCan* Watering_can = nullptr;
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Anims")
 	UAnimSequence *MyAnimSequence;
 

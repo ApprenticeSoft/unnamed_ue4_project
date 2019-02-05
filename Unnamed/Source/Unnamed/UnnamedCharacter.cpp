@@ -89,15 +89,14 @@ void AUnnamedCharacter::BeginPlay()
 		UE_LOG(LogTemp, Warning, TEXT("localRotation %s"), *localRotation.ToString());
 	}
 	*/
+
+	// Référence de l'arrosoir
 	TArray< AActor* > tempChildActors;
 	GetAttachedActors(tempChildActors);
-	AWateringCan* Watering_can = nullptr; 
 	tempChildActors.FindItemByClass<class AWateringCan>(&Watering_can);
 	
-	if (Watering_can)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Watering can name: %s"), *Watering_can->GetFullName());
-	}
+	if (!Watering_can)
+		UE_LOG(LogTemp, Warning, TEXT("Pas d'arrosoir!!!"));
 	
 }
 
@@ -159,8 +158,10 @@ void AUnnamedCharacter::Interact()
 		SetInteractionTarget(Sol->PopPlant());
 		InteractWithPlant();
 	}
-	else if (Sol->GetHumidity() < 30)
+	else if (Sol->GetHumidity() < 80)
 	{
+		if(Watering_can)
+			Watering_can->Activate();
 		Sol->SetHumidity(100);
 	}
 	else if (Sol->GetPlantNumber() == 0)

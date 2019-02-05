@@ -6,6 +6,8 @@
 #include "GameFramework/Actor.h"
 #include "WateringCan.generated.h"
 
+class UStaticMeshComponent;
+
 UCLASS()
 class UNNAMED_API AWateringCan : public AActor
 {
@@ -18,9 +20,12 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+	UStaticMeshComponent* Mesh;
+	float Scale = 0.1f;
+	float newScale = 0.1f;
 
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-
+	void Activate();
 };
