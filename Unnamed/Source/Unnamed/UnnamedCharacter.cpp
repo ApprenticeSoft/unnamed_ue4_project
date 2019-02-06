@@ -142,6 +142,7 @@ void AUnnamedCharacter::MoveDown()
 
 void AUnnamedCharacter::Interact()
 {
+	UE_LOG(LogTemp, Warning, TEXT("Interaction!!!"));
 	AActor* UsedItem = nullptr;
 	UsedItem = FindTarget();
 	if (!UsedItem) { return; }
@@ -160,9 +161,8 @@ void AUnnamedCharacter::Interact()
 	}
 	else if (Sol->GetHumidity() < 80)
 	{
-		if(Watering_can)
-			Watering_can->Activate();
-		Sol->SetHumidity(100);
+		SetInteractionTarget(Sol);
+		Water();
 	}
 	else if (Sol->GetPlantNumber() == 0)
 	{
@@ -184,6 +184,26 @@ void AUnnamedCharacter::Interact()
 	}
 	*/
 }
+
+void AUnnamedCharacter::ActivateWateringCan()
+{
+	if (Watering_can)
+		Watering_can->Activate();
+}
+
+void AUnnamedCharacter::DeactivateWateringCan()
+{
+	if (Watering_can)
+		Watering_can->Deactivate();
+}
+
+void AUnnamedCharacter::IncreaseHumidity()
+{
+	ASol* Sol = dynamic_cast<ASol*>(InteractionTarget);
+	if(Sol)
+		Sol->SetHumidity(1);
+}
+
 
 AActor* AUnnamedCharacter::FindTarget()
 {

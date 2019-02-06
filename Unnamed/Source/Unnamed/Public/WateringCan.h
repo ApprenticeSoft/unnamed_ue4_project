@@ -22,10 +22,12 @@ protected:
 	virtual void BeginPlay() override;
 	UStaticMeshComponent* Mesh;
 	float Scale = 0.1f;
-	float newScale = 0.1f;
+	float NewScale = 0.1f;
 
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+	void AdjustSize();
 	void Activate();
+	void Deactivate();
 };

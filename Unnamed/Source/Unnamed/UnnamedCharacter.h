@@ -52,12 +52,16 @@ protected:
 	void PickPlants(AActor * Plante);
 	UFUNCTION(BlueprintCallable)
 	void LaunchSeeds();
+	UFUNCTION(BlueprintCallable)
+	void ActivateWateringCan();
+	UFUNCTION(BlueprintCallable)
+	void DeactivateWateringCan();
+	UFUNCTION(BlueprintCallable)
+	void IncreaseHumidity();
 	UPROPERTY(BlueprintReadWrite)
 	AActor* InteractionTarget = nullptr;
 	UPROPERTY(BlueprintReadWrite)
 	float AngleRotation = 0;
-	UFUNCTION(BlueprintImplementableEvent, Category = "Interactions")
-	void InteractWithPlant();
 
 	UPROPERTY(EditDefaultsOnly, Category = Setup)
 	//UClass* ProjectileBluePrint;		// UClass* va afficher la totalités des classes disponibles dans le blueprint alors que TSubclassOf<> n'affiche que la classe choisie
@@ -96,4 +100,6 @@ public:
 	void Sow();
 	UFUNCTION(BlueprintImplementableEvent, Category = "Interactions")
 	void Water();
+	UFUNCTION(BlueprintImplementableEvent, Category = "Interactions")
+	void InteractWithPlant();
 };

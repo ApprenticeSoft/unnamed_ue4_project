@@ -28,18 +28,41 @@ void AWateringCan::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	if (newScale > Scale) 
+	AdjustSize();
+}
+
+void AWateringCan::AdjustSize()
+{
+	if (NewScale > Scale)
 	{
-		Scale += GetWorld()->DeltaTimeSeconds;
+		Scale += 10 * GetWorld()->DeltaTimeSeconds;
+		if (Scale > NewScale)
+			Scale = NewScale;
+		SetActorScale3D(FVector(Scale));
+	}
+	else if (NewScale < Scale)
+	{
+		Scale -= 10 * GetWorld()->DeltaTimeSeconds;
+		if (Scale < NewScale)
+		{
+			Scale = NewScale;
+			if (Mesh)
+				Mesh->SetVisibility(false);
+		}
 		SetActorScale3D(FVector(Scale));
 	}
 }
 
 void AWateringCan::Activate()
 {
-	if(Mesh)
+	if (Mesh)
 		Mesh->SetVisibility(true);
 
-	newScale = 1;
+	NewScale = 1;
+}
+
+void AWateringCan::Deactivate()
+{
+	NewScale = 0.1f;
 }
 
