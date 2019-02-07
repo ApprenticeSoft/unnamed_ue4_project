@@ -33,6 +33,8 @@ void AWateringCan::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	AdjustSize();
+
+	PourWater();
 }
 
 void AWateringCan::AdjustSize()
@@ -40,8 +42,11 @@ void AWateringCan::AdjustSize()
 	if (NewScale > Scale)
 	{
 		Scale += 10 * GetWorld()->DeltaTimeSeconds;
-		if (Scale > NewScale)
+		if (Scale > NewScale) 
+		{
 			Scale = NewScale;
+			IsPouring = true;
+		}
 		SetActorScale3D(FVector(Scale));
 	}
 	else if (NewScale < Scale)
@@ -68,19 +73,28 @@ void AWateringCan::Activate()
 void AWateringCan::Deactivate()
 {
 	NewScale = 0.1f;
+	IsPouring = false;
 }
 
 void AWateringCan::PourWater()
 {
-	auto SocketArray = FindComponentByClass<class UStaticMeshComponent>()->GetAllSocketNames();
-	for (int i = 0; i < SocketArray.Num(); i++)
+	if (IsPouring) 
 	{
-		auto SocketTransform = FindComponentByClass<class UStaticMeshComponent>()->GetSocketTransform(SocketArray[i]);
-		auto Water = GetWorld()->SpawnActor<AWater>(WaterBluePrint,
-													SocketTransform.GetLocation(),
-													GetActorRotation());
+		PourTimer += 1;
 
-		Water->LaunchWater(100);
+		if (PourTimer%PourDelay == 0) 
+		{
+			auto SocketArray = FindComponentByClass<class UStaticMeshComponent>()->GetAllSocketNames();
+			for (int i = 0; i < SocketArray.Num(); i++)
+			{
+				auto SocketTransform = FindComponentByClass<class UStaticMeshComponent>()->GetSocketTransform(SocketArray[i]);
+				auto Water = GetWorld()->SpawnActor<AWater>(WaterBluePrint,
+															SocketTransform.GetLocation(),
+															GetActorRotation());
+
+				Water->LaunchWater(100);
+			}
+		}
 	}
 }
 
