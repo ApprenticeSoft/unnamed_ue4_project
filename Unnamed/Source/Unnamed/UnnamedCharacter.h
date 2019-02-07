@@ -57,7 +57,7 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	void DeactivateWateringCan();
 	UFUNCTION(BlueprintCallable)
-	void IncreaseHumidity();
+	void IncreaseHumidity(float value = 1.0f);
 	UPROPERTY(BlueprintReadWrite)
 	AActor* InteractionTarget = nullptr;
 	UPROPERTY(BlueprintReadWrite)

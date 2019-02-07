@@ -142,7 +142,6 @@ void AUnnamedCharacter::MoveDown()
 
 void AUnnamedCharacter::Interact()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Interaction!!!"));
 	AActor* UsedItem = nullptr;
 	UsedItem = FindTarget();
 	if (!UsedItem) { return; }
@@ -197,11 +196,11 @@ void AUnnamedCharacter::DeactivateWateringCan()
 		Watering_can->Deactivate();
 }
 
-void AUnnamedCharacter::IncreaseHumidity()
+void AUnnamedCharacter::IncreaseHumidity(float value)
 {
 	ASol* Sol = dynamic_cast<ASol*>(InteractionTarget);
 	if(Sol)
-		Sol->SetHumidity(1);
+		Sol->SetHumidity(value);
 }
 
 
@@ -284,12 +283,23 @@ void AUnnamedCharacter::PickPlants(AActor * Plante)
 
 void AUnnamedCharacter::LaunchSeeds()
 {
-	for (int i = 0; i < 5; i++) {
-		auto Seed = GetWorld()->SpawnActor<ASeed>(SeedBluePrint,
-			GetActorLocation(),
-			GetActorRotation());
+	// On détermine la position de la main avant de lancer les graines
+	auto HandSocket = GetMesh()->GetSocketByName(FName("Hand_LSocket"));
+	FVector HandLocation = FVector(0,0,0);
+	if (HandSocket)
+	{
+		auto HandTransform = GetMesh()->GetSocketTransform(FName("Hand_LSocket"));
+		HandLocation = HandTransform.GetLocation();
+		UE_LOG(LogTemp, Warning, TEXT("HandTransform %s"), *HandTransform.ToString());
+	}
 
-		int32 Speed = UKismetMathLibrary::RandomIntegerInRange(150, 280);
+	// On lance les graines
+	for (int i = 0; i < 5; i++) {
+		auto Seed = GetWorld()->SpawnActor<ASeed>(	SeedBluePrint,
+													HandLocation,
+													GetActorRotation());
+
+		int32 Speed = UKismetMathLibrary::RandomIntegerInRange(120, 200);
 		Seed->LaunchSeed(Speed);
 	}
 }

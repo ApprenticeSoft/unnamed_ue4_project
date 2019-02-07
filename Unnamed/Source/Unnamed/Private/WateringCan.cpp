@@ -2,6 +2,10 @@
 
 #include "WateringCan.h"
 #include "Components/StaticMeshComponent.h"
+#include "Engine/SkeletalMeshSocket.h"
+#include "Components/StaticMeshComponent.h"
+#include "Engine/StaticMeshSocket.h"
+#include "Water.h"
 
 // Sets default values
 AWateringCan::AWateringCan()
@@ -64,5 +68,19 @@ void AWateringCan::Activate()
 void AWateringCan::Deactivate()
 {
 	NewScale = 0.1f;
+}
+
+void AWateringCan::PourWater()
+{
+	auto SocketArray = FindComponentByClass<class UStaticMeshComponent>()->GetAllSocketNames();
+	for (int i = 0; i < SocketArray.Num(); i++)
+	{
+		auto SocketTransform = FindComponentByClass<class UStaticMeshComponent>()->GetSocketTransform(SocketArray[i]);
+		auto Water = GetWorld()->SpawnActor<AWater>(WaterBluePrint,
+													SocketTransform.GetLocation(),
+													GetActorRotation());
+
+		Water->LaunchWater(100);
+	}
 }
 

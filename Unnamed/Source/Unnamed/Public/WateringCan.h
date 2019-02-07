@@ -7,6 +7,7 @@
 #include "WateringCan.generated.h"
 
 class UStaticMeshComponent;
+class AWater;
 
 UCLASS()
 class UNNAMED_API AWateringCan : public AActor
@@ -24,10 +25,14 @@ protected:
 	float Scale = 0.1f;
 	float NewScale = 0.1f;
 
+	UPROPERTY(EditDefaultsOnly, Category = Setup)
+	TSubclassOf<AWater> WaterBluePrint;
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 	void AdjustSize();
 	void Activate();
 	void Deactivate();
+	void PourWater();
 };
