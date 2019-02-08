@@ -131,12 +131,12 @@ void AUnnamedCharacter::MoveRight(float Value)
 
 void AUnnamedCharacter::MoveUp()
 {
-	PositionX -= 100;
+	PositionX -= 150;
 }
 
 void AUnnamedCharacter::MoveDown()
 {	
-	PositionX += 100;
+	PositionX += 150;
 }
 
 
@@ -167,8 +167,8 @@ void AUnnamedCharacter::Interact()
 	{
 		SetInteractionTarget(Sol);
 		auto Mais = GetWorld()->SpawnActor<APlantSkeletalMeshActor>(MaisBlueprint,
-			Sol->GetActorLocation(),
-			Sol->GetActorRotation());
+																	Sol->GetActorLocation(),
+																	FRotator(0,260,0));
 		Sol->AddPlant(Mais);
 		Sow();
 	} 
@@ -294,6 +294,7 @@ void AUnnamedCharacter::LaunchSeeds()
 	}
 
 	// On lance les graines
+	/*
 	for (int i = 0; i < 5; i++) {
 		auto Seed = GetWorld()->SpawnActor<ASeed>(	SeedBluePrint,
 													HandLocation,
@@ -302,6 +303,12 @@ void AUnnamedCharacter::LaunchSeeds()
 		int32 Speed = UKismetMathLibrary::RandomIntegerInRange(120, 200);
 		Seed->LaunchSeed(Speed);
 	}
+	*/
+	auto Seed = GetWorld()->SpawnActor<ASeed>(SeedBluePrint,
+		HandLocation,
+		GetActorRotation());
+
+	Seed->LaunchSeed(160);
 }
 
 void AUnnamedCharacter::TouchStarted(const ETouchIndex::Type FingerIndex, const FVector Location)
