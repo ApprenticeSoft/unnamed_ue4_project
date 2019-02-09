@@ -18,11 +18,17 @@ class UNNAMED_API APlantSkeletalMeshActor : public ASkeletalMeshActor
 public:
 	APlantSkeletalMeshActor();
 	bool IsRipe();
-	void Interact();
+	UFUNCTION(BlueprintCallable)
+		void SetHarvested(bool Harvested);
+	UFUNCTION(BlueprintCallable)
+		void SetGrown(bool Grown);
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+		float RotDelay = 100;
 
 protected:
 	virtual void Tick(float DeltaTime) override;
 	float KeyValue = 0.f;
-	bool Harvested = false;
+	bool IsHarvested = false;
+	bool IsGrown = false;
 
 };
