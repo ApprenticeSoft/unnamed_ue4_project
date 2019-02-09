@@ -308,7 +308,7 @@ void AUnnamedCharacter::LaunchSeeds()
 		HandLocation,
 		GetActorRotation());
 
-	Seed->LaunchSeed(160);
+	Seed->LaunchSeed(130);
 }
 
 void AUnnamedCharacter::TouchStarted(const ETouchIndex::Type FingerIndex, const FVector Location)
