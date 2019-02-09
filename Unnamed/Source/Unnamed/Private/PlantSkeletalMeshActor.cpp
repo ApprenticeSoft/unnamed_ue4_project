@@ -2,11 +2,13 @@
 
 #include "PlantSkeletalMeshActor.h"
 #include "Components/SkeletalMeshComponent.h"
+#include "Materials/MaterialInstanceDynamic.h"
 
 
 APlantSkeletalMeshActor::APlantSkeletalMeshActor()
 {
 	PrimaryActorTick.bCanEverTick = true;
+	//bHidden = true;
 
 	GetSkeletalMeshComponent()->SetMorphTarget(FName("Key 1"), 1);
 	GetSkeletalMeshComponent()->SetMorphTarget(FName("Key 2"), 1);
@@ -20,7 +22,6 @@ APlantSkeletalMeshActor::APlantSkeletalMeshActor()
 void APlantSkeletalMeshActor::BeginPlay()
 {
 	Super::BeginPlay();
-
 	
 	// Retourne le premier components de la class voulue
 	auto Mesh = FindComponentByClass<USkeletalMeshComponent>();
@@ -31,11 +32,15 @@ void APlantSkeletalMeshActor::BeginPlay()
 	UE_LOG(LogTemp, Warning, TEXT("Material1 Name: %s"), *Material1->GetFName().ToString());
 	UE_LOG(LogTemp, Warning, TEXT("Material2 Name: %s"), *Material2->GetFName().ToString());
 
-	/*
 	// Création du Dynamic Material Instance
-	DynamicMaterial = UMaterialInstanceDynamic::Create(material, NULL);
-	Plane->SetMaterial(0, DynamicMaterial);
-	*/
+	// Bug: ces lignes font apparaitre les mais complètement dévelopé pendant une image lors de la création de l'objet
+	// Pour régler ce bug: Dans le blueprint, cocher "actor Hidden in game" puis rajouter un SetActorHiddenInGame(true) après un délai
+	DynamicMaterial0 = UMaterialInstanceDynamic::Create(Material0, NULL);
+	Mesh->SetMaterial(0, DynamicMaterial0);
+	DynamicMaterial1 = UMaterialInstanceDynamic::Create(Material1, NULL);
+	Mesh->SetMaterial(1, DynamicMaterial1);
+	DynamicMaterial2 = UMaterialInstanceDynamic::Create(Material2, NULL);
+	Mesh->SetMaterial(2, DynamicMaterial2);
 
 }
 
@@ -65,6 +70,12 @@ void APlantSkeletalMeshActor::Tick(float DeltaTime)
 	else if (RotDelay < 0)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("La plante est pourrie!"));
+		
+		Rottenness += 0.2f * GetWorld()->DeltaTimeSeconds;
+		DynamicMaterial0->SetScalarParameterValue(TEXT("Blend"), Rottenness);
+		DynamicMaterial1->SetScalarParameterValue(TEXT("Blend"), Rottenness);
+		DynamicMaterial2->SetScalarParameterValue(TEXT("Blend"), Rottenness);
+		
 	}
 	// Si la plante à fini sa croissance, un délai est appliqué avant qu'elle pourrisse
 	else if (GetSkeletalMeshComponent()->GetMorphTarget(FName("Key 1")) == 0.0f)

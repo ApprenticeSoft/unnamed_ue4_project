@@ -6,6 +6,8 @@
 #include "Animation/SkeletalMeshActor.h"
 #include "PlantSkeletalMeshActor.generated.h"
 
+class UMaterialInstanceDynamic;
+
 /**
  * 
  */
@@ -29,7 +31,12 @@ protected:
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
 	float KeyValue = 0.f;
+	float Rottenness = 0;
 	bool IsHarvested = false;
 	bool IsGrown = false;
+
+	UMaterialInstanceDynamic* DynamicMaterial0;
+	UMaterialInstanceDynamic* DynamicMaterial1;
+	UMaterialInstanceDynamic* DynamicMaterial2;
 
 };
