@@ -16,6 +16,29 @@ APlantSkeletalMeshActor::APlantSkeletalMeshActor()
 	GetSkeletalMeshComponent()->SetMorphTarget(FName("Key 6"), 1);
 }
 
+// Called when the game starts or when spawned
+void APlantSkeletalMeshActor::BeginPlay()
+{
+	Super::BeginPlay();
+
+	
+	// Retourne le premier components de la class voulue
+	auto Mesh = FindComponentByClass<USkeletalMeshComponent>();
+	auto Material0 = Mesh->GetMaterial(0);
+	auto Material1 = Mesh->GetMaterial(1);
+	auto Material2 = Mesh->GetMaterial(2);
+	UE_LOG(LogTemp, Warning, TEXT("Material0 Name: %s"), *Material0->GetFName().ToString());
+	UE_LOG(LogTemp, Warning, TEXT("Material1 Name: %s"), *Material1->GetFName().ToString());
+	UE_LOG(LogTemp, Warning, TEXT("Material2 Name: %s"), *Material2->GetFName().ToString());
+
+	/*
+	// Création du Dynamic Material Instance
+	DynamicMaterial = UMaterialInstanceDynamic::Create(material, NULL);
+	Plane->SetMaterial(0, DynamicMaterial);
+	*/
+
+}
+
 void APlantSkeletalMeshActor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
