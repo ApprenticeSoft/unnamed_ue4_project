@@ -34,9 +34,11 @@ protected:
 	float Rottenness = 0;
 	bool IsHarvested = false;
 	bool IsGrown = false;
-
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Materials)
 	UMaterialInstanceDynamic* DynamicMaterial0;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Materials)
 	UMaterialInstanceDynamic* DynamicMaterial1;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Materials)
 	UMaterialInstanceDynamic* DynamicMaterial2;
-
 };
