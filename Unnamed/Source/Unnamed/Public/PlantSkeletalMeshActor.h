@@ -21,11 +21,14 @@ public:
 	APlantSkeletalMeshActor();
 	bool IsRipe();
 	UFUNCTION(BlueprintCallable)
-		void SetHarvested(bool Harvested);
+	void SetHarvested(bool Harvested);
 	UFUNCTION(BlueprintCallable)
-		void SetGrown(bool Grown);
+	void SetGrown(bool Grown);
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-		float RotDelay = 100;
+	float RotDelay = 100;
+	float MoveToPositionDelay = 1.0f;
+	void SetPosition(FVector NewPosition);
+
 
 protected:
 	virtual void BeginPlay() override;
@@ -34,6 +37,7 @@ protected:
 	float Rottenness = 0;
 	bool IsHarvested = false;
 	bool IsGrown = false;
+	FVector Position = FVector(0,0,0);
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Materials)
 	UMaterialInstanceDynamic* DynamicMaterial0;

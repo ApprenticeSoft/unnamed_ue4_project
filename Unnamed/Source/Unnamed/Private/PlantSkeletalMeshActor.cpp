@@ -45,6 +45,15 @@ void APlantSkeletalMeshActor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	if (MoveToPositionDelay > 0)
+	{
+		MoveToPositionDelay -= GetWorld()->DeltaTimeSeconds;
+		if (MoveToPositionDelay <= 0)
+		{
+			SetActorLocation(Position);
+		}
+	}
+
 	if (IsHarvested)
 	{
 		if (KeyValue < 1) {
@@ -97,4 +106,9 @@ void APlantSkeletalMeshActor::SetHarvested(bool Harvested)
 void APlantSkeletalMeshActor::SetGrown(bool Grown)
 {
 	IsGrown = Grown;
+}
+
+void APlantSkeletalMeshActor::SetPosition(FVector NewPosition)
+{
+	Position = NewPosition;
 }

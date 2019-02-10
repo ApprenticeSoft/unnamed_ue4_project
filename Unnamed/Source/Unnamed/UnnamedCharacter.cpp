@@ -167,8 +167,9 @@ void AUnnamedCharacter::Interact()
 	{
 		SetInteractionTarget(Sol);
 		auto Mais = GetWorld()->SpawnActor<APlantSkeletalMeshActor>(MaisBlueprint,
-																	Sol->GetActorLocation(),
+																	FVector(0,0,-200),
 																	FRotator(0,260,0));
+		Mais->SetPosition(Sol->GetActorLocation());
 		Sol->AddPlant(Mais);
 		Sow();
 	} 
