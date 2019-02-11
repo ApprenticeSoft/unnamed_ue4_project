@@ -166,11 +166,7 @@ void AUnnamedCharacter::Interact()
 	else if (Sol->GetPlantNumber() == 0)
 	{
 		SetInteractionTarget(Sol);
-		auto Mais = GetWorld()->SpawnActor<APlantSkeletalMeshActor>(MaisBlueprint,
-																	FVector(0,0,-200),
-																	FRotator(0,260,0));
-		Mais->SetPosition(Sol->GetActorLocation());
-		Sol->AddPlant(Mais);
+		PlantThePlant(Sol);
 		Sow();
 	} 
 
@@ -183,6 +179,15 @@ void AUnnamedCharacter::Interact()
 		}
 	}
 	*/
+}
+
+void AUnnamedCharacter::PlantThePlant(ASol* Sol)
+{
+	auto Mais = GetWorld()->SpawnActor<APlantSkeletalMeshActor>(MaisBlueprint,
+																FVector(0, 0, -200),
+																FRotator(0, 260, 0));
+	Mais->SetPosition(Sol->GetActorLocation());
+	Sol->AddPlant(Mais);
 }
 
 void AUnnamedCharacter::ActivateWateringCan()
@@ -257,8 +262,13 @@ void AUnnamedCharacter::PickPlants(AActor * Plante)
 			Plante->K2_AttachRootComponentTo(GetMesh(), FName("Hand_LSocket"), EAttachLocation::SnapToTarget, true);
 			Plante->SetActorEnableCollision(false);
 
+			UE_LOG(LogTemp, Warning, TEXT("PlantSocketLocalLocation: %s"), *PlantSocketLocalLocation.ToString());
+			UE_LOG(LogTemp, Warning, TEXT("PlantScale: %s"), *PlantScale.ToString());
+
+
 			// On déplace repositione la plante dans la main en prenant en compte la position du socket et l'échelle de la plante
-			Plante->SetActorRelativeLocation(-PlantSocketLocalLocation * PlantScale);
+			//Plante->SetActorRelativeLocation(-PlantSocketLocalLocation * PlantScale);
+			Plante->SetActorRelativeLocation(FVector(0, 0, PlantSocketLocalLocation.Y) * PlantScale);
 
 			/*
 			auto localTransform = GetMesh()->GetSocketTransform(FName("Hand_LSocket"));

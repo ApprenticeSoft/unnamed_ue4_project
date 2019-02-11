@@ -39,6 +39,8 @@ void APlantSkeletalMeshActor::BeginPlay()
 	Mesh->SetMaterial(0, DynamicMaterial0);
 	Mesh->SetMaterial(1, DynamicMaterial1);
 	Mesh->SetMaterial(2, DynamicMaterial2);
+
+	SetActorEnableCollision(true);
 }
 
 void APlantSkeletalMeshActor::Tick(float DeltaTime)
@@ -77,7 +79,10 @@ void APlantSkeletalMeshActor::Tick(float DeltaTime)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("La plante est pourrie!"));
 
-		Rottenness += 0.2f * GetWorld()->DeltaTimeSeconds;
+		if (Rottenness < 1.0f) 
+		{
+			Rottenness += 0.2f * GetWorld()->DeltaTimeSeconds;
+		}
 		DynamicMaterial0->SetScalarParameterValue(TEXT("Blend"), Rottenness);
 		DynamicMaterial1->SetScalarParameterValue(TEXT("Blend"), Rottenness);
 		DynamicMaterial2->SetScalarParameterValue(TEXT("Blend"), Rottenness);

@@ -11,6 +11,7 @@ class APlantSkeletalMeshActor;
 class UAnimSequence;
 class ASeed;
 class AWateringCan;
+class ASol;
 //class APlantSkeletalMeshActor;
 
 UCLASS(config=Game)
@@ -58,6 +59,7 @@ protected:
 	void DeactivateWateringCan();
 	UFUNCTION(BlueprintCallable)
 	void IncreaseHumidity(float value = 1.0f);
+	void PlantThePlant(ASol* Sol);
 	UPROPERTY(BlueprintReadWrite)
 	AActor* InteractionTarget = nullptr;
 	UPROPERTY(BlueprintReadWrite)
