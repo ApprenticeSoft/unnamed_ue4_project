@@ -75,23 +75,27 @@ void APlantSkeletalMeshActor::Tick(float DeltaTime)
 		GetSkeletalMeshComponent()->SetGenerateOverlapEvents(false);
 		GetSkeletalMeshComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	}
-	else if (RotDelay < 0)
+	else
 	{
-		UE_LOG(LogTemp, Warning, TEXT("La plante est pourrie!"));
-
-		if (Rottenness < 1.0f) 
+		// Si la plante est trop mûre, elle pourrie
+		if (RotDelay < 0)
 		{
-			Rottenness += 0.2f * GetWorld()->DeltaTimeSeconds;
+			//UE_LOG(LogTemp, Warning, TEXT("La plante est pourrie!"));
+
+			if (Rottenness < 1.0f)
+			{
+				Rottenness += 0.2f * GetWorld()->DeltaTimeSeconds;
+			}
+			DynamicMaterial0->SetScalarParameterValue(TEXT("Blend"), Rottenness);
+			DynamicMaterial1->SetScalarParameterValue(TEXT("Blend"), Rottenness);
+			DynamicMaterial2->SetScalarParameterValue(TEXT("Blend"), Rottenness);
 		}
-		DynamicMaterial0->SetScalarParameterValue(TEXT("Blend"), Rottenness);
-		DynamicMaterial1->SetScalarParameterValue(TEXT("Blend"), Rottenness);
-		DynamicMaterial2->SetScalarParameterValue(TEXT("Blend"), Rottenness);
-	}
-	// Si la plante à fini sa croissance, un délai est appliqué avant qu'elle pourrisse
-	else if (GetSkeletalMeshComponent()->GetMorphTarget(FName("Key 1")) == 0.0f)
-	{
-		RotDelay -= GetWorld()->DeltaTimeSeconds;
-		UE_LOG(LogTemp, Warning, TEXT("RotDelay = %f"), RotDelay);
+		// Si la plante à fini sa croissance, un délai est appliqué avant qu'elle pourrisse
+		else if (GetSkeletalMeshComponent()->GetMorphTarget(FName("Key 1")) == 0.0f)
+		{
+			RotDelay -= GetWorld()->DeltaTimeSeconds;
+			//UE_LOG(LogTemp, Warning, TEXT("RotDelay = %f"), RotDelay);
+		}
 	}
 }
 

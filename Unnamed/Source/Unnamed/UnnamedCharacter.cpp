@@ -246,6 +246,8 @@ void AUnnamedCharacter::SetInteractionTarget(AActor* Target)
 void AUnnamedCharacter::PickPlants(AActor * Plante)
 {
 	if (!Plante) { return; }
+	
+
 	auto HandSocket = GetMesh()->GetSocketByName(FName("Hand_LSocket"));
 	if (HandSocket) {
 		auto PlantSocket = Plante->FindComponentByClass<class USkeletalMeshComponent>()->GetSocketByName(FName("Socket"));
@@ -269,7 +271,8 @@ void AUnnamedCharacter::PickPlants(AActor * Plante)
 			// On déplace repositione la plante dans la main en prenant en compte la position du socket et l'échelle de la plante
 			//Plante->SetActorRelativeLocation(-PlantSocketLocalLocation * PlantScale);
 			Plante->SetActorRelativeLocation(FVector(0, 0, PlantSocketLocalLocation.Y) * PlantScale);
-
+			dynamic_cast<APlantSkeletalMeshActor*>(Plante)->SetHarvested(true);
+			
 			/*
 			auto localTransform = GetMesh()->GetSocketTransform(FName("Hand_LSocket"));
 			auto localRotation = localTransform.GetRotation();
@@ -315,11 +318,24 @@ void AUnnamedCharacter::LaunchSeeds()
 		Seed->LaunchSeed(Speed);
 	}
 	*/
-	auto Seed = GetWorld()->SpawnActor<ASeed>(SeedBluePrint,
-		HandLocation,
-		GetActorRotation());
-
+	auto Seed = GetWorld()->SpawnActor<ASeed>(	SeedBluePrint,
+												HandLocation,
+												GetActorRotation());
+	if (Seed->GetActorEnableCollision()) 
+	{
+		UE_LOG(LogTemp, Warning, TEXT("1: ActorEnableCollision"));
+	}
+	else {
+		UE_LOG(LogTemp, Warning, TEXT("1: No Collision"));
+	}
 	Seed->LaunchSeed(130);
+	if (Seed->GetActorEnableCollision())
+	{
+		UE_LOG(LogTemp, Warning, TEXT("2: ActorEnableCollision"));
+	}
+	else {
+		UE_LOG(LogTemp, Warning, TEXT("2: No Collision"));
+	}
 }
 
 void AUnnamedCharacter::TouchStarted(const ETouchIndex::Type FingerIndex, const FVector Location)
