@@ -96,8 +96,7 @@ void AUnnamedCharacter::BeginPlay()
 	tempChildActors.FindItemByClass<class AWateringCan>(&Watering_can);
 	
 	if (!Watering_can)
-		UE_LOG(LogTemp, Warning, TEXT("Pas d'arrosoir!!!"));
-	
+		UE_LOG(LogTemp, Warning, TEXT("Pas d'arrosoir!!!"));;
 }
 
 void AUnnamedCharacter::Tick(float DeltaTime)

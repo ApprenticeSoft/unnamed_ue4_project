@@ -3,6 +3,7 @@
 #include "PlantSkeletalMeshActor.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Materials/MaterialInstanceDynamic.h"
+#include "MyGameStateBase.h"
 
 
 APlantSkeletalMeshActor::APlantSkeletalMeshActor()
@@ -110,6 +111,9 @@ bool APlantSkeletalMeshActor::IsRipe()
 void APlantSkeletalMeshActor::SetHarvested(bool Harvested)
 {
 	IsHarvested = Harvested;
+
+	auto GameState = dynamic_cast<AMyGameStateBase*>(GetWorld()->GetGameState());
+	GameState->SetCornNumber(GameState->GetCornNumber() + 1);
 }
 
 void APlantSkeletalMeshActor::SetGrown(bool Grown)
