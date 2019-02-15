@@ -10,6 +10,16 @@
  * 
  */
 
+
+UENUM()
+enum class CurrentSeason : uint8
+{
+	Spring,
+	Summer,
+	Fall,
+	Winter
+};
+
 UCLASS()
 class UNNAMED_API AMyGameStateBase : public AGameStateBase
 {
@@ -22,6 +32,8 @@ protected:
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
 
+	void TimeTracking();
+
 
 public:
 	UFUNCTION(BlueprintCallable)
@@ -30,8 +42,15 @@ public:
 	UFUNCTION(BlueprintCallable)
 	int32 GetWheatNumber();
 	void SetWheatNumber(int32 Number);
+	CurrentSeason GetSeason();
+
+protected:
+	UPROPERTY(BlueprintReadOnly, Category = "State")
+	CurrentSeason Season = CurrentSeason::Spring;
 
 private:
 	int32 CornNumber = 0;
 	int32 WheatNumber = 0;
+	float Time = 0.0f;
+	float SeasonDuration = 10.0f;
 };

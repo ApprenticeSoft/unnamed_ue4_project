@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "MyGameStateBase.h"
+#include "Classes/Engine/World.h"
 
 
 AMyGameStateBase::AMyGameStateBase()
@@ -20,7 +21,44 @@ void AMyGameStateBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	//UE_LOG(LogTemp, Warning, TEXT("Game State Base Tick"));
+	TimeTracking();
+}
+
+void AMyGameStateBase::TimeTracking()
+{
+	Time += GetWorld()->DeltaTimeSeconds;
+
+	if (Time > SeasonDuration * 4)
+		Time -= SeasonDuration * 4;
+
+	else if (Time > SeasonDuration * 3) {
+		if (Season != CurrentSeason::Winter)
+		{
+			Season = CurrentSeason::Winter;
+			UE_LOG(LogTemp, Warning, TEXT("Hiver"));
+		}
+	}
+	else if (Time > SeasonDuration * 2) {
+		if (Season != CurrentSeason::Fall)
+		{
+			Season = CurrentSeason::Fall;
+			UE_LOG(LogTemp, Warning, TEXT("Automne"));
+		}
+	}
+	else if (Time > SeasonDuration) {
+		if (Season != CurrentSeason::Summer)
+		{
+			Season = CurrentSeason::Summer;
+			UE_LOG(LogTemp, Warning, TEXT("Ete"));
+		}
+	}
+	else {
+		if (Season != CurrentSeason::Spring)
+		{
+			Season = CurrentSeason::Spring;
+			UE_LOG(LogTemp, Warning, TEXT("Printemps"));
+		}
+	}
 }
 
 int32 AMyGameStateBase::GetCornNumber()
@@ -41,5 +79,10 @@ int32 AMyGameStateBase::GetWheatNumber()
 void AMyGameStateBase::SetWheatNumber(int32 Number)
 {
 	WheatNumber = Number;
+}
+
+CurrentSeason AMyGameStateBase::GetSeason()
+{
+	return Season;
 }
 
