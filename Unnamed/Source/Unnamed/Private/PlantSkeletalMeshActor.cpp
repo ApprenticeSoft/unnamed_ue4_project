@@ -128,3 +128,8 @@ EPlantState APlantSkeletalMeshActor::GetPlantState()
 {
 	return PlantState;
 }
+
+void APlantSkeletalMeshActor::SetPlantState(EPlantState State)
+{
+	PlantState = State;
+}

@@ -6,6 +6,14 @@
 #include "GameFramework/Actor.h"
 #include "Sol.generated.h"
 
+
+UENUM(BlueprintType)
+enum class ESoilState : uint8
+{
+	Dry,
+	Wet
+};
+
 class APlantSkeletalMeshActor;
 class UMaterialInstanceDynamic;
 
@@ -26,9 +34,13 @@ public:
 	float GetHumidity();
 	bool IsReadyToHarvest();
 
+	ESoilState GetSoilState();
+	void SetSoilState(ESoilState State);
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+	ESoilState SoilState = ESoilState::Wet;
 
 public:	
 	// Called every frame

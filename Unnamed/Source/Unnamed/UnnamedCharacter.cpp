@@ -157,7 +157,7 @@ void AUnnamedCharacter::Interact()
 		SetInteractionTarget(Sol->PopPlant());
 		InteractWithPlant();
 	}
-	else if (Sol->GetHumidity() < 80)
+	else if (Sol->GetSoilState() == ESoilState::Dry)
 	{
 		SetInteractionTarget(Sol);
 		Water();

@@ -36,7 +36,8 @@ void ASol::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	UpdateHumidity();
+	if(SoilState == ESoilState::Wet)
+		UpdateHumidity();
 }
 
 int32 ASol::GetPlantNumber()
@@ -62,9 +63,17 @@ APlantSkeletalMeshActor* ASol::GetPlant()
 
 void ASol::UpdateHumidity()
 {
-	Humidity -= GetWorld()->DeltaTimeSeconds;
+	Humidity -= 10 * GetWorld()->DeltaTimeSeconds;
 	if (Humidity < 0)
+	{
 		Humidity = 0;
+		SoilState = ESoilState::Dry;
+		
+		if(PlanteSurLeSol.Num() > 0)
+			if (GetPlant()->GetPlantState() == EPlantState::Growing || GetPlant()->GetPlantState() == EPlantState::Seed)
+				GetPlant()->SetPlantState(EPlantState::InteruptedGrowth);
+		
+	}
 	DynamicMaterial->SetScalarParameterValue(TEXT("Blend"), Humidity / HumidityMax);
 }
 
@@ -73,6 +82,11 @@ void ASol::SetHumidity(float value)
 	Humidity += value;
 	if (Humidity > 100)
 		Humidity = 100;
+
+	SoilState = ESoilState::Wet;
+	if (PlanteSurLeSol.Num() > 0)
+		if(GetPlant()->GetPlantState() == EPlantState::InteruptedGrowth)
+			GetPlant()->SetPlantState(EPlantState::Growing);
 }
 
 float ASol::GetHumidity()
@@ -87,5 +101,15 @@ bool ASol::IsReadyToHarvest()
 			return true;
 
 	return  false;
+}
+
+ESoilState ASol::GetSoilState()
+{
+	return SoilState;
+}
+
+void ASol::SetSoilState(ESoilState State)
+{
+	SoilState = State;
 }
 

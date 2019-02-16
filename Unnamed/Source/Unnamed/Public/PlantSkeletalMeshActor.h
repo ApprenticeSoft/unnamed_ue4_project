@@ -35,7 +35,9 @@ public:
 	void Harvest();
 	float MoveToPositionDelay = 1.0f;
 	void SetPosition(FVector NewPosition);
+	UFUNCTION(BlueprintCallable)
 	EPlantState GetPlantState();
+	void SetPlantState(EPlantState State);
 
 protected:
 	virtual void BeginPlay() override;
