@@ -11,6 +11,18 @@ class UMaterialInstanceDynamic;
 /**
  * 
  */
+
+UENUM(BlueprintType)
+enum class EPlantState : uint8
+{
+	Seed,
+	Growing,
+	InteruptedGrowth,
+	Ripe,
+	Harvested,
+	Rotten
+};
+
 UCLASS()
 class UNNAMED_API APlantSkeletalMeshActor : public ASkeletalMeshActor
 {
@@ -19,25 +31,25 @@ class UNNAMED_API APlantSkeletalMeshActor : public ASkeletalMeshActor
 
 public:
 	APlantSkeletalMeshActor();
-	bool IsRipe();
 	UFUNCTION(BlueprintCallable)
-	void SetHarvested(bool Harvested);
-	UFUNCTION(BlueprintCallable)
-	void SetGrown(bool Grown);
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	float RotDelay = 100;
+	void Harvest();
 	float MoveToPositionDelay = 1.0f;
 	void SetPosition(FVector NewPosition);
-
+	EPlantState GetPlantState();
 
 protected:
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
 	float KeyValue = 0.f;
 	float Rottenness = 0;
-	bool IsHarvested = false;
-	bool IsGrown = false;
 	FVector Position = FVector(0,0,0);
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = Delay)
+	float RotDelay = 100;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = Delay)
+	float HatchDelay = 2;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Enum)
+	EPlantState PlantState = EPlantState::Seed;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Materials)
 	UMaterialInstanceDynamic* DynamicMaterial0;

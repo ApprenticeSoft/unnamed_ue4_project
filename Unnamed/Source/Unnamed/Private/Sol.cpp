@@ -83,7 +83,7 @@ float ASol::GetHumidity()
 bool ASol::IsReadyToHarvest()
 {
 	if (PlanteSurLeSol.Num() > 0)
-		if (PlanteSurLeSol[0]->IsRipe())
+		if (PlanteSurLeSol[0]->GetPlantState() == EPlantState::Ripe)
 			return true;
 
 	return  false;

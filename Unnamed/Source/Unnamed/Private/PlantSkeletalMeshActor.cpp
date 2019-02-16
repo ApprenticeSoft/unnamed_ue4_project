@@ -48,16 +48,44 @@ void APlantSkeletalMeshActor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	if (MoveToPositionDelay > 0)
-	{
-		MoveToPositionDelay -= GetWorld()->DeltaTimeSeconds;
-		if (MoveToPositionDelay <= 0)
-		{
-			SetActorLocation(Position);
-		}
-	}
 
-	if (IsHarvested)
+	if (PlantState == EPlantState::Seed) 
+	{
+		if (MoveToPositionDelay > 0)
+		{
+			MoveToPositionDelay -= GetWorld()->DeltaTimeSeconds;
+			if (MoveToPositionDelay <= 0)
+			{
+				SetActorLocation(Position);
+			}
+		}
+
+		HatchDelay -= GetWorld()->DeltaTimeSeconds;
+		if (HatchDelay < 0)
+			PlantState = EPlantState::Growing;
+	}
+	else if (PlantState == EPlantState::Growing)
+	{
+		if (GetSkeletalMeshComponent()->GetMorphTarget(FName("Key 1")) == 0.0f)
+			PlantState = EPlantState::Ripe;
+	}
+	else if (PlantState == EPlantState::Ripe)
+	{
+		RotDelay -= GetWorld()->DeltaTimeSeconds;
+		if (RotDelay < 0)
+			PlantState = EPlantState::Rotten;
+	}
+	else if (PlantState == EPlantState::Rotten)
+	{
+		if (Rottenness < 1.0f)
+		{
+			Rottenness += 0.2f * GetWorld()->DeltaTimeSeconds;
+		}
+		DynamicMaterial0->SetScalarParameterValue(TEXT("Blend"), Rottenness);
+		DynamicMaterial1->SetScalarParameterValue(TEXT("Blend"), Rottenness);
+		DynamicMaterial2->SetScalarParameterValue(TEXT("Blend"), Rottenness);
+	}
+	else if(PlantState == EPlantState::Harvested)
 	{
 		if (KeyValue < 1) {
 			GetSkeletalMeshComponent()->SetMorphTarget(FName("Key 1"), KeyValue);
@@ -76,41 +104,11 @@ void APlantSkeletalMeshActor::Tick(float DeltaTime)
 		GetSkeletalMeshComponent()->SetGenerateOverlapEvents(false);
 		GetSkeletalMeshComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	}
-	else
-	{
-		// Si la plante est trop mûre, elle pourrie
-		if (RotDelay < 0)
-		{
-			//UE_LOG(LogTemp, Warning, TEXT("La plante est pourrie!"));
-
-			if (Rottenness < 1.0f)
-			{
-				Rottenness += 0.2f * GetWorld()->DeltaTimeSeconds;
-			}
-			DynamicMaterial0->SetScalarParameterValue(TEXT("Blend"), Rottenness);
-			DynamicMaterial1->SetScalarParameterValue(TEXT("Blend"), Rottenness);
-			DynamicMaterial2->SetScalarParameterValue(TEXT("Blend"), Rottenness);
-		}
-		// Si la plante à fini sa croissance, un délai est appliqué avant qu'elle pourrisse
-		else if (GetSkeletalMeshComponent()->GetMorphTarget(FName("Key 1")) == 0.0f)
-		{
-			RotDelay -= GetWorld()->DeltaTimeSeconds;
-			//UE_LOG(LogTemp, Warning, TEXT("RotDelay = %f"), RotDelay);
-		}
-	}
 }
 
-bool APlantSkeletalMeshActor::IsRipe()
+void APlantSkeletalMeshActor::Harvest()
 {
-	if (GetSkeletalMeshComponent()->GetMorphTarget(FName("Key 1")) < 0.5f)
-		return true;
-	else
-		return false;
-}
-
-void APlantSkeletalMeshActor::SetHarvested(bool Harvested)
-{
-	IsHarvested = Harvested;
+	PlantState = EPlantState::Harvested;
 
 	auto GameState = dynamic_cast<AMyGameStateBase*>(GetWorld()->GetGameState());
 	GameState->SetCornNumber(GameState->GetCornNumber() + 1);
@@ -121,12 +119,12 @@ void APlantSkeletalMeshActor::SetHarvested(bool Harvested)
 	}
 }
 
-void APlantSkeletalMeshActor::SetGrown(bool Grown)
-{
-	IsGrown = Grown;
-}
-
 void APlantSkeletalMeshActor::SetPosition(FVector NewPosition)
 {
 	Position = NewPosition;
+}
+
+EPlantState APlantSkeletalMeshActor::GetPlantState()
+{
+	return PlantState;
 }

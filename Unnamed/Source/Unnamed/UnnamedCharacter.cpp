@@ -168,16 +168,6 @@ void AUnnamedCharacter::Interact()
 		PlantThePlant(Sol);
 		Sow();
 	} 
-
-	/*
-	else if (Sol->GetPlantNumber() > 0)
-	{
-		if (Sol->GetPlant()->IsRipe()) {
-			SetInteractionTarget(Sol->PopPlant());
-			InteractWithPlant();
-		}
-	}
-	*/
 }
 
 void AUnnamedCharacter::PlantThePlant(ASol* Sol)
@@ -270,7 +260,7 @@ void AUnnamedCharacter::PickPlants(AActor * Plante)
 			// On déplace repositione la plante dans la main en prenant en compte la position du socket et l'échelle de la plante
 			//Plante->SetActorRelativeLocation(-PlantSocketLocalLocation * PlantScale);
 			Plante->SetActorRelativeLocation(FVector(0, 0, PlantSocketLocalLocation.Y) * PlantScale);
-			dynamic_cast<APlantSkeletalMeshActor*>(Plante)->SetHarvested(true);
+			dynamic_cast<APlantSkeletalMeshActor*>(Plante)->Harvest();
 			
 			/*
 			auto localTransform = GetMesh()->GetSocketTransform(FName("Hand_LSocket"));
@@ -281,16 +271,6 @@ void AUnnamedCharacter::PickPlants(AActor * Plante)
 		else {
 			UE_LOG(LogTemp, Warning, TEXT("Pas Socket!!"));
 		}
-
-		//Plante->SetActorRelativeLocation(-socketOffset);
-		/*
-		FRotator Rot(Plante->GetRootComponent()->GetRelativeTransform().GetRotation());
-		Rot.Yaw -= 90;
-		FVector NewOfs = Rot.RotateVector(socketOffset);
-		Plante->SetActorRelativeRotation(Rot);
-		Plante->SetActorRelativeLocation(NewOfs);
-		//dynamic_cast<APlantSkeletalMeshActor*>(Plante)->Interact();
-		*/
 	}
 }
 
@@ -303,38 +283,13 @@ void AUnnamedCharacter::LaunchSeeds()
 	{
 		auto HandTransform = GetMesh()->GetSocketTransform(FName("Hand_LSocket"));
 		HandLocation = HandTransform.GetLocation();
-		UE_LOG(LogTemp, Warning, TEXT("HandTransform %s"), *HandTransform.ToString());
 	}
 
 	// On lance les graines
-	/*
-	for (int i = 0; i < 5; i++) {
-		auto Seed = GetWorld()->SpawnActor<ASeed>(	SeedBluePrint,
-													HandLocation,
-													GetActorRotation());
-
-		int32 Speed = UKismetMathLibrary::RandomIntegerInRange(120, 200);
-		Seed->LaunchSeed(Speed);
-	}
-	*/
 	auto Seed = GetWorld()->SpawnActor<ASeed>(	SeedBluePrint,
 												HandLocation,
 												GetActorRotation());
-	if (Seed->GetActorEnableCollision()) 
-	{
-		UE_LOG(LogTemp, Warning, TEXT("1: ActorEnableCollision"));
-	}
-	else {
-		UE_LOG(LogTemp, Warning, TEXT("1: No Collision"));
-	}
 	Seed->LaunchSeed(130);
-	if (Seed->GetActorEnableCollision())
-	{
-		UE_LOG(LogTemp, Warning, TEXT("2: ActorEnableCollision"));
-	}
-	else {
-		UE_LOG(LogTemp, Warning, TEXT("2: No Collision"));
-	}
 }
 
 void AUnnamedCharacter::TouchStarted(const ETouchIndex::Type FingerIndex, const FVector Location)
