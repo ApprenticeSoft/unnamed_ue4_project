@@ -28,40 +28,6 @@ void AMyGameStateBase::TimeTracking()
 {
 	Time += GetWorld()->DeltaTimeSeconds;
 
-	/*
-	if (Time > SeasonDuration * 4)
-		Time -= SeasonDuration * 4;
-
-	else if (Time > SeasonDuration * 3) {
-		if (Season != ECurrentSeason::Fall)
-		{
-			Season = ECurrentSeason::Fall;
-			UE_LOG(LogTemp, Warning, TEXT("Automne"));
-		}
-	}
-	else if (Time > SeasonDuration * 2) {
-		if (Season != ECurrentSeason::Summer)
-		{
-			Season = ECurrentSeason::Summer;
-			UE_LOG(LogTemp, Warning, TEXT("Ete"));
-		}
-	}
-	else if (Time > SeasonDuration) {
-		if (Season != ECurrentSeason::Spring)
-		{
-			Season = ECurrentSeason::Spring;
-			UE_LOG(LogTemp, Warning, TEXT("Printemps"));
-		}
-	}
-	else {
-		if (Season != ECurrentSeason::Winter)
-		{
-			Season = ECurrentSeason::Winter;
-			UE_LOG(LogTemp, Warning, TEXT("Hiver"));
-		}
-	}
-	*/
-
 	DetermineMonth();
 }
 

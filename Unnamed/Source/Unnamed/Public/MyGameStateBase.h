@@ -11,7 +11,7 @@
  */
 
 
-UENUM()
+UENUM(BlueprintType)
 enum class ECurrentSeason : uint8
 {
 	Winter,
@@ -20,7 +20,7 @@ enum class ECurrentSeason : uint8
 	Fall
 };
 
-UENUM()
+UENUM(BlueprintType)
 enum class ECurrentMonth : uint8
 {
 	January,
