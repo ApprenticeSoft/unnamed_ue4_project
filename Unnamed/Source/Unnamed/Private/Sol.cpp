@@ -70,7 +70,7 @@ void ASol::UpdateHumidity()
 		SoilState = ESoilState::Dry;
 		
 		if(PlanteSurLeSol.Num() > 0)
-			if (GetPlant()->GetPlantState() == EPlantState::Growing || GetPlant()->GetPlantState() == EPlantState::Seed)
+			if (GetPlant()->GetPlantState() == EPlantState::Growing)
 				GetPlant()->SetPlantState(EPlantState::InteruptedGrowth);
 		
 	}

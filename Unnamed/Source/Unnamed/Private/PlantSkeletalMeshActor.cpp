@@ -114,7 +114,7 @@ void APlantSkeletalMeshActor::Harvest()
 	GameState->SetCornNumber(GameState->GetCornNumber() + 1);
 
 	// Test pour avoir accès à la saison en cours à partir de la plante 
-	if (GameState->GetSeason() == CurrentSeason::Summer) {
+	if (GameState->GetSeason() == ECurrentSeason::Summer) {
 		UE_LOG(LogTemp, Warning, TEXT("C'est l'été!!"));
 	}
 }
