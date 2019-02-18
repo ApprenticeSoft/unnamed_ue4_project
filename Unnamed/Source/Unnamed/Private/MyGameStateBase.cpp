@@ -37,9 +37,9 @@ void AMyGameStateBase::DetermineMonth()
 		Time -= SeasonDuration * 4;
 
 	else if (Time > MonthDuration * 11) {
-		if (Month != ECurrentMonth::September)
+		if (Month != ECurrentMonth::December)
 		{
-			Month = ECurrentMonth::September;
+			Month = ECurrentMonth::December;
 			UE_LOG(LogTemp, Warning, TEXT("Automne/Decembre"));
 		}
 	}
