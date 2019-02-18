@@ -6,6 +6,15 @@
 #include "GameFramework/Character.h"
 #include "UnnamedCharacter.generated.h"
 
+UENUM(BlueprintType)
+enum class ESeed : uint8
+{
+	Corn,
+	Wheat,
+	Pumpkin,
+	Sunflower
+};
+
 class UInteractionDetectorComponent;
 class APlantSkeletalMeshActor;
 class UAnimSequence;
@@ -64,6 +73,8 @@ protected:
 	AActor* InteractionTarget = nullptr;
 	UPROPERTY(BlueprintReadWrite)
 	float AngleRotation = 0;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "State")
+	ESeed Seed = ESeed::Corn;
 
 	UPROPERTY(EditDefaultsOnly, Category = Setup)
 	//UClass* ProjectileBluePrint;		// UClass* va afficher la totalités des classes disponibles dans le blueprint alors que TSubclassOf<> n'affiche que la classe choisie
