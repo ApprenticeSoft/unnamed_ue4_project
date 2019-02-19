@@ -172,11 +172,43 @@ void AUnnamedCharacter::Interact()
 
 void AUnnamedCharacter::PlantThePlant(ASol* Sol)
 {
-	auto Mais = GetWorld()->SpawnActor<APlantSkeletalMeshActor>(MaisBlueprint,
+	APlantSkeletalMeshActor* Plant;
+
+	switch (Seed) 
+	{
+	case ESeed::Corn:
+		Plant = GetWorld()->SpawnActor<APlantSkeletalMeshActor>(MaisBlueprint,
 																FVector(0, 0, -200),
 																FRotator(0, 260, 0));
-	Mais->SetPosition(Sol->GetActorLocation());
-	Sol->AddPlant(Mais);
+		break;
+	case ESeed::Wheat:
+		Plant = GetWorld()->SpawnActor<APlantSkeletalMeshActor>(MaisBlueprint,
+			FVector(0, 0, -200),
+			FRotator(0, 260, 0));
+		UE_LOG(LogTemp, Warning, TEXT("Plant wheat!!!"));
+		break;
+	case ESeed::Sunflower:
+		Plant = GetWorld()->SpawnActor<APlantSkeletalMeshActor>(MaisBlueprint,
+			FVector(0, 0, -200),
+			FRotator(0, 260, 0));
+		UE_LOG(LogTemp, Warning, TEXT("Plant Sunflower!!!"));
+		break;
+	case ESeed::Pumpkin:
+		Plant = GetWorld()->SpawnActor<APlantSkeletalMeshActor>(MaisBlueprint,
+			FVector(0, 0, -200),
+			FRotator(0, 260, 0));
+		UE_LOG(LogTemp, Warning, TEXT("Plant Pumpkin!!!"));
+		break;
+	default:
+		Plant = GetWorld()->SpawnActor<APlantSkeletalMeshActor>(MaisBlueprint,
+																FVector(0, 0, -200),
+																FRotator(0, 260, 0));
+		break;
+
+	}
+
+	Plant->SetPosition(Sol->GetActorLocation());
+	Sol->AddPlant(Plant);
 }
 
 void AUnnamedCharacter::ActivateWateringCan()
