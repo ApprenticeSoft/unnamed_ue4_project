@@ -81,6 +81,8 @@ protected:
 	TSubclassOf<ASeed> SeedBluePrint;
 	UPROPERTY(EditDefaultsOnly, Category = Setup)
 	TSubclassOf<APlantSkeletalMeshActor> MaisBlueprint;
+	UPROPERTY(EditDefaultsOnly, Category = Setup)
+	TSubclassOf<APlantSkeletalMeshActor> WheatBlueprint;
 
 	/** Handle touch inputs. */
 	void TouchStarted(const ETouchIndex::Type FingerIndex, const FVector Location);

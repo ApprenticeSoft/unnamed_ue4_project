@@ -182,9 +182,9 @@ void AUnnamedCharacter::PlantThePlant(ASol* Sol)
 																FRotator(0, 260, 0));
 		break;
 	case ESeed::Wheat:
-		Plant = GetWorld()->SpawnActor<APlantSkeletalMeshActor>(MaisBlueprint,
-			FVector(0, 0, -200),
-			FRotator(0, 260, 0));
+		Plant = GetWorld()->SpawnActor<APlantSkeletalMeshActor>(WheatBlueprint,
+																FVector(0, 0, -200),
+																FRotator(0, 0, 0));
 		UE_LOG(LogTemp, Warning, TEXT("Plant wheat!!!"));
 		break;
 	case ESeed::Sunflower:

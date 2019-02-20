@@ -26,20 +26,24 @@ void APlantSkeletalMeshActor::BeginPlay()
 	// Retourne le premier components de la class voulue
 	auto Mesh = FindComponentByClass<USkeletalMeshComponent>();
 	auto Material0 = Mesh->GetMaterial(0);
-	auto Material1 = Mesh->GetMaterial(1);
-	auto Material2 = Mesh->GetMaterial(2);
 	UE_LOG(LogTemp, Warning, TEXT("Material0 Name: %s"), *Material0->GetFName().ToString());
-	UE_LOG(LogTemp, Warning, TEXT("Material1 Name: %s"), *Material1->GetFName().ToString());
-	UE_LOG(LogTemp, Warning, TEXT("Material2 Name: %s"), *Material2->GetFName().ToString());
-
-	// Création du Dynamic Material Instance
 	DynamicMaterial0 = UMaterialInstanceDynamic::Create(Material0, NULL);
-	DynamicMaterial1 = UMaterialInstanceDynamic::Create(Material1, NULL);
-	DynamicMaterial2 = UMaterialInstanceDynamic::Create(Material2, NULL);
-
 	Mesh->SetMaterial(0, DynamicMaterial0);
-	Mesh->SetMaterial(1, DynamicMaterial1);
-	Mesh->SetMaterial(2, DynamicMaterial2);
+
+	if (Mesh->GetMaterials().Num() > 1)
+	{
+		auto Material1 = Mesh->GetMaterial(1);
+		auto Material2 = Mesh->GetMaterial(2);
+		UE_LOG(LogTemp, Warning, TEXT("Material1 Name: %s"), *Material1->GetFName().ToString());
+		UE_LOG(LogTemp, Warning, TEXT("Material2 Name: %s"), *Material2->GetFName().ToString());
+
+		// Création du Dynamic Material Instance
+		DynamicMaterial1 = UMaterialInstanceDynamic::Create(Material1, NULL);
+		DynamicMaterial2 = UMaterialInstanceDynamic::Create(Material2, NULL);
+
+		Mesh->SetMaterial(1, DynamicMaterial1);
+		Mesh->SetMaterial(2, DynamicMaterial2);
+	}
 
 	SetActorEnableCollision(true);
 }
@@ -68,6 +72,7 @@ void APlantSkeletalMeshActor::Tick(float DeltaTime)
 	{
 		if (GetSkeletalMeshComponent()->GetMorphTarget(FName("Key 1")) == 0.0f)
 			PlantState = EPlantState::Ripe;
+		UE_LOG(LogTemp, Warning, TEXT("RIPE !!"));
 	}
 	else if (PlantState == EPlantState::Ripe)
 	{
@@ -82,8 +87,13 @@ void APlantSkeletalMeshActor::Tick(float DeltaTime)
 			Rottenness += 0.2f * GetWorld()->DeltaTimeSeconds;
 		}
 		DynamicMaterial0->SetScalarParameterValue(TEXT("Blend"), Rottenness);
-		DynamicMaterial1->SetScalarParameterValue(TEXT("Blend"), Rottenness);
-		DynamicMaterial2->SetScalarParameterValue(TEXT("Blend"), Rottenness);
+
+		// À ARRANGER - FAIRE QUELQUE CHOSE DE PLUS PROPRE
+		if (FindComponentByClass<USkeletalMeshComponent>()->GetMaterials().Num() > 1)
+		{
+			DynamicMaterial1->SetScalarParameterValue(TEXT("Blend"), Rottenness);
+			DynamicMaterial2->SetScalarParameterValue(TEXT("Blend"), Rottenness);
+		}
 	}
 	else if(PlantState == EPlantState::Harvested)
 	{
