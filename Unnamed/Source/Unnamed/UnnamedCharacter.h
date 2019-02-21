@@ -80,7 +80,7 @@ protected:
 	//UClass* ProjectileBluePrint;		// UClass* va afficher la totalités des classes disponibles dans le blueprint alors que TSubclassOf<> n'affiche que la classe choisie
 	TSubclassOf<ASeed> SeedBluePrint;
 	UPROPERTY(EditDefaultsOnly, Category = Setup)
-	TSubclassOf<APlantSkeletalMeshActor> MaisBlueprint;
+	TSubclassOf<APlantSkeletalMeshActor> CornBlueprint;
 	UPROPERTY(EditDefaultsOnly, Category = Setup)
 	TSubclassOf<APlantSkeletalMeshActor> WheatBlueprint;
 

@@ -63,7 +63,7 @@ APlantSkeletalMeshActor* ASol::GetPlant()
 
 void ASol::UpdateHumidity()
 {
-	Humidity -= 10 * GetWorld()->DeltaTimeSeconds;
+	Humidity -= 1 * GetWorld()->DeltaTimeSeconds;
 	if (Humidity < 0)
 	{
 		Humidity = 0;

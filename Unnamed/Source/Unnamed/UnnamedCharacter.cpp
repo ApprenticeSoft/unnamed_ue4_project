@@ -177,7 +177,7 @@ void AUnnamedCharacter::PlantThePlant(ASol* Sol)
 	switch (Seed) 
 	{
 	case ESeed::Corn:
-		Plant = GetWorld()->SpawnActor<APlantSkeletalMeshActor>(MaisBlueprint,
+		Plant = GetWorld()->SpawnActor<APlantSkeletalMeshActor>(CornBlueprint,
 																FVector(0, 0, -200),
 																FRotator(0, 260, 0));
 		break;
@@ -188,19 +188,19 @@ void AUnnamedCharacter::PlantThePlant(ASol* Sol)
 		UE_LOG(LogTemp, Warning, TEXT("Plant wheat!!!"));
 		break;
 	case ESeed::Sunflower:
-		Plant = GetWorld()->SpawnActor<APlantSkeletalMeshActor>(MaisBlueprint,
+		Plant = GetWorld()->SpawnActor<APlantSkeletalMeshActor>(CornBlueprint,
 			FVector(0, 0, -200),
 			FRotator(0, 260, 0));
 		UE_LOG(LogTemp, Warning, TEXT("Plant Sunflower!!!"));
 		break;
 	case ESeed::Pumpkin:
-		Plant = GetWorld()->SpawnActor<APlantSkeletalMeshActor>(MaisBlueprint,
+		Plant = GetWorld()->SpawnActor<APlantSkeletalMeshActor>(CornBlueprint,
 			FVector(0, 0, -200),
 			FRotator(0, 260, 0));
 		UE_LOG(LogTemp, Warning, TEXT("Plant Pumpkin!!!"));
 		break;
 	default:
-		Plant = GetWorld()->SpawnActor<APlantSkeletalMeshActor>(MaisBlueprint,
+		Plant = GetWorld()->SpawnActor<APlantSkeletalMeshActor>(CornBlueprint,
 																FVector(0, 0, -200),
 																FRotator(0, 260, 0));
 		break;

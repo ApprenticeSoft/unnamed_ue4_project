@@ -52,11 +52,6 @@ protected:
 	float HatchDelay = 2;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Enum)
 	EPlantState PlantState = EPlantState::Seed;
-	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Materials)
-	UMaterialInstanceDynamic* DynamicMaterial0;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Materials)
-	UMaterialInstanceDynamic* DynamicMaterial1;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Materials)
-	UMaterialInstanceDynamic* DynamicMaterial2;
+
+	TArray<UMaterialInstanceDynamic*> DynamicMaterials;
 };
