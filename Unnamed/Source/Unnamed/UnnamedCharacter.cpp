@@ -14,6 +14,7 @@
 #include "Engine/SkeletalMeshSocket.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "WateringCan.h"
+#include "Basket.h"
 
 AUnnamedCharacter::AUnnamedCharacter()
 {
@@ -90,13 +91,18 @@ void AUnnamedCharacter::BeginPlay()
 	}
 	*/
 
-	// Référence de l'arrosoir
+	// Référence de l'arrosoir et au panier
 	TArray< AActor* > tempChildActors;
 	GetAttachedActors(tempChildActors);
 	tempChildActors.FindItemByClass<class AWateringCan>(&Watering_can);
-	
+	tempChildActors.FindItemByClass<class ABasket>(&Basket);
+
 	if (!Watering_can)
-		UE_LOG(LogTemp, Warning, TEXT("Pas d'arrosoir!!!"));;
+		UE_LOG(LogTemp, Warning, TEXT("Pas d'arrosoir!!!"));
+	
+	if (!Basket)
+		UE_LOG(LogTemp, Warning, TEXT("Pas de panier!!!"));
+	
 }
 
 void AUnnamedCharacter::Tick(float DeltaTime)
@@ -282,7 +288,7 @@ void AUnnamedCharacter::PickPlants(AActor * Plante)
 			FVector PlantScale = PlantSocketTransform.GetScale3D();
 
 			// On attache la plante au socket dans la main du personnage
-			Plante->K2_AttachRootComponentTo(GetMesh(), FName("Hand_LSocket"), EAttachLocation::SnapToTarget, true);
+			Plante->AttachToComponent(GetMesh(),FAttachmentTransformRules::SnapToTargetNotIncludingScale, FName("Hand_LSocket"));
 			Plante->SetActorEnableCollision(false);
 
 			UE_LOG(LogTemp, Warning, TEXT("PlantSocketLocalLocation: %s"), *PlantSocketLocalLocation.ToString());
@@ -292,17 +298,16 @@ void AUnnamedCharacter::PickPlants(AActor * Plante)
 			// On déplace repositione la plante dans la main en prenant en compte la position du socket et l'échelle de la plante
 			//Plante->SetActorRelativeLocation(-PlantSocketLocalLocation * PlantScale);
 			Plante->SetActorRelativeLocation(FVector(0, 0, PlantSocketLocalLocation.Y) * PlantScale);
-			dynamic_cast<APlantSkeletalMeshActor*>(Plante)->Harvest();
-			
-			/*
-			auto localTransform = GetMesh()->GetSocketTransform(FName("Hand_LSocket"));
-			auto localRotation = localTransform.GetRotation();
-			UE_LOG(LogTemp, Warning, TEXT("localRotation %s"), *localRotation.ToString());
-			*/			
+			dynamic_cast<APlantSkeletalMeshActor*>(Plante)->Harvest();		
 		}
 		else {
 			UE_LOG(LogTemp, Warning, TEXT("Pas Socket!!"));
 		}
+	}
+
+	if (Basket) 
+	{
+		Basket->AddCrop(dynamic_cast<APlantSkeletalMeshActor*>(Plante));
 	}
 }
 

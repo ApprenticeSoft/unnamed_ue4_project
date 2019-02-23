@@ -20,6 +20,7 @@ class APlantSkeletalMeshActor;
 class UAnimSequence;
 class ASeed;
 class AWateringCan;
+class ABasket;
 class ASol;
 //class APlantSkeletalMeshActor;
 
@@ -55,6 +56,7 @@ protected:
 	FRotator RotationTowardsTarget;
 	UInteractionDetectorComponent* Detector = nullptr;
 	AWateringCan* Watering_can = nullptr;
+	ABasket* Basket = nullptr;
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Anims")
 	UAnimSequence *MyAnimSequence;
 

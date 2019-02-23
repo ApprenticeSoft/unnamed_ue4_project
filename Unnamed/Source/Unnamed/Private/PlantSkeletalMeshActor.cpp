@@ -78,8 +78,6 @@ void APlantSkeletalMeshActor::Tick(float DeltaTime)
 				DynamicMaterial->SetScalarParameterValue(TEXT("Blend"), Rottenness);
 			}
 		}
-		
-		
 	}
 	else if(PlantState == EPlantState::Harvested)
 	{
@@ -118,6 +116,11 @@ void APlantSkeletalMeshActor::Harvest()
 void APlantSkeletalMeshActor::SetPosition(FVector NewPosition)
 {
 	Position = NewPosition;
+}
+
+EPlantType APlantSkeletalMeshActor::GetPlantType()
+{
+	return PlantType;
 }
 
 EPlantState APlantSkeletalMeshActor::GetPlantState()

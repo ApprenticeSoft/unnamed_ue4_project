@@ -23,6 +23,15 @@ enum class EPlantState : uint8
 	Rotten
 };
 
+UENUM(BlueprintType)
+enum class EPlantType : uint8
+{
+	Corn,
+	Wheat,
+	Pumpkin,
+	Sunflower
+};
+
 UCLASS()
 class UNNAMED_API APlantSkeletalMeshActor : public ASkeletalMeshActor
 {
@@ -38,6 +47,8 @@ public:
 	UFUNCTION(BlueprintCallable)
 	EPlantState GetPlantState();
 	void SetPlantState(EPlantState State);
+	UFUNCTION(BlueprintCallable)
+	EPlantType GetPlantType();
 
 protected:
 	virtual void BeginPlay() override;
@@ -52,6 +63,8 @@ protected:
 	float HatchDelay = 2;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Enum)
 	EPlantState PlantState = EPlantState::Seed;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Enum)
+	EPlantType PlantType = EPlantType::Corn;
 
 	TArray<UMaterialInstanceDynamic*> DynamicMaterials;
 };
