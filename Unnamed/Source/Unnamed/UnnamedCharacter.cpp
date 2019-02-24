@@ -82,16 +82,6 @@ void AUnnamedCharacter::BeginPlay()
 	PositionX = GetActorLocation().X;
 	Detector = AActor::FindComponentByClass<class UInteractionDetectorComponent>();
 
-	/*
-	auto HandSocket = GetMesh()->GetSocketByName(FName("Hand_LSocket"));
-	if (HandSocket) 
-	{
-		auto localTransform = GetMesh()->GetSocketTransform(FName("Hand_LSocket"));
-		auto localRotation = localTransform.GetRotation();
-		UE_LOG(LogTemp, Warning, TEXT("localRotation %s"), *localRotation.ToString());
-	}
-	*/
-
 	// Référence de l'arrosoir et au panier
 	TArray< AActor* > tempChildActors;
 	GetAttachedActors(tempChildActors);
@@ -291,9 +281,7 @@ void AUnnamedCharacter::PickPlants(AActor * Plante)
 			Plante->SetActorEnableCollision(false);
 
 			// On déplace repositione la plante dans la main en prenant en compte la position du socket et l'échelle de la plante
-			//Plante->SetActorRelativeLocation(-PlantSocketLocalLocation * PlantScale);
 			Plante->SetActorRelativeLocation(FVector(0, 0, PlantSocketLocalLocation.Y) * PlantScale);
-			//dynamic_cast<APlantSkeletalMeshActor*>(Plante)->Harvest();		
 		}
 		else {
 			UE_LOG(LogTemp, Warning, TEXT("Pas Socket!!"));
@@ -303,7 +291,6 @@ void AUnnamedCharacter::PickPlants(AActor * Plante)
 
 void AUnnamedCharacter::GetCrop(AActor* Plante)
 {
-	//auto HandSocket = GetMesh()->GetSocketByName(FName("Hand_LSocket"));
 	AHarvestedPlant* Crop;
 	Crop = GetWorld()->SpawnActor<AHarvestedPlant>(dynamic_cast<APlantSkeletalMeshActor*>(Plante)->CropBlueprint,
 													GetActorLocation(),

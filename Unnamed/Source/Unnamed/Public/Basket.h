@@ -18,6 +18,7 @@ public:
 	// Sets default values for this actor's properties
 	ABasket();
 	void AddCrop(APlantSkeletalMeshActor* Crop);
+	void AddCrop(AHarvestedPlant* Crop);
 
 protected:
 	// Called when the game starts or when spawned
@@ -28,6 +29,9 @@ protected:
 	TSubclassOf<AHarvestedPlant> HarvestedCornBlueprint;
 	UPROPERTY(EditDefaultsOnly, Category = Setup)
 	TSubclassOf<AHarvestedPlant> HarvestedWheatBlueprint;
+
+	TArray<FName> SocketArray;
+	int SocketIndex = 0;
 
 public:	
 	// Called every frame

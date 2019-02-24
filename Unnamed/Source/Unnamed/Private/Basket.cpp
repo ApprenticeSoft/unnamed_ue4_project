@@ -4,6 +4,7 @@
 #include "PlantSkeletalMeshActor.h"
 #include "Classes/Engine/World.h"
 #include "HarvestedPlant.h"
+#include "Components/StaticMeshComponent.h"
 
 // Sets default values
 ABasket::ABasket()
@@ -18,6 +19,8 @@ void ABasket::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	SocketArray = FindComponentByClass<class UStaticMeshComponent>()->GetAllSocketNames();
+	UE_LOG(LogTemp, Warning, TEXT("SocketArray: %i"), SocketArray.Num());
 }
 
 // Called every frame
@@ -52,6 +55,15 @@ void ABasket::AddCrop(APlantSkeletalMeshActor* Crop)
 
 	HarvestedPlants.Add(plant);
 	UE_LOG(LogTemp, Warning, TEXT("Nombre de récolte: %i"), HarvestedPlants.Num());
+}
+
+void ABasket::AddCrop(AHarvestedPlant * Crop)
+{
+	if (SocketIndex < SocketArray.Num())
+	{
+		Crop->AttachToComponent(FindComponentByClass<class UStaticMeshComponent>(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, SocketArray[SocketIndex]);
+		SocketIndex += 1;
+	}
 }
 
 
