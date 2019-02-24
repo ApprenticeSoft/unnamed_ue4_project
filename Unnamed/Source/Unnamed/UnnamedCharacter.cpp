@@ -15,6 +15,7 @@
 #include "Kismet/KismetMathLibrary.h"
 #include "WateringCan.h"
 #include "Basket.h"
+#include "HarvestedPlant.h"
 
 AUnnamedCharacter::AUnnamedCharacter()
 {
@@ -144,6 +145,38 @@ void AUnnamedCharacter::MoveDown()
 	PositionX += 150;
 }
 
+AActor* AUnnamedCharacter::FindTarget()
+{
+	AActor* UsedItem = nullptr;
+
+	auto ItemsInReach = Detector->getOverlappingActors();
+	float ItemDistance = 1000;
+
+	if (ItemsInReach.Num() > 0) {
+		for (const auto* Actor : ItemsInReach)
+		{
+			if (Actor == nullptr) { return nullptr; }
+			float Distance = FVector::Distance(Actor->GetActorLocation(), GetActorLocation());
+			UE_LOG(LogTemp, Warning, TEXT("Distance avec %s: %f"), *Actor->GetName(), Distance);
+
+			if (FVector::Distance(Actor->GetActorLocation(), GetActorLocation()) < ItemDistance)
+			{
+				ItemDistance = FVector::Distance(Actor->GetActorLocation(), GetActorLocation());
+				UsedItem = const_cast<AActor*>(Actor); // const_cast permet de convertir un const AActor* en AActor*
+			}
+		}
+	}
+
+	return UsedItem;
+}
+
+void AUnnamedCharacter::SetInteractionTarget(AActor* Target)
+{
+	if (!Target) { return; }
+	InteractionTarget = Target;
+	RotationTowardsTarget = UKismetMathLibrary::FindLookAtRotation(this->GetActorLocation(), InteractionTarget->GetActorLocation());
+	AngleRotation = RotationTowardsTarget.Yaw;
+}
 
 void AUnnamedCharacter::Interact()
 {
@@ -195,8 +228,8 @@ void AUnnamedCharacter::PlantThePlant(ASol* Sol)
 		break;
 	case ESeed::Sunflower:
 		Plant = GetWorld()->SpawnActor<APlantSkeletalMeshActor>(CornBlueprint,
-			FVector(0, 0, -200),
-			FRotator(0, 260, 0));
+																FVector(0, 0, -200),
+																FRotator(0, 260, 0));
 		UE_LOG(LogTemp, Warning, TEXT("Plant Sunflower!!!"));
 		break;
 	case ESeed::Pumpkin:
@@ -236,40 +269,6 @@ void AUnnamedCharacter::IncreaseHumidity(float value)
 		Sol->SetHumidity(value);
 }
 
-
-AActor* AUnnamedCharacter::FindTarget()
-{
-	AActor* UsedItem = nullptr;
-
-	auto ItemsInReach = Detector->getOverlappingActors();
-	float ItemDistance = 1000;
-
-	if (ItemsInReach.Num() > 0) {
-		for (const auto* Actor : ItemsInReach)
-		{
-			if (Actor == nullptr) { return nullptr; }
-			float Distance = FVector::Distance(Actor->GetActorLocation(), GetActorLocation());
-			UE_LOG(LogTemp, Warning, TEXT("Distance avec %s: %f"), *Actor->GetName(), Distance);
-
-			if (FVector::Distance(Actor->GetActorLocation(), GetActorLocation()) < ItemDistance)
-			{
-				ItemDistance = FVector::Distance(Actor->GetActorLocation(), GetActorLocation());
-				UsedItem = const_cast<AActor*>(Actor); // const_cast permet de convertir un const AActor* en AActor*
-			}
-		}
-	}
-
-	return UsedItem;
-}
-
-void AUnnamedCharacter::SetInteractionTarget(AActor* Target)
-{
-	if (!Target) { return; }
-	InteractionTarget = Target;
-	RotationTowardsTarget = UKismetMathLibrary::FindLookAtRotation(this->GetActorLocation(), InteractionTarget->GetActorLocation());
-	AngleRotation = RotationTowardsTarget.Yaw;
-}
-
 void AUnnamedCharacter::PickPlants(AActor * Plante)
 {
 	if (!Plante) { return; }
@@ -291,24 +290,33 @@ void AUnnamedCharacter::PickPlants(AActor * Plante)
 			Plante->AttachToComponent(GetMesh(),FAttachmentTransformRules::SnapToTargetNotIncludingScale, FName("Hand_LSocket"));
 			Plante->SetActorEnableCollision(false);
 
-			UE_LOG(LogTemp, Warning, TEXT("PlantSocketLocalLocation: %s"), *PlantSocketLocalLocation.ToString());
-			UE_LOG(LogTemp, Warning, TEXT("PlantScale: %s"), *PlantScale.ToString());
-
-
 			// On déplace repositione la plante dans la main en prenant en compte la position du socket et l'échelle de la plante
 			//Plante->SetActorRelativeLocation(-PlantSocketLocalLocation * PlantScale);
 			Plante->SetActorRelativeLocation(FVector(0, 0, PlantSocketLocalLocation.Y) * PlantScale);
-			dynamic_cast<APlantSkeletalMeshActor*>(Plante)->Harvest();		
+			//dynamic_cast<APlantSkeletalMeshActor*>(Plante)->Harvest();		
 		}
 		else {
 			UE_LOG(LogTemp, Warning, TEXT("Pas Socket!!"));
 		}
 	}
+}
 
-	if (Basket) 
-	{
-		Basket->AddCrop(dynamic_cast<APlantSkeletalMeshActor*>(Plante));
-	}
+void AUnnamedCharacter::GetCrop(AActor* Plante)
+{
+	//auto HandSocket = GetMesh()->GetSocketByName(FName("Hand_LSocket"));
+	AHarvestedPlant* Crop;
+	Crop = GetWorld()->SpawnActor<AHarvestedPlant>(dynamic_cast<APlantSkeletalMeshActor*>(Plante)->CropBlueprint,
+													GetActorLocation(),
+													FRotator(0, 260, 0));
+	Crop->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, FName("Hand_LSocket"));
+	Crop->SetActorEnableCollision(false);
+	InteractionTarget = Crop;
+	Plante->Destroy();
+}
+
+void AUnnamedCharacter::ThrowCrop(AActor* Crop)
+{
+	dynamic_cast<AHarvestedPlant*>(Crop)->SetThrown(true);
 }
 
 void AUnnamedCharacter::LaunchSeeds()

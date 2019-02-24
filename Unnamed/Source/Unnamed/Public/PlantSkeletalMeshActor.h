@@ -7,6 +7,7 @@
 #include "PlantSkeletalMeshActor.generated.h"
 
 class UMaterialInstanceDynamic;
+class AHarvestedPlant;
 
 /**
  * 
@@ -48,6 +49,8 @@ public:
 	void SetPlantState(EPlantState State);
 	UFUNCTION(BlueprintCallable)
 	EPlantType GetPlantType();
+	UPROPERTY(EditDefaultsOnly, Category = Setup)
+	TSubclassOf<AHarvestedPlant> CropBlueprint;
 
 protected:
 	virtual void BeginPlay() override;

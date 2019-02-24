@@ -6,6 +6,8 @@
 #include "GameFramework/Actor.h"
 #include "HarvestedPlant.generated.h"
 
+class ABasket;
+
 UCLASS()
 class UNNAMED_API AHarvestedPlant : public AActor
 {
@@ -19,10 +21,14 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	bool Thrown = false;
+	ABasket* Basket = nullptr;
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 	bool MoveToLocation(FVector Location, float Treshold);
+	void SetThrown(bool value);
 
 };

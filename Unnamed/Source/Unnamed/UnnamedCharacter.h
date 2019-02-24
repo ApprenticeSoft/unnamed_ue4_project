@@ -22,7 +22,6 @@ class ASeed;
 class AWateringCan;
 class ABasket;
 class ASol;
-//class APlantSkeletalMeshActor;
 
 UCLASS(config=Game)
 class AUnnamedCharacter : public ACharacter
@@ -48,9 +47,9 @@ protected:
 	void MoveDown();
 
 	//UFUNCTION(Blueprintcallable)
-	void Interact();
 	AActor* FindTarget();
 	void SetInteractionTarget(AActor* Target);
+	void Interact();
 	float XVector = 5.f;
 	float PositionX = 0.f;
 	FRotator RotationTowardsTarget;
@@ -62,6 +61,10 @@ protected:
 
 	UFUNCTION(BlueprintCallable)
 	void PickPlants(AActor * Plante);
+	UFUNCTION(BlueprintCallable)
+	void GetCrop(AActor * Plante);
+	UFUNCTION(BlueprintCallable)
+	void ThrowCrop(AActor * Crop);
 	UFUNCTION(BlueprintCallable)
 	void LaunchSeeds();
 	UFUNCTION(BlueprintCallable)

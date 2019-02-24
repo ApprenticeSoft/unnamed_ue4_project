@@ -35,18 +35,18 @@ void ABasket::AddCrop(APlantSkeletalMeshActor* Crop)
 	{
 	case EPlantType::Corn:
 		plant = GetWorld()->SpawnActor<AHarvestedPlant>(HarvestedCornBlueprint,
-															FVector(0, 0, 100),
-															FRotator(0, 260, 0));
+														FVector(0, 0, 100),
+														FRotator(0, 260, 0));
 		break;
 	case EPlantType::Wheat:
 		plant = GetWorld()->SpawnActor<AHarvestedPlant>(HarvestedWheatBlueprint,
-															GetActorLocation(),
-															FRotator(0, 260, 0));
+														GetActorLocation(),
+														FRotator(0, 260, 0));
 		break;
 	default:
 		plant = GetWorld()->SpawnActor<AHarvestedPlant>(HarvestedCornBlueprint,
-															FVector(0, 0, 100),
-															FRotator(0, 260, 0));
+														FVector(0, 0, 100),
+														FRotator(0, 260, 0));
 		break;
 	}
 

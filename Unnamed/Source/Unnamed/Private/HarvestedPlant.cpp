@@ -18,7 +18,11 @@ AHarvestedPlant::AHarvestedPlant()
 void AHarvestedPlant::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	Basket = dynamic_cast<AUnnamedCharacter*>(GetWorld()->GetFirstPlayerController()->GetPawn())->GetBasket();
+
+	if (!Basket)
+		UE_LOG(LogTemp, Warning, TEXT("Pas de Basket!!!"));
 }
 
 // Called every frame
@@ -26,9 +30,10 @@ void AHarvestedPlant::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	auto Basket = dynamic_cast<AUnnamedCharacter*>(GetWorld()->GetFirstPlayerController()->GetPawn())->GetBasket();
-
-	MoveToLocation(Basket->GetActorLocation(), 1);
+	if (Thrown) 
+	{
+		MoveToLocation(Basket->GetActorLocation(), 1);
+	}	
 }
 
 bool AHarvestedPlant::MoveToLocation(FVector Location, float Treshold)
@@ -40,5 +45,10 @@ bool AHarvestedPlant::MoveToLocation(FVector Location, float Treshold)
 
 
 	return Distance > Treshold;
+}
+
+void AHarvestedPlant::SetThrown(bool value)
+{
+	Thrown = value;
 }
 
