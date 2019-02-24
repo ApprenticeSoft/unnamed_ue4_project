@@ -112,11 +112,12 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	bool MoveToLocation(AActor* Target, float Treshold = 10.0f, bool ColideWithTarget = false);
-
 	UFUNCTION(BlueprintImplementableEvent, Category = "Interactions")
 	void Sow();
 	UFUNCTION(BlueprintImplementableEvent, Category = "Interactions")
 	void Water();
 	UFUNCTION(BlueprintImplementableEvent, Category = "Interactions")
 	void InteractWithPlant();
+
+	ABasket* GetBasket();
 };

@@ -362,3 +362,8 @@ bool AUnnamedCharacter::MoveToLocation(AActor * Target, float Treshold, bool Col
 	return Distance > Treshold;
 }
 
+ABasket* AUnnamedCharacter::GetBasket()
+{
+	return Basket;
+}
+

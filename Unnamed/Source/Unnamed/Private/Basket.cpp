@@ -49,6 +49,9 @@ void ABasket::AddCrop(APlantSkeletalMeshActor* Crop)
 															FRotator(0, 260, 0));
 		break;
 	}
+
+	HarvestedPlants.Add(plant);
+	UE_LOG(LogTemp, Warning, TEXT("Nombre de récolte: %i"), HarvestedPlants.Num());
 }
 
 

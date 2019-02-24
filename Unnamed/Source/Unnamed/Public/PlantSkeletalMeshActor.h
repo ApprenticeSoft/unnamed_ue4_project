@@ -42,7 +42,6 @@ public:
 	APlantSkeletalMeshActor();
 	UFUNCTION(BlueprintCallable)
 	void Harvest();
-	float MoveToPositionDelay = 1.0f;
 	void SetPosition(FVector NewPosition);
 	UFUNCTION(BlueprintCallable)
 	EPlantState GetPlantState();
@@ -58,9 +57,11 @@ protected:
 	FVector Position = FVector(0,0,0);
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = Delay)
+	float MoveToPositionDelay = 2.0f;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = Delay)
 	float RotDelay = 100;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = Delay)
-	float HatchDelay = 2;
+	float HatchDelay = 2.1f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Enum)
 	EPlantState PlantState = EPlantState::Seed;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Enum)
