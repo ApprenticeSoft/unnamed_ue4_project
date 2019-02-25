@@ -60,6 +60,10 @@ protected:
 	UAnimSequence *MyAnimSequence;
 
 	UFUNCTION(BlueprintCallable)
+	void PutBasketInHand();
+	UFUNCTION(BlueprintCallable)
+	void PutBasketOnBack();
+	UFUNCTION(BlueprintCallable)
 	void PickPlants(AActor * Plante);
 	UFUNCTION(BlueprintCallable)
 	void GetCrop(AActor * Plante);

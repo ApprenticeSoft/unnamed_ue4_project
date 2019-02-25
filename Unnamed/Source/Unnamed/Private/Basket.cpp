@@ -5,6 +5,10 @@
 #include "Classes/Engine/World.h"
 #include "HarvestedPlant.h"
 #include "Components/StaticMeshComponent.h"
+#include "Classes/GameFramework/PlayerController.h"
+#include "Classes/GameFramework/Pawn.h"
+#include "Classes/Components/SkeletalMeshComponent.h"
+#include "Engine/SkeletalMeshSocket.h"
 
 // Sets default values
 ABasket::ABasket()
@@ -21,6 +25,14 @@ void ABasket::BeginPlay()
 	
 	SocketArray = FindComponentByClass<class UStaticMeshComponent>()->GetAllSocketNames();
 	UE_LOG(LogTemp, Warning, TEXT("SocketArray: %i"), SocketArray.Num());
+
+
+	PlayerSkeletalMesh = GetWorld()->GetFirstPlayerController()->GetPawn()->FindComponentByClass<class USkeletalMeshComponent>();
+	auto ChestSocket = PlayerSkeletalMesh->GetSocketByName(FName("ChestSocket"));
+	BackRelativeTransform = GetTransform().GetRelativeTransform(ChestSocket->GetSocketTransform(PlayerSkeletalMesh));
+
+	//DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+
 }
 
 // Called every frame
@@ -28,6 +40,29 @@ void ABasket::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+}
+
+void ABasket::AttachToBack()
+{
+	DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+	AttachToComponent(GetWorld()->GetFirstPlayerController()->GetPawn()->FindComponentByClass<class USkeletalMeshComponent>(),
+		FAttachmentTransformRules::FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true),
+		FName("ChestSocket")
+	);
+	SetActorRelativeTransform(BackRelativeTransform);
+}
+
+void ABasket::AttachToHand()
+{
+	auto HandSocket = PlayerSkeletalMesh->GetSocketByName(FName("Hand_LSocket"));
+	HandRelativeTransform = GetTransform().GetRelativeTransform(HandSocket->GetSocketTransform(PlayerSkeletalMesh));
+
+	DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+	AttachToComponent(GetWorld()->GetFirstPlayerController()->GetPawn()->FindComponentByClass<class USkeletalMeshComponent>(),
+		FAttachmentTransformRules::FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true),
+		FName("Hand_LSocket")
+	);
+	SetActorRelativeTransform(HandRelativeTransform);
 }
 
 void ABasket::AddCrop(APlantSkeletalMeshActor* Crop)
@@ -53,7 +88,6 @@ void ABasket::AddCrop(APlantSkeletalMeshActor* Crop)
 		break;
 	}
 
-	HarvestedPlants.Add(plant);
 	UE_LOG(LogTemp, Warning, TEXT("Nombre de récolte: %i"), HarvestedPlants.Num());
 }
 
@@ -61,9 +95,11 @@ void ABasket::AddCrop(AHarvestedPlant * Crop)
 {
 	if (SocketIndex < SocketArray.Num())
 	{
+		HarvestedPlants.Add(Crop);
 		Crop->AttachToComponent(FindComponentByClass<class UStaticMeshComponent>(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, SocketArray[SocketIndex]);
 		SocketIndex += 1;
 	}
+
 }
 
 

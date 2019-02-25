@@ -259,6 +259,16 @@ void AUnnamedCharacter::IncreaseHumidity(float value)
 		Sol->SetHumidity(value);
 }
 
+void AUnnamedCharacter::PutBasketInHand()
+{
+	Basket->AttachToHand();
+}
+
+void AUnnamedCharacter::PutBasketOnBack()
+{
+	Basket->AttachToBack();
+}
+
 void AUnnamedCharacter::PickPlants(AActor * Plante)
 {
 	if (!Plante) { return; }

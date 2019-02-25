@@ -32,7 +32,7 @@ void AHarvestedPlant::Tick(float DeltaTime)
 
 	if (Thrown) 
 	{
-		Thrown = MoveToLocation(Basket->GetActorLocation(), 1);
+		Thrown = MoveToLocation(Basket->GetActorLocation(), 10);
 		if (!Thrown)
 		{
 			Basket->AddCrop(this);
