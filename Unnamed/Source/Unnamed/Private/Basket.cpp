@@ -54,13 +54,13 @@ void ABasket::AttachToBack()
 
 void ABasket::AttachToHand()
 {
-	auto HandSocket = PlayerSkeletalMesh->GetSocketByName(FName("Hand_LSocket"));
+	auto HandSocket = PlayerSkeletalMesh->GetSocketByName(FName("Finger_04_LSocket"));
 	HandRelativeTransform = GetTransform().GetRelativeTransform(HandSocket->GetSocketTransform(PlayerSkeletalMesh));
 
 	DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
 	AttachToComponent(GetWorld()->GetFirstPlayerController()->GetPawn()->FindComponentByClass<class USkeletalMeshComponent>(),
 		FAttachmentTransformRules::FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true),
-		FName("Hand_LSocket")
+		FName("Finger_04_LSocket")
 	);
 	SetActorRelativeTransform(HandRelativeTransform);
 }
