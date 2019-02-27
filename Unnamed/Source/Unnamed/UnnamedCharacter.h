@@ -60,10 +60,6 @@ protected:
 	UAnimSequence *MyAnimSequence;
 
 	UFUNCTION(BlueprintCallable)
-	void PutBasketInHand();
-	UFUNCTION(BlueprintCallable)
-	void PutBasketOnBack();
-	UFUNCTION(BlueprintCallable)
 	void PickPlants(AActor * Plante);
 	UFUNCTION(BlueprintCallable)
 	void GetCrop(AActor * Plante);
@@ -75,6 +71,12 @@ protected:
 	void ActivateWateringCan();
 	UFUNCTION(BlueprintCallable)
 	void DeactivateWateringCan();
+	UFUNCTION(BlueprintCallable)
+	void PutBasketInHand();
+	UFUNCTION(BlueprintCallable)
+	void PutBasketOnBack();
+	UFUNCTION(BlueprintCallable)
+	void EmptyBasket();
 	UFUNCTION(BlueprintCallable)
 	void IncreaseHumidity(float value = 1.0f);
 	void PlantThePlant(ASol* Sol);

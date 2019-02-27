@@ -18,8 +18,6 @@ class UNNAMED_API ABasket : public AActor
 public:	
 	// Sets default values for this actor's properties
 	ABasket();
-	void AddCrop(APlantSkeletalMeshActor* Crop);
-	void AddCrop(AHarvestedPlant* Crop);
 
 protected:
 	// Called when the game starts or when spawned
@@ -45,4 +43,7 @@ public:
 	virtual void Tick(float DeltaTime) override;
 	void AttachToBack();
 	void AttachToHand();
+	void AddCrop(APlantSkeletalMeshActor* Crop);
+	void AddCrop(AHarvestedPlant* Crop);
+	void ReleaseCrop();
 };

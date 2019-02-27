@@ -252,13 +252,6 @@ void AUnnamedCharacter::DeactivateWateringCan()
 		Watering_can->Deactivate();
 }
 
-void AUnnamedCharacter::IncreaseHumidity(float value)
-{
-	ASol* Sol = dynamic_cast<ASol*>(InteractionTarget);
-	if(Sol)
-		Sol->SetHumidity(value);
-}
-
 void AUnnamedCharacter::PutBasketInHand()
 {
 	Basket->AttachToHand();
@@ -267,6 +260,18 @@ void AUnnamedCharacter::PutBasketInHand()
 void AUnnamedCharacter::PutBasketOnBack()
 {
 	Basket->AttachToBack();
+}
+
+void AUnnamedCharacter::EmptyBasket()
+{
+	Basket->ReleaseCrop();
+}
+
+void AUnnamedCharacter::IncreaseHumidity(float value)
+{
+	ASol* Sol = dynamic_cast<ASol*>(InteractionTarget);
+	if(Sol)
+		Sol->SetHumidity(value);
 }
 
 void AUnnamedCharacter::PickPlants(AActor * Plante)

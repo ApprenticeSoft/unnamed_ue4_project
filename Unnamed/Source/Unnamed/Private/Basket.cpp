@@ -9,6 +9,7 @@
 #include "Classes/GameFramework/Pawn.h"
 #include "Classes/Components/SkeletalMeshComponent.h"
 #include "Engine/SkeletalMeshSocket.h"
+#include "Classes/Components/StaticMeshComponent.h"
 
 // Sets default values
 ABasket::ABasket()
@@ -99,7 +100,22 @@ void ABasket::AddCrop(AHarvestedPlant * Crop)
 		Crop->AttachToComponent(FindComponentByClass<class UStaticMeshComponent>(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, SocketArray[SocketIndex]);
 		SocketIndex += 1;
 	}
+}
 
+void ABasket::ReleaseCrop()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Legumes dans le panier: %i"), HarvestedPlants.Num());
+	for (AHarvestedPlant* crop : HarvestedPlants) 
+	{
+		crop->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+		crop->SetActorEnableCollision(true);
+		crop->FindComponentByClass<class UStaticMeshComponent>()->SetSimulatePhysics(true);
+		crop->FindComponentByClass<class UStaticMeshComponent>()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+		UE_LOG(LogTemp, Warning, TEXT("Crop name: %s"), *crop->GetFName().ToString());
+	}
+	HarvestedPlants.Empty();
+	SocketIndex = 0;
+	UE_LOG(LogTemp, Warning, TEXT("Legumes dans le panier: %i"), HarvestedPlants.Num());
 }
 
 
