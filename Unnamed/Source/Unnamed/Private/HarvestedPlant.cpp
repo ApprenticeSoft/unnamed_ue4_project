@@ -23,6 +23,8 @@ void AHarvestedPlant::BeginPlay()
 
 	if (!Basket)
 		UE_LOG(LogTemp, Warning, TEXT("Pas de Basket!!!"));
+
+
 }
 
 // Called every frame
@@ -38,6 +40,7 @@ void AHarvestedPlant::Tick(float DeltaTime)
 			Basket->AddCrop(this);
 		}
 	}	
+
 }
 
 bool AHarvestedPlant::MoveToLocation(FVector Location, float Treshold)

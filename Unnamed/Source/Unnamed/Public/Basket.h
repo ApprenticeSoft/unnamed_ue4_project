@@ -25,6 +25,9 @@ protected:
 	TArray<AHarvestedPlant*> HarvestedPlants;
 	TArray<FName> SocketArray;
 	int SocketIndex = 0;
+	int CropReleaseDelay = 0;
+	int ReleaseIndex = 0;
+	bool IsReleasingCrops = false;
 
 	UPROPERTY(EditDefaultsOnly, Category = Setup)
 	TSubclassOf<AHarvestedPlant> HarvestedCornBlueprint;

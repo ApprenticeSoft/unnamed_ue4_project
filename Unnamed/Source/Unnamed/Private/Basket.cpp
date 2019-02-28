@@ -41,6 +41,58 @@ void ABasket::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+
+	if (IsReleasingCrops) 
+	{
+		/*
+		CropReleaseDelay--;
+
+		if (CropReleaseDelay < 0)
+		{
+			if (ReleaseIndex > -1)
+			{
+				UE_LOG(LogTemp, Warning, TEXT("ReleaseIndex: %i"), ReleaseIndex);
+				HarvestedPlants[ReleaseIndex]->SetActorLocation(HarvestedPlants[ReleaseIndex]->GetActorLocation() + GetActorRotation().RotateVector(FVector(0, 0, 25.0f)));
+
+				HarvestedPlants[ReleaseIndex]->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+				HarvestedPlants[ReleaseIndex]->SetActorEnableCollision(true);
+				HarvestedPlants[ReleaseIndex]->FindComponentByClass<class UStaticMeshComponent>()->SetSimulatePhysics(true);
+				HarvestedPlants[ReleaseIndex]->FindComponentByClass<class UStaticMeshComponent>()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+				HarvestedPlants.RemoveAt(ReleaseIndex);
+				SocketIndex--;
+
+				ReleaseIndex--;
+			}
+
+			CropReleaseDelay = 10;
+		}
+		*/
+		
+		for (int32 i = HarvestedPlants.Num()-1; i > -1; i--)
+		{
+			// Sécurité au cas où plusieurs plantes dépaces la limite en même temps.
+			//if (i > HarvestedPlants.Num() - 1) i = HarvestedPlants.Num() - 1;
+
+			HarvestedPlants[i]->SetActorLocation(HarvestedPlants[i]->GetActorLocation() + GetActorRotation().RotateVector(FVector(0,0,1.0f)));
+			auto Distance = FVector::Distance(HarvestedPlants[i]->GetActorLocation(), GetActorLocation());
+			UE_LOG(LogTemp, Warning, TEXT("Distance: %f"), Distance);
+
+			if (Distance > 36)
+			{
+				HarvestedPlants[i]->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+				HarvestedPlants[i]->SetActorEnableCollision(true);
+				HarvestedPlants[i]->FindComponentByClass<class UStaticMeshComponent>()->SetSimulatePhysics(true);
+				HarvestedPlants[i]->FindComponentByClass<class UStaticMeshComponent>()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+				HarvestedPlants.RemoveAt(i);
+				SocketIndex--;
+			}
+		}
+		
+		if (HarvestedPlants.Num() == 0)
+			IsReleasingCrops = false;
+		
+	}
+
 }
 
 void ABasket::AttachToBack()
@@ -104,18 +156,21 @@ void ABasket::AddCrop(AHarvestedPlant * Crop)
 
 void ABasket::ReleaseCrop()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Legumes dans le panier: %i"), HarvestedPlants.Num());
+	/*
 	for (AHarvestedPlant* crop : HarvestedPlants) 
 	{
 		crop->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
 		crop->SetActorEnableCollision(true);
 		crop->FindComponentByClass<class UStaticMeshComponent>()->SetSimulatePhysics(true);
 		crop->FindComponentByClass<class UStaticMeshComponent>()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-		UE_LOG(LogTemp, Warning, TEXT("Crop name: %s"), *crop->GetFName().ToString());
 	}
 	HarvestedPlants.Empty();
 	SocketIndex = 0;
-	UE_LOG(LogTemp, Warning, TEXT("Legumes dans le panier: %i"), HarvestedPlants.Num());
+	*/
+	
+	//SocketIndex = SocketArray.Num() - 1;
+	IsReleasingCrops = true;
+	ReleaseIndex = HarvestedPlants.Num() - 1;
 }
 
 
