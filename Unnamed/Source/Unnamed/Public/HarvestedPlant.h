@@ -8,6 +8,7 @@
 
 class UProjectileMovementComponent;
 class ABasket;
+class APoint;
 
 UCLASS()
 class UNNAMED_API AHarvestedPlant : public AActor
@@ -17,6 +18,8 @@ class UNNAMED_API AHarvestedPlant : public AActor
 public:	
 	// Sets default values for this actor's properties
 	AHarvestedPlant();
+	UPROPERTY(EditDefaultsOnly, Category = Setup)
+	TSubclassOf<APoint> PointBlueprint;
 
 protected:
 	// Called when the game starts or when spawned

@@ -6,6 +6,7 @@
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "UnnamedCharacter.h"
 #include "Basket.h"
+#include "Point.h"
 
 // Sets default values
 AHarvestedPlant::AHarvestedPlant()
@@ -26,7 +27,6 @@ void AHarvestedPlant::BeginPlay()
 
 	if (!Basket)
 		UE_LOG(LogTemp, Warning, TEXT("Pas de Basket!!!"));
-
 
 }
 
@@ -90,8 +90,13 @@ void AHarvestedPlant::Disappear()
 		{
 			SetActorScale3D(FVector(GetActorScale3D() - GetWorld()->DeltaTimeSeconds));
 
-			if (GetActorScale3D().X < 0)
+			if (GetActorScale3D().X < 0) 
+			{
+				APoint* Point = GetWorld()->SpawnActor<APoint>(	PointBlueprint,
+																GetActorLocation(),
+																FRotator(0, 0, 0));
 				Destroy();
+			}
 		}
 	}
 }
