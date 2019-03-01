@@ -36,6 +36,5 @@ void ASeed::LaunchSeed(float Speed)
 	//ProjectileMovement->SetVelocityInLocalSpace(FVector(Direction.X, Direction.Y, 0) * Speed);
 	ProjectileMovement->SetVelocityInLocalSpace(FVector(1, 0, 0) * Speed);
 	ProjectileMovement->Activate();
-
 }
 

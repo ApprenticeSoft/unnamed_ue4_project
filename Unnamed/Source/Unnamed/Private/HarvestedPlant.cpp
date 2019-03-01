@@ -3,6 +3,7 @@
 #include "HarvestedPlant.h"
 #include "Classes/Engine/World.h"
 #include "Classes/GameFramework/PlayerController.h"
+#include "GameFramework/ProjectileMovementComponent.h"
 #include "UnnamedCharacter.h"
 #include "Basket.h"
 
@@ -12,6 +13,8 @@ AHarvestedPlant::AHarvestedPlant()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>(FName("Projectile Movement"));
+	ProjectileMovement->bAutoActivate = false;
 }
 
 // Called when the game starts or when spawned
@@ -32,15 +35,9 @@ void AHarvestedPlant::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	if (Thrown) 
-	{
-		Thrown = MoveToLocation(Basket->GetActorLocation(), 10);
-		if (!Thrown)
-		{
-			Basket->AddCrop(this);
-		}
-	}	
+	ThrownInBasket();
 
+	Disappear();
 }
 
 bool AHarvestedPlant::MoveToLocation(FVector Location, float Treshold)
@@ -57,5 +54,45 @@ bool AHarvestedPlant::MoveToLocation(FVector Location, float Treshold)
 void AHarvestedPlant::SetThrown(bool value)
 {
 	Thrown = value;
+}
+
+void AHarvestedPlant::ThrownInBasket()
+{
+	if (Thrown)
+	{
+		Thrown = MoveToLocation(Basket->GetActorLocation(), 10);
+		if (!Thrown)
+		{
+			Basket->AddCrop(this);
+		}
+	}
+}
+
+void AHarvestedPlant::LaunchCrop(FVector Direction, float Speed)
+{
+	UE_LOG(LogTemp, Warning, TEXT("Projectile fires at %f"), Speed);
+	ProjectileMovement->SetVelocityInLocalSpace(Direction * Speed);
+	ProjectileMovement->Activate();
+}
+
+void AHarvestedPlant::TriggerDisappear()
+{
+	IsDisappearing = true;
+}
+
+void AHarvestedPlant::Disappear()
+{
+	if (IsDisappearing)
+	{
+		DisappearDelay -= GetWorld()->DeltaTimeSeconds;
+
+		if (DisappearDelay < 0)
+		{
+			SetActorScale3D(FVector(GetActorScale3D() - GetWorld()->DeltaTimeSeconds));
+
+			if (GetActorScale3D().X < 0)
+				Destroy();
+		}
+	}
 }
 

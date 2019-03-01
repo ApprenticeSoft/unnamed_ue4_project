@@ -106,6 +106,7 @@ void APlantSkeletalMeshActor::Harvest()
 
 	auto GameState = dynamic_cast<AMyGameStateBase*>(GetWorld()->GetGameState());
 	GameState->SetCornNumber(GameState->GetCornNumber() + 1);
+	UE_LOG(LogTemp, Warning, TEXT("GameState->GetCornNumber(): %i"), GameState->GetCornNumber());
 
 	// Test pour avoir accès à la saison en cours à partir de la plante 
 	if (GameState->GetSeason() == ECurrentSeason::Summer) {
