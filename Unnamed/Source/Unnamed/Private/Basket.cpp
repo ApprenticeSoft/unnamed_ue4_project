@@ -77,7 +77,7 @@ void ABasket::Tick(float DeltaTime)
 			auto Distance = FVector::Distance(HarvestedPlants[i]->GetActorLocation(), GetActorLocation());
 			UE_LOG(LogTemp, Warning, TEXT("Distance: %f"), Distance);
 
-			if (Distance > 50)
+			if (Distance > ReleaseDistance)
 			{
 				HarvestedPlants[i]->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
 				HarvestedPlants[i]->SetActorEnableCollision(true);
@@ -86,14 +86,14 @@ void ABasket::Tick(float DeltaTime)
 				HarvestedPlants[i]->FindComponentByClass<class UStaticMeshComponent>()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 				HarvestedPlants.RemoveAt(i);
 				SocketIndex--;
-				//ReleaseDistance++;
+				ReleaseDistance += 3;
 			}
 		}
 		
 		if (HarvestedPlants.Num() == 0)
 		{
 			IsReleasingCrops = false;
-			//ReleaseDistance = 50;
+			ReleaseDistance = 50;
 		}
 		
 	}
