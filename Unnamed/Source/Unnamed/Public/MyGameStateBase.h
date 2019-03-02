@@ -60,13 +60,17 @@ public:
 	UFUNCTION(BlueprintCallable)
 	int32 GetWheatNumber();
 	void SetWheatNumber(int32 Number);
+	UFUNCTION(BlueprintCallable)
 	ECurrentSeason GetSeason();
+	UFUNCTION(BlueprintCallable)
+	FString GetMonth();
 
 protected:
 	UPROPERTY(BlueprintReadOnly, Category = "State")
 	ECurrentSeason Season = ECurrentSeason::Spring;
 	UPROPERTY(BlueprintReadOnly, Category = "State")
 	ECurrentMonth Month = ECurrentMonth::April;
+	FString MonthString = "April";
 
 private:
 	int32 CornNumber = 0;

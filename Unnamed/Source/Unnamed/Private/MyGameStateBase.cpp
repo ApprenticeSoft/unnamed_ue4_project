@@ -40,6 +40,7 @@ void AMyGameStateBase::DetermineMonth()
 		if (Month != ECurrentMonth::December)
 		{
 			Month = ECurrentMonth::December;
+			MonthString = "December";
 			UE_LOG(LogTemp, Warning, TEXT("Automne/Decembre"));
 		}
 	}
@@ -47,6 +48,7 @@ void AMyGameStateBase::DetermineMonth()
 		if (Month != ECurrentMonth::November)
 		{
 			Month = ECurrentMonth::November;
+			MonthString = "November";
 			UE_LOG(LogTemp, Warning, TEXT("Automne/Novembre"));
 		}
 	}
@@ -55,6 +57,7 @@ void AMyGameStateBase::DetermineMonth()
 		{
 			Month = ECurrentMonth::October;
 			Season = ECurrentSeason::Fall;
+			MonthString = "October";
 			UE_LOG(LogTemp, Warning, TEXT("Automne/Octobre"));
 		}
 	}
@@ -62,6 +65,7 @@ void AMyGameStateBase::DetermineMonth()
 		if (Month != ECurrentMonth::September)
 		{
 			Month = ECurrentMonth::September;
+			MonthString = "September";
 			UE_LOG(LogTemp, Warning, TEXT("Ete/Septembre"));
 		}
 	}
@@ -69,6 +73,7 @@ void AMyGameStateBase::DetermineMonth()
 		if (Month != ECurrentMonth::August)
 		{
 			Month = ECurrentMonth::August;
+			MonthString = "August";
 			UE_LOG(LogTemp, Warning, TEXT("Ete/Aout"));
 		}
 	}
@@ -77,6 +82,7 @@ void AMyGameStateBase::DetermineMonth()
 		{
 			Month = ECurrentMonth::July;
 			Season = ECurrentSeason::Summer;
+			MonthString = "July";
 			UE_LOG(LogTemp, Warning, TEXT("Ete/Juillet"));
 		}
 	}
@@ -84,6 +90,7 @@ void AMyGameStateBase::DetermineMonth()
 		if (Month != ECurrentMonth::June)
 		{
 			Month = ECurrentMonth::June;
+			MonthString = "June";
 			UE_LOG(LogTemp, Warning, TEXT("Printemps/Juin"));
 		}
 	}
@@ -91,6 +98,7 @@ void AMyGameStateBase::DetermineMonth()
 		if (Month != ECurrentMonth::May)
 		{
 			Month = ECurrentMonth::May;
+			MonthString = "May";
 			UE_LOG(LogTemp, Warning, TEXT("Printemps/Mai"));
 		}
 	}
@@ -99,6 +107,7 @@ void AMyGameStateBase::DetermineMonth()
 		{
 			Month = ECurrentMonth::April;
 			Season = ECurrentSeason::Spring;
+			MonthString = "April";
 			UE_LOG(LogTemp, Warning, TEXT("Printemps/Avril"));
 		}
 	}
@@ -106,6 +115,7 @@ void AMyGameStateBase::DetermineMonth()
 		if (Month != ECurrentMonth::March)
 		{
 			Month = ECurrentMonth::March;
+			MonthString = "March";
 			UE_LOG(LogTemp, Warning, TEXT("Hiver/Mars"));
 		}
 	}
@@ -113,6 +123,7 @@ void AMyGameStateBase::DetermineMonth()
 		if (Month != ECurrentMonth::February)
 		{
 			Month = ECurrentMonth::February;
+			MonthString = "February";
 			UE_LOG(LogTemp, Warning, TEXT("Hiver/Fevrier"));
 		}
 	}
@@ -121,6 +132,7 @@ void AMyGameStateBase::DetermineMonth()
 		{
 			Month = ECurrentMonth::January;
 			Season = ECurrentSeason::Winter;
+			MonthString = "January";
 			UE_LOG(LogTemp, Warning, TEXT("Hiver/Janvier"));
 		}
 	}
@@ -149,5 +161,10 @@ void AMyGameStateBase::SetWheatNumber(int32 Number)
 ECurrentSeason AMyGameStateBase::GetSeason()
 {
 	return Season;
+}
+
+FString AMyGameStateBase::GetMonth()
+{
+	return MonthString;
 }
 
