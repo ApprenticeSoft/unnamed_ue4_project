@@ -28,6 +28,7 @@ protected:
 	int CropReleaseDelay = 0;
 	int ReleaseIndex = 0;
 	bool IsReleasingCrops = false;
+	//float ReleaseDistance = 50;
 
 	UPROPERTY(EditDefaultsOnly, Category = Setup)
 	TSubclassOf<AHarvestedPlant> HarvestedCornBlueprint;

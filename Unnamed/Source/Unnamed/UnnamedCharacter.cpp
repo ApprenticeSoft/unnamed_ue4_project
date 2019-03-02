@@ -9,6 +9,7 @@
 #include "InteractionDetectorComponent.h"
 #include "PlantSkeletalMeshActor.h"
 #include "Sol.h"
+#include "Shop.h"
 #include "Seed.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Engine/SkeletalMeshSocket.h"
@@ -188,10 +189,9 @@ void AUnnamedCharacter::Interact()
 	if (!Sol) 
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Ce n'est pas un sol!!"));
-		return;
+		//return;
 	}
-
-	if (Sol->IsReadyToHarvest())
+	else if (Sol->IsReadyToHarvest())
 	{
 		SetInteractionTarget(Sol->PopPlant());
 		InteractWithPlant();
@@ -207,6 +207,16 @@ void AUnnamedCharacter::Interact()
 		PlantThePlant(Sol);
 		Sow();
 	} 
+
+	AShop* Shop = dynamic_cast<AShop*>(UsedItem);
+	if (!Shop)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Ce n'est pas un shop!!"));
+	}
+	else
+	{
+		InteractWithShop();
+	}
 }
 
 void AUnnamedCharacter::PlantThePlant(ASol* Sol)

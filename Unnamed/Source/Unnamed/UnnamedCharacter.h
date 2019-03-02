@@ -133,6 +133,8 @@ public:
 	void Water();
 	UFUNCTION(BlueprintImplementableEvent, Category = "Interactions")
 	void InteractWithPlant();
+	UFUNCTION(BlueprintImplementableEvent, Category = "Interactions")
+	void InteractWithShop();
 	void GetScreenToWorldPosition(float ScreenPositionX, float ScreenPositionY, FVector& WorldLocation, FVector& WorldDirection);
 	FVector2D GetScreenSize();
 
