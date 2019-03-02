@@ -7,6 +7,7 @@
 #include "Point.generated.h"
 
 class UTextRenderComponent;
+class AUnnamedCharacter;
 
 UCLASS()
 class UNNAMED_API APoint : public AActor
@@ -22,6 +23,13 @@ protected:
 	virtual void BeginPlay() override;
 	UTextRenderComponent* Text = nullptr;
 	int32 PointValue = 1;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = Delay)
+	float MoveDelay = 1.0f;
+	void AddPoints();
+
+	//TEST
+	FVector PointDestination;
+	AUnnamedCharacter* Character;
 
 public:	
 	// Called every frame

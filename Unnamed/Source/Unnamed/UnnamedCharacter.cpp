@@ -17,6 +17,9 @@
 #include "Basket.h"
 #include "HarvestedPlant.h"
 
+#include "Classes/Kismet/GameplayStatics.h"
+#include "Classes/GameFramework/PlayerController.h"
+
 AUnnamedCharacter::AUnnamedCharacter()
 {
 	// Set size for collision capsule
@@ -94,6 +97,13 @@ void AUnnamedCharacter::BeginPlay()
 	if (!Basket)
 		UE_LOG(LogTemp, Warning, TEXT("Pas de panier!!!"));
 	
+	//Test
+	Controller = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+	Controller->GetViewportSize(ViewportSizeX, ViewportSizeY);
+	UE_LOG(LogTemp, Warning, TEXT("ViewportSizeX: %i"), ViewportSizeX);
+	UE_LOG(LogTemp, Warning, TEXT("ViewportSizeY: %i"), ViewportSizeY);
+
+	GetScreenToWorldPosition(ViewportSizeX * 0.5f, ViewportSizeY * 0.2f, WorldLocation, WorldDirection);
 }
 
 void AUnnamedCharacter::Tick(float DeltaTime)
@@ -376,4 +386,17 @@ ABasket* AUnnamedCharacter::GetBasket()
 {
 	return Basket;
 }
+
+void AUnnamedCharacter::GetScreenToWorldPosition(float ScreenPositionX, float ScreenPositionY, FVector & WorldLocation, FVector & WorldDirection)
+{
+	Controller->DeprojectScreenPositionToWorld(ScreenPositionX, ScreenPositionY, WorldLocation, WorldDirection);
+	UE_LOG(LogTemp, Warning, TEXT("WorldLocation: %s"), *WorldLocation.ToString());
+	UE_LOG(LogTemp, Warning, TEXT("WorldDirection: %s"), *WorldDirection.ToString());
+}
+
+FVector2D AUnnamedCharacter::GetScreenSize()
+{
+	return FVector2D(ViewportSizeX, ViewportSizeY);
+}
+
 

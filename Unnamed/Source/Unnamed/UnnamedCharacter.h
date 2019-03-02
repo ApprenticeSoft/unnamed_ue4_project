@@ -16,6 +16,7 @@ enum class ESeed : uint8
 };
 
 class UInteractionDetectorComponent;
+class APlayerController;
 class APlantSkeletalMeshActor;
 class UAnimSequence;
 class ASeed;
@@ -95,6 +96,11 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = Setup)
 	TSubclassOf<APlantSkeletalMeshActor> WheatBlueprint;
 
+	// Référence position sur l'écran
+	APlayerController* Controller;
+	int32 ViewportSizeX, ViewportSizeY;
+	FVector WorldLocation, WorldDirection;
+
 	/** Handle touch inputs. */
 	void TouchStarted(const ETouchIndex::Type FingerIndex, const FVector Location);
 
@@ -127,6 +133,8 @@ public:
 	void Water();
 	UFUNCTION(BlueprintImplementableEvent, Category = "Interactions")
 	void InteractWithPlant();
+	void GetScreenToWorldPosition(float ScreenPositionX, float ScreenPositionY, FVector& WorldLocation, FVector& WorldDirection);
+	FVector2D GetScreenSize();
 
 	ABasket* GetBasket();
 };
