@@ -64,6 +64,10 @@ public:
 	ECurrentSeason GetSeason();
 	UFUNCTION(BlueprintCallable)
 	FString GetMonth();
+	UFUNCTION(BlueprintCallable)
+	float GetSunAngle();
+	UFUNCTION(BlueprintCallable)
+	float GetSunIntensity();
 
 protected:
 	UPROPERTY(BlueprintReadOnly, Category = "State")
@@ -71,11 +75,14 @@ protected:
 	UPROPERTY(BlueprintReadOnly, Category = "State")
 	ECurrentMonth Month = ECurrentMonth::April;
 	FString MonthString = "April";
+	UPROPERTY(BlueprintReadOnly, Category = "State")
+	float Time = 0.0f;
+	UPROPERTY(BlueprintReadOnly, Category = "State")
+	float SunIntensityMax = 2.5f;
 
 private:
 	int32 CornNumber = 0;
 	int32 WheatNumber = 0;
-	float Time = 10.0f;
-	float SeasonDuration = 10.0f;
+	float SeasonDuration = 60.0f;
 	float MonthDuration = SeasonDuration / 3;
 };
