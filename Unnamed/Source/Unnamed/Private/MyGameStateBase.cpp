@@ -166,8 +166,24 @@ float AMyGameStateBase::GetSunAngle()
 
 float AMyGameStateBase::GetSunIntensity()
 {
-	float Intensity = SunIntensityMax * (1 + FMath::Sin(2*PI*GetSunAngle()/360 - PI))/2;
+	float Intensity = SunIntensityMax * (1.05f + FMath::Sin(2*PI*GetSunAngle()/360 - PI))/2;
 
 	return Intensity;
+}
+
+float AMyGameStateBase::GetNightLightBlend()
+{
+	float Blend = 0.0f;
+
+	if (Time < SeasonDuration * 3)
+		Blend = 0.0f;
+	else if (Time < SeasonDuration * 3.2f)
+		Blend = (Time - 3 * SeasonDuration) / (0.2f * SeasonDuration);
+	else if (Time < SeasonDuration * 3.8f)
+		Blend = 1.0f;
+	else
+		Blend = (4 * SeasonDuration - Time) / (0.2f * SeasonDuration);
+
+	return Blend;
 }
 
