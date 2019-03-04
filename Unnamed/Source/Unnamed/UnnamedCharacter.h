@@ -95,6 +95,8 @@ protected:
 	TSubclassOf<APlantSkeletalMeshActor> CornBlueprint;
 	UPROPERTY(EditDefaultsOnly, Category = Setup)
 	TSubclassOf<APlantSkeletalMeshActor> WheatBlueprint;
+	UPROPERTY(EditDefaultsOnly, Category = Setup)
+	TSubclassOf<APlantSkeletalMeshActor> PumpkinBlueprint;
 
 	// Référence position sur l'écran
 	APlayerController* Controller;

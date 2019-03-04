@@ -189,7 +189,6 @@ void AUnnamedCharacter::Interact()
 	if (!Sol) 
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Ce n'est pas un sol!!"));
-		//return;
 	}
 	else if (Sol->IsReadyToHarvest())
 	{
@@ -215,7 +214,8 @@ void AUnnamedCharacter::Interact()
 	}
 	else
 	{
-		InteractWithShop();
+		if(Basket->GetCropNumber() > 0)
+			InteractWithShop();
 	}
 }
 
@@ -243,9 +243,9 @@ void AUnnamedCharacter::PlantThePlant(ASol* Sol)
 		UE_LOG(LogTemp, Warning, TEXT("Plant Sunflower!!!"));
 		break;
 	case ESeed::Pumpkin:
-		Plant = GetWorld()->SpawnActor<APlantSkeletalMeshActor>(CornBlueprint,
-			FVector(0, 0, -200),
-			FRotator(0, 260, 0));
+		Plant = GetWorld()->SpawnActor<APlantSkeletalMeshActor>(PumpkinBlueprint,
+																FVector(0, 0, -200),
+																FRotator(0, 260, 0));
 		UE_LOG(LogTemp, Warning, TEXT("Plant Pumpkin!!!"));
 		break;
 	default:

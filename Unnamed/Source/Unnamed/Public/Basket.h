@@ -50,4 +50,5 @@ public:
 	void AddCrop(APlantSkeletalMeshActor* Crop);
 	void AddCrop(AHarvestedPlant* Crop);
 	void ReleaseCrop();
+	int32 GetCropNumber();
 };

@@ -78,7 +78,7 @@ protected:
 	ECurrentMonth Month = ECurrentMonth::April;
 	FString MonthString = "April";
 	UPROPERTY(BlueprintReadOnly, Category = "State")
-	float Time = 175.0f;
+	float Time = 0.0f;
 	UPROPERTY(BlueprintReadOnly, Category = "State")
 	float SunIntensityMax = 2.5f;
 

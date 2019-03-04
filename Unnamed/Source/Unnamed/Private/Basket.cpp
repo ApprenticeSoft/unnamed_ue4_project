@@ -159,21 +159,13 @@ void ABasket::AddCrop(AHarvestedPlant * Crop)
 	}
 }
 
+int32 ABasket::GetCropNumber()
+{
+	return HarvestedPlants.Num();
+}
+
 void ABasket::ReleaseCrop()
 {
-	/*
-	for (AHarvestedPlant* crop : HarvestedPlants) 
-	{
-		crop->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
-		crop->SetActorEnableCollision(true);
-		crop->FindComponentByClass<class UStaticMeshComponent>()->SetSimulatePhysics(true);
-		crop->FindComponentByClass<class UStaticMeshComponent>()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-	}
-	HarvestedPlants.Empty();
-	SocketIndex = 0;
-	*/
-	
-	//SocketIndex = SocketArray.Num() - 1;
 	IsReleasingCrops = true;
 	ReleaseIndex = HarvestedPlants.Num() - 1;
 }
