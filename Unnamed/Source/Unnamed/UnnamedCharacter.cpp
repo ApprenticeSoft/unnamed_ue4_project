@@ -214,6 +214,7 @@ void AUnnamedCharacter::Interact()
 	}
 	else
 	{
+		SetInteractionTarget(Shop);
 		if(Basket->GetCropNumber() > 0)
 			InteractWithShop();
 	}
