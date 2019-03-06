@@ -4,6 +4,7 @@
 #include "Classes/Engine/World.h"
 #include "Classes/GameFramework/PlayerController.h"
 #include "GameFramework/ProjectileMovementComponent.h"
+#include "Components/StaticMeshComponent.h"
 #include "UnnamedCharacter.h"
 #include "Basket.h"
 #include "Point.h"
@@ -23,6 +24,9 @@ void AHarvestedPlant::BeginPlay()
 {
 	Super::BeginPlay();
 
+	auto Mesh = FindComponentByClass<UStaticMeshComponent>();
+	Mesh->SetNotifyRigidBodyCollision(true);	// Permet d'activer l'option "Simulation Generates Hit Events" du blueprint
+
 	Basket = dynamic_cast<AUnnamedCharacter*>(GetWorld()->GetFirstPlayerController()->GetPawn())->GetBasket();
 
 	if (!Basket)
@@ -37,7 +41,7 @@ void AHarvestedPlant::Tick(float DeltaTime)
 
 	ThrownInBasket();
 
-	Disappear();
+	Resize();
 }
 
 bool AHarvestedPlant::MoveToLocation(FVector Location, float Treshold)
@@ -60,6 +64,7 @@ void AHarvestedPlant::ThrownInBasket()
 {
 	if (Thrown)
 	{
+		SetScale(0.3f);
 		Thrown = MoveToLocation(Basket->GetActorLocation(), 10);
 		if (!Thrown)
 		{
@@ -80,7 +85,7 @@ void AHarvestedPlant::TriggerDisappear()
 	IsDisappearing = true;
 }
 
-void AHarvestedPlant::Disappear()
+void AHarvestedPlant::Resize()
 {
 	if (IsDisappearing)
 	{
@@ -99,5 +104,27 @@ void AHarvestedPlant::Disappear()
 			}
 		}
 	}
+	else
+	{
+		if (NewScale > Scale)
+		{
+			Scale += 3 * GetWorld()->DeltaTimeSeconds;
+			if (Scale > NewScale)
+				Scale = NewScale;
+			SetActorScale3D(FVector(Scale));
+		}
+		else if (NewScale < Scale)
+		{
+			Scale -= 5 * GetWorld()->DeltaTimeSeconds;
+			if (Scale < NewScale)
+				Scale = NewScale;
+			SetActorScale3D(FVector(Scale));
+		}
+	}
+}
+
+void AHarvestedPlant::SetScale(float value)
+{
+	NewScale = value;
 }
 

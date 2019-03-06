@@ -26,9 +26,11 @@ protected:
 	virtual void BeginPlay() override;
 	UFUNCTION(BlueprintCallable)
 	void TriggerDisappear();
-	void Disappear();
+	void Resize();
 	bool IsDisappearing = false;
 	float DisappearDelay = 4.0f;
+	float Scale = 1.0f;
+	float NewScale = 1.0f;
 
 	// Test UProjectileMovementComponent. Peut être à enlever
 	UProjectileMovementComponent* ProjectileMovement = nullptr;
@@ -42,6 +44,7 @@ public:
 
 	bool MoveToLocation(FVector Location, float Treshold);
 	void SetThrown(bool value);
+	void SetScale(float value);
 
 	void LaunchCrop(FVector Direction, float Speed);
 

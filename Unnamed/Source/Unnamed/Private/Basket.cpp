@@ -72,7 +72,7 @@ void ABasket::Tick(float DeltaTime)
 		{
 			// Sécurité au cas où plusieurs plantes dépaces la limite en même temps.
 			//if (i > HarvestedPlants.Num() - 1) i = HarvestedPlants.Num() - 1;
-
+			
 			HarvestedPlants[i]->SetActorLocation(HarvestedPlants[i]->GetActorLocation() + GetActorRotation().RotateVector(FVector(0,0,1.8f)));
 			auto Distance = FVector::Distance(HarvestedPlants[i]->GetActorLocation(), GetActorLocation());
 			UE_LOG(LogTemp, Warning, TEXT("Distance: %f"), Distance);
@@ -84,6 +84,7 @@ void ABasket::Tick(float DeltaTime)
 				HarvestedPlants[i]->FindComponentByClass<class UStaticMeshComponent>()->SetSimulatePhysics(true);
 				//HarvestedPlants[i]->LaunchCrop(GetActorRotation().RotateVector(FVector(0, 0, 1)), 180);
 				HarvestedPlants[i]->FindComponentByClass<class UStaticMeshComponent>()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+				HarvestedPlants[i]->SetScale(1);
 				HarvestedPlants.RemoveAt(i);
 				SocketIndex--;
 				ReleaseDistance += 3;
