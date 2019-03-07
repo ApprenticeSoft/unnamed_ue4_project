@@ -63,7 +63,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	ECurrentSeason GetSeason();
 	UFUNCTION(BlueprintCallable)
-	FString GetMonth();
+	ECurrentMonth GetMonth();
+	UFUNCTION(BlueprintCallable)
+	FString GetMonthString();
 	UFUNCTION(BlueprintCallable)
 	float GetSunAngle();
 	UFUNCTION(BlueprintCallable)

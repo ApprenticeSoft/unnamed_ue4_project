@@ -151,7 +151,12 @@ ECurrentSeason AMyGameStateBase::GetSeason()
 	return Season;
 }
 
-FString AMyGameStateBase::GetMonth()
+ECurrentMonth AMyGameStateBase::GetMonth()
+{
+	return Month;
+}
+
+FString AMyGameStateBase::GetMonthString()
 {
 	return MonthString;
 }
