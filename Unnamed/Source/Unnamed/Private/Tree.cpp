@@ -6,6 +6,7 @@
 #include "Classes/Engine/World.h"
 #include "Components/StaticMeshComponent.h"
 #include "Engine/StaticMeshSocket.h"
+#include "Kismet/KismetMathLibrary.h"
 
 // Sets default values
 ATree::ATree()
@@ -36,8 +37,10 @@ void ATree::CreateLeaves()
 	for (int i = 0; i < SocketArray.Num(); i++)
 	{
 		auto SocketTransform = FindComponentByClass<class UStaticMeshComponent>()->GetSocketTransform(SocketArray[i]);
-		auto Leaves = GetWorld()->SpawnActor<ALeaves>(LeavesBluePrint,
-			SocketTransform.GetLocation(),
-			GetActorRotation());
+		auto Leave = GetWorld()->SpawnActor<ALeaves>(	LeavesBluePrint,
+														SocketTransform.GetLocation(),
+														UKismetMathLibrary::RandomRotator());
+
+		Leave->SetScale(SocketTransform.GetScale3D().X/GetActorScale3D().X);
 	}
 }

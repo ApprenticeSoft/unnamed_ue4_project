@@ -7,6 +7,7 @@
 #include "SingleLeave.generated.h"
 
 class UMaterialInstanceDynamic;
+class AMyGameStateBase;
 
 UCLASS()
 class UNNAMED_API ASingleLeave : public AActor
@@ -21,6 +22,9 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 	UMaterialInstanceDynamic* DynamicMaterial;
+	AMyGameStateBase* GameState;
+	void Disapear();
+	float DisapearDelay = 5.0f;
 
 public:	
 	// Called every frame

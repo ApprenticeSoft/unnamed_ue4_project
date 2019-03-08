@@ -33,10 +33,11 @@ protected:
 	void ChangeColor();
 	void SpawnLeaves();
 	float SpawnLeaveDelay = 0;
+	float Scale = 1.0f;
 
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-
+	void SetScale(float value);
 
 };

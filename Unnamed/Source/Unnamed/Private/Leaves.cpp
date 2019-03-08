@@ -47,7 +47,7 @@ void ALeaves::Tick(float DeltaTime)
 
 void ALeaves::Grow()
 {
-	if (GameState->GetMonth() == ECurrentMonth::April && GetActorScale3D().X < 1)
+	if (GameState->GetMonth() == ECurrentMonth::April && GetActorScale3D().X < Scale)
 	{
 		SetActorScale3D(GetActorScale3D() + 0.05f * GetWorld()->DeltaTimeSeconds);
 	}
@@ -82,16 +82,16 @@ void ALeaves::SpawnLeaves()
 			SpawnLeaveDelay = UKismetMathLibrary::RandomFloatInRange(0.0f, 1.9f);
 
 			FVector Location, Extend, RandomVector, SpawnLocation;
-			GetActorBounds(true, Location, Extend);
+			GetActorBounds(false, Location, Extend);
 
-			RandomVector = FVector(UKismetMathLibrary::RandomFloatInRange(-0.8f, 0.8f) * Extend.X,
-				UKismetMathLibrary::RandomFloatInRange(-0.8f, 0.8f) * Extend.Y,
-				UKismetMathLibrary::RandomFloatInRange(-0.5f, 0.5f) * Extend.Z);
+			RandomVector = FVector(	UKismetMathLibrary::RandomFloatInRange(-0.8f, 0.8f) * Extend.X,
+									UKismetMathLibrary::RandomFloatInRange(-0.8f, 0.8f) * Extend.Y,
+									UKismetMathLibrary::RandomFloatInRange(-0.5f, 0.5f) * Extend.Z);
 			SpawnLocation = Location + RandomVector;
 
-			auto Leave = GetWorld()->SpawnActor<ASingleLeave>(SingleLeaveBluePrint,
-				SpawnLocation,
-				GetActorRotation());
+			auto Leave = GetWorld()->SpawnActor<ASingleLeave>(	SingleLeaveBluePrint,
+																SpawnLocation,
+																UKismetMathLibrary::RandomRotator());
 		}
 
 		if (GetActorScale3D().X <= 0)
@@ -102,5 +102,10 @@ void ALeaves::SpawnLeaves()
 			ColorChangeDelay = 10;
 		}
 	}
+}
+
+void ALeaves::SetScale(float value)
+{
+	Scale = value;
 }
 
