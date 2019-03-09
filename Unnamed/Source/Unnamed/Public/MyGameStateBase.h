@@ -4,12 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameStateBase.h"
+#include "map"
+#include "PlantSkeletalMeshActor.h"
 #include "MyGameStateBase.generated.h"
 
 /**
  * 
  */
-
 
 UENUM(BlueprintType)
 enum class ECurrentSeason : uint8
@@ -51,6 +52,9 @@ protected:
 
 	void TimeTracking();
 	void DetermineMonth();
+	void CreateCalendar();
+	void CheckPlantingMonth(ECurrentMonth CurrentMonth);
+	bool CheckPlantingMonth(EPlantType PlantType, ECurrentMonth CurrentMonth);
 
 
 public:
@@ -72,6 +76,9 @@ public:
 	float GetSunIntensity();
 	UFUNCTION(BlueprintCallable)
 	float GetNightLightBlend();
+	bool GetCornSeason() const;
+	bool GetWheatSeason() const;
+	bool GetPumpkinSeason() const;
 
 protected:
 	UPROPERTY(BlueprintReadOnly, Category = "State")
@@ -83,10 +90,19 @@ protected:
 	float Time = 0.0f;
 	UPROPERTY(BlueprintReadOnly, Category = "State")
 	float SunIntensityMax = 2.5f;
+	UPROPERTY(BlueprintReadOnly, Category = "State")
+	bool CornSeason = true;
+	UPROPERTY(BlueprintReadOnly, Category = "State")
+	bool WheatSeason = false;
+	UPROPERTY(BlueprintReadOnly, Category = "State")
+	bool PumpkinSeason = false;
 
-private:
 	int32 CornNumber = 0;
 	int32 WheatNumber = 0;
 	float SeasonDuration = 60.0f;
 	float MonthDuration = SeasonDuration / 3;
+	TArray<ECurrentMonth> CornPlantingCalendar;
+	TArray<ECurrentMonth> WheatPlantingCalendar;
+	TArray<ECurrentMonth> PumpkinPlantingCalendar;
+	std::map < EPlantType, TArray<ECurrentMonth>> CropCalendar;
 };

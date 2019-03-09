@@ -31,7 +31,7 @@ public:
 	APlantSkeletalMeshActor* GetPlant();
 
 	void SetHumidity(float value);
-	float GetHumidity();
+	float GetHumidity() const;
 	bool IsReadyToHarvest();
 
 	ESoilState GetSoilState();
@@ -55,5 +55,6 @@ private:
 	float const HumidityMax = 100.0f;
 	float Humidity = 100.0f;
 	void UpdateHumidity();
-
+	void NotifyDryness();
+	float DrynessWarningIndex = 0;
 };

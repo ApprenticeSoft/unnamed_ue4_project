@@ -38,6 +38,8 @@ void ASol::Tick(float DeltaTime)
 
 	if(SoilState == ESoilState::Wet)
 		UpdateHumidity();
+	else if (SoilState == ESoilState::Dry)
+		NotifyDryness();
 }
 
 int32 ASol::GetPlantNumber()
@@ -72,9 +74,14 @@ void ASol::UpdateHumidity()
 		if(PlanteSurLeSol.Num() > 0)
 			if (GetPlant()->GetPlantState() == EPlantState::Growing)
 				GetPlant()->SetPlantState(EPlantState::InteruptedGrowth);
-		
 	}
-	DynamicMaterial->SetScalarParameterValue(TEXT("Blend"), Humidity / HumidityMax);
+	DynamicMaterial->SetScalarParameterValue(TEXT("Blend_Humidity"), Humidity / HumidityMax);
+}
+
+void ASol::NotifyDryness()
+{
+	DrynessWarningIndex += 8*GetWorld()->DeltaTimeSeconds;
+	DynamicMaterial->SetScalarParameterValue(TEXT("Blend_Dry_Warning"), (1 + FMath::Cos(DrynessWarningIndex))/2);
 }
 
 void ASol::SetHumidity(float value)
@@ -87,9 +94,12 @@ void ASol::SetHumidity(float value)
 	if (PlanteSurLeSol.Num() > 0)
 		if(GetPlant()->GetPlantState() == EPlantState::InteruptedGrowth)
 			GetPlant()->SetPlantState(EPlantState::Growing);
+
+	// On annule le warning liée à la secheresse du sol
+	DynamicMaterial->SetScalarParameterValue(TEXT("Blend_Dry_Warning"), 0);
 }
 
-float ASol::GetHumidity()
+float ASol::GetHumidity() const
 {
 	return Humidity;
 }

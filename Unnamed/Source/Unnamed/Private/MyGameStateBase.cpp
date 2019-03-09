@@ -3,6 +3,9 @@
 #include "MyGameStateBase.h"
 #include "Classes/Engine/World.h"
 
+#include "map"
+#include "PlantSkeletalMeshActor.h"
+
 
 AMyGameStateBase::AMyGameStateBase()
 {
@@ -16,12 +19,44 @@ void AMyGameStateBase::BeginPlay()
 	Super::BeginPlay();
 
 	UE_LOG(LogTemp, Warning, TEXT("Game State Base BeginPlay"));
+
+	CreateCalendar();
 }
 void AMyGameStateBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
 	TimeTracking();
+}
+
+void AMyGameStateBase::CreateCalendar()
+{
+	CornPlantingCalendar.Add(ECurrentMonth::April);
+	CornPlantingCalendar.Add(ECurrentMonth::May);
+	CornPlantingCalendar.Add(ECurrentMonth::June);
+
+	WheatPlantingCalendar.Add(ECurrentMonth::September);
+	WheatPlantingCalendar.Add(ECurrentMonth::October);
+
+	PumpkinPlantingCalendar.Add(ECurrentMonth::May);
+	PumpkinPlantingCalendar.Add(ECurrentMonth::June);
+
+	CropCalendar[EPlantType::Corn] = CornPlantingCalendar;
+	CropCalendar[EPlantType::Wheat] = WheatPlantingCalendar;
+	CropCalendar[EPlantType::Pumpkin] = PumpkinPlantingCalendar;
+}
+
+void AMyGameStateBase::CheckPlantingMonth(ECurrentMonth CurrentMonth)
+{
+	CornSeason = CheckPlantingMonth(EPlantType::Corn, CurrentMonth);
+	WheatSeason = CheckPlantingMonth(EPlantType::Wheat, CurrentMonth);
+	PumpkinSeason = CheckPlantingMonth(EPlantType::Pumpkin, CurrentMonth);
+}
+
+bool AMyGameStateBase::CheckPlantingMonth(EPlantType PlantType, ECurrentMonth CurrentMonth)
+{
+	int32 index;
+	return CropCalendar.find(PlantType)->second.Find(CurrentMonth, index);
 }
 
 void AMyGameStateBase::TimeTracking()
@@ -41,6 +76,8 @@ void AMyGameStateBase::DetermineMonth()
 		{
 			Month = ECurrentMonth::March;
 			MonthString = "March";
+
+			CheckPlantingMonth(Month);
 		}
 	}
 	else if (Time > MonthDuration * 10) {
@@ -48,6 +85,8 @@ void AMyGameStateBase::DetermineMonth()
 		{
 			Month = ECurrentMonth::February;
 			MonthString = "February";
+
+			CheckPlantingMonth(Month);
 		}
 	}
 	else if (Time > MonthDuration * 9) {
@@ -56,6 +95,8 @@ void AMyGameStateBase::DetermineMonth()
 			Month = ECurrentMonth::January;
 			Season = ECurrentSeason::Winter;
 			MonthString = "January";
+
+			CheckPlantingMonth(Month);
 		}
 	}
 	else if (Time > MonthDuration * 8) {
@@ -63,6 +104,8 @@ void AMyGameStateBase::DetermineMonth()
 		{
 			Month = ECurrentMonth::December;
 			MonthString = "December";
+
+			CheckPlantingMonth(Month);
 		}
 	}
 	else if (Time > MonthDuration * 7) {
@@ -70,6 +113,8 @@ void AMyGameStateBase::DetermineMonth()
 		{
 			Month = ECurrentMonth::November;
 			MonthString = "November";
+
+			CheckPlantingMonth(Month);
 		}
 	}
 	else if (Time > MonthDuration * 6) {
@@ -78,6 +123,8 @@ void AMyGameStateBase::DetermineMonth()
 			Month = ECurrentMonth::October;
 			Season = ECurrentSeason::Fall;
 			MonthString = "October";
+
+			CheckPlantingMonth(Month);
 		}
 	}
 	else if (Time > MonthDuration * 5) {
@@ -85,6 +132,8 @@ void AMyGameStateBase::DetermineMonth()
 		{
 			Month = ECurrentMonth::September;
 			MonthString = "September";
+
+			CheckPlantingMonth(Month);
 		}
 	}
 	else if (Time > MonthDuration * 4) {
@@ -92,6 +141,8 @@ void AMyGameStateBase::DetermineMonth()
 		{
 			Month = ECurrentMonth::August;
 			MonthString = "August";
+
+			CheckPlantingMonth(Month);
 		}
 	}
 	else if (Time > MonthDuration * 3) {
@@ -100,6 +151,8 @@ void AMyGameStateBase::DetermineMonth()
 			Month = ECurrentMonth::July;
 			Season = ECurrentSeason::Summer;
 			MonthString = "July";
+
+			CheckPlantingMonth(Month);
 		}
 	}
 	else if (Time > MonthDuration * 2) {
@@ -107,6 +160,10 @@ void AMyGameStateBase::DetermineMonth()
 		{
 			Month = ECurrentMonth::June;
 			MonthString = "June";
+
+			CheckPlantingMonth(Month);
+
+			CheckPlantingMonth(Month);
 		}
 	}
 	else if (Time > MonthDuration) {
@@ -114,6 +171,8 @@ void AMyGameStateBase::DetermineMonth()
 		{
 			Month = ECurrentMonth::May;
 			MonthString = "May";
+
+			CheckPlantingMonth(Month);
 		}
 	}
 	else {
@@ -122,6 +181,8 @@ void AMyGameStateBase::DetermineMonth()
 			Month = ECurrentMonth::April;
 			Season = ECurrentSeason::Spring;
 			MonthString = "April";
+
+			CheckPlantingMonth(Month);
 		}
 	}
 }
@@ -199,5 +260,20 @@ float AMyGameStateBase::GetNightLightBlend()
 		Blend = (4 * SeasonDuration - Time) / (0.2f * SeasonDuration);
 
 	return Blend;
+}
+
+bool AMyGameStateBase::GetCornSeason() const
+{
+	return CornSeason;
+}
+
+bool AMyGameStateBase::GetWheatSeason() const
+{
+	return WheatSeason;
+}
+
+bool AMyGameStateBase::GetPumpkinSeason() const
+{
+	return PumpkinSeason;
 }
 
