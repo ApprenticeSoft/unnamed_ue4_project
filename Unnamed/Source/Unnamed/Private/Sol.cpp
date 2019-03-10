@@ -63,6 +63,11 @@ APlantSkeletalMeshActor* ASol::GetPlant()
 	return PlanteSurLeSol[0];
 }
 
+void ASol::ClearPlants()
+{
+	PlanteSurLeSol.Empty();
+}
+
 void ASol::UpdateHumidity()
 {
 	Humidity -= 1 * GetWorld()->DeltaTimeSeconds;
@@ -70,10 +75,6 @@ void ASol::UpdateHumidity()
 	{
 		Humidity = 0;
 		SoilState = ESoilState::Dry;
-		
-		if(PlanteSurLeSol.Num() > 0)
-			if (GetPlant()->GetPlantState() == EPlantState::Growing)
-				GetPlant()->SetPlantState(EPlantState::InteruptedGrowth);
 	}
 	DynamicMaterial->SetScalarParameterValue(TEXT("Blend_Humidity"), Humidity / HumidityMax);
 }

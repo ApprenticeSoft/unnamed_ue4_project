@@ -29,6 +29,7 @@ public:
 	void AddPlant(APlantSkeletalMeshActor* Plant);
 	APlantSkeletalMeshActor* PopPlant();
 	APlantSkeletalMeshActor* GetPlant();
+	void ClearPlants();
 
 	void SetHumidity(float value);
 	float GetHumidity() const;
@@ -38,13 +39,9 @@ public:
 	void SetSoilState(ESoilState State);
 
 protected:
-	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-	ESoilState SoilState = ESoilState::Wet;
-
-public:	
-	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+	ESoilState SoilState = ESoilState::Wet;
 
 private:
 	UPROPERTY(EditDefaultsOnly, Category = Setup)

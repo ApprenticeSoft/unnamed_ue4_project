@@ -4,6 +4,7 @@
 #include "Components/SkeletalMeshComponent.h"
 #include "Materials/MaterialInstanceDynamic.h"
 #include "MyGameStateBase.h"
+#include "Sol.h"
 
 
 APlantSkeletalMeshActor::APlantSkeletalMeshActor()
@@ -58,14 +59,21 @@ void APlantSkeletalMeshActor::Tick(float DeltaTime)
 	}
 	else if (PlantState == EPlantState::Growing)
 	{
+		if (Sol->GetHumidity() <= 0)
+			SetPlantState(EPlantState::InteruptedGrowth);
+
 		if (GetSkeletalMeshComponent()->GetMorphTarget(FName("Key 1")) == 0.0f)
 			PlantState = EPlantState::Ripe;
 	}
 	else if (PlantState == EPlantState::Ripe)
 	{
 		RotDelay -= GetWorld()->DeltaTimeSeconds;
-		if (RotDelay < 0)
+		if (RotDelay < 0) 
+		{
+			GetSkeletalMeshComponent()->SetGenerateOverlapEvents(false);
+			GetSkeletalMeshComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 			PlantState = EPlantState::Rotten;
+		}
 	}
 	else if (PlantState == EPlantState::Rotten)
 	{
@@ -78,39 +86,21 @@ void APlantSkeletalMeshActor::Tick(float DeltaTime)
 				DynamicMaterial->SetScalarParameterValue(TEXT("Blend"), Rottenness);
 			}
 		}
-	}
-	else if(PlantState == EPlantState::Harvested)
-	{
-		if (KeyValue < 1) {
-			GetSkeletalMeshComponent()->SetMorphTarget(FName("Key 1"), KeyValue);
-			GetSkeletalMeshComponent()->SetMorphTarget(FName("Key 2"), KeyValue);
-			GetSkeletalMeshComponent()->SetMorphTarget(FName("Key 3"), KeyValue);
-			GetSkeletalMeshComponent()->SetMorphTarget(FName("Key 4"), KeyValue);
-			GetSkeletalMeshComponent()->SetMorphTarget(FName("Key 5"), KeyValue);
-			GetSkeletalMeshComponent()->SetMorphTarget(FName("Key 6"), KeyValue);
-			KeyValue += GetWorld()->DeltaTimeSeconds;
-		}
+		else if (DisapearDelay > 0)
+			DisapearDelay -= GetWorld()->DeltaTimeSeconds;
 		else
+			PlantState = EPlantState::Disapearing;
+	}
+	else if (PlantState == EPlantState::Disapearing)
+	{
+		SetActorLocation(GetActorLocation() + FVector(0, 0, -0.2f));
+
+		if (GetActorLocation().Z < 0.0f)
 		{
+			if (!Sol) { return; }
+			Sol->ClearPlants();
 			Destroy();
 		}
-
-		GetSkeletalMeshComponent()->SetGenerateOverlapEvents(false);
-		GetSkeletalMeshComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-	}
-}
-
-void APlantSkeletalMeshActor::Harvest()
-{
-	PlantState = EPlantState::Harvested;
-
-	auto GameState = dynamic_cast<AMyGameStateBase*>(GetWorld()->GetGameState());
-	GameState->SetCornNumber(GameState->GetCornNumber() + 1);
-	UE_LOG(LogTemp, Warning, TEXT("GameState->GetCornNumber(): %i"), GameState->GetCornNumber());
-
-	// Test pour avoir accès à la saison en cours à partir de la plante 
-	if (GameState->GetSeason() == ECurrentSeason::Summer) {
-		UE_LOG(LogTemp, Warning, TEXT("C'est l'été!!"));
 	}
 }
 
@@ -132,4 +122,9 @@ EPlantState APlantSkeletalMeshActor::GetPlantState()
 void APlantSkeletalMeshActor::SetPlantState(EPlantState State)
 {
 	PlantState = State;
+}
+
+void APlantSkeletalMeshActor::SetSol(ASol* NewSol)
+{
+	Sol = NewSol;
 }

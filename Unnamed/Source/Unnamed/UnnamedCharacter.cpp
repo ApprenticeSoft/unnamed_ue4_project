@@ -281,6 +281,7 @@ void AUnnamedCharacter::PlantThePlant(ASol* Sol)
 	}
 
 	Plant->SetPosition(Sol->GetActorLocation());
+	Plant->SetSol(Sol);
 	Sol->AddPlant(Plant);
 }
 

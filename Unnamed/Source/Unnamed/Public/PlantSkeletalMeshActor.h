@@ -20,8 +20,8 @@ enum class EPlantState : uint8
 	Growing,
 	InteruptedGrowth,
 	Ripe,
-	Harvested,
-	Rotten
+	Rotten,
+	Disapearing
 };
 
 UENUM(BlueprintType)
@@ -33,6 +33,8 @@ enum class EPlantType : uint8
 	Sunflower
 };
 
+class ASol;
+
 UCLASS()
 class UNNAMED_API APlantSkeletalMeshActor : public ASkeletalMeshActor
 {
@@ -42,7 +44,6 @@ class UNNAMED_API APlantSkeletalMeshActor : public ASkeletalMeshActor
 public:
 	APlantSkeletalMeshActor();
 	UFUNCTION(BlueprintCallable)
-	void Harvest();
 	void SetPosition(FVector NewPosition);
 	UFUNCTION(BlueprintCallable)
 	EPlantState GetPlantState();
@@ -51,10 +52,12 @@ public:
 	EPlantType GetPlantType();
 	UPROPERTY(EditDefaultsOnly, Category = Setup)
 	TSubclassOf<AHarvestedPlant> CropBlueprint;
+	void SetSol(ASol* NewSol);
 
 protected:
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
+	ASol* Sol = nullptr;
 	float KeyValue = 0.f;
 	float Rottenness = 0;
 	FVector Position = FVector(0,0,0);
@@ -62,9 +65,11 @@ protected:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = Delay)
 	float MoveToPositionDelay = 2.0f;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = Delay)
+	float HatchDelay = 2.1f;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = Delay)
 	float RotDelay = 100;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = Delay)
-	float HatchDelay = 2.1f;
+	float DisapearDelay = 10.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Enum)
 	EPlantState PlantState = EPlantState::Seed;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Enum)
