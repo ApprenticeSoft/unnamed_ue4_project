@@ -216,9 +216,9 @@ void AUnnamedCharacter::Interact()
 		}
 		else
 		{
-			UE_LOG(LogTemp, Warning, TEXT("Tu ne peux pas planter %s"), *SeedString);
-			NotificationString = SeedString + " can't be planted in " + GameState->GetMonthString();
-			NotifyCantPlant();
+			//UE_LOG(LogTemp, Warning, TEXT("Tu ne peux pas planter %s"), *SeedString);
+			//NotificationString = SeedString + " can't be planted in " + GameState->GetMonthString();
+			//NotifyCantPlant();
 			SetInteractionTarget(Sol);
 			Water();
 		}
@@ -235,6 +235,12 @@ void AUnnamedCharacter::Interact()
 		if(Basket->GetCropNumber() > 0)
 			InteractWithShop();
 	}
+}
+
+FString AUnnamedCharacter::GetNotificationString()
+{
+	NotificationString = SeedString + " can't be planted in " + GameState->GetMonthString();
+	return NotificationString;
 }
 
 void AUnnamedCharacter::PlantThePlant(ASol* Sol)
