@@ -19,6 +19,7 @@ enum class EPlantState : uint8
 	Seed,
 	Growing,
 	InteruptedGrowth,
+	InteruptedGrowthRotten,
 	Ripe,
 	Rotten,
 	Disapearing
@@ -53,6 +54,7 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = Setup)
 	TSubclassOf<AHarvestedPlant> CropBlueprint;
 	void SetSol(ASol* NewSol);
+	void SetInteruptedGrowthRotDelay(float value);
 
 protected:
 	virtual void BeginPlay() override;
@@ -68,6 +70,8 @@ protected:
 	float HatchDelay = 2.1f;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = Delay)
 	float RotDelay = 100;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = Delay)
+	float InteruptedGrowthRotDelay = 20;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = Delay)
 	float DisapearDelay = 10.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Enum)

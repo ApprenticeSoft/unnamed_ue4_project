@@ -93,8 +93,11 @@ void ASol::SetHumidity(float value)
 
 	SoilState = ESoilState::Wet;
 	if (PlanteSurLeSol.Num() > 0)
-		if(GetPlant()->GetPlantState() == EPlantState::InteruptedGrowth)
+		if (GetPlant()->GetPlantState() == EPlantState::InteruptedGrowth)
+		{
 			GetPlant()->SetPlantState(EPlantState::Growing);
+			GetPlant()->SetInteruptedGrowthRotDelay(20);
+		}
 
 	// On annule le warning liée à la secheresse du sol
 	DynamicMaterial->SetScalarParameterValue(TEXT("Blend_Dry_Warning"), 0);

@@ -80,16 +80,39 @@ void APlantSkeletalMeshActor::Tick(float DeltaTime)
 		if (Rottenness < 1.0f)
 		{
 			Rottenness += 0.2f * GetWorld()->DeltaTimeSeconds;
-
 			for (UMaterialInstanceDynamic* DynamicMaterial : DynamicMaterials)
-			{
 				DynamicMaterial->SetScalarParameterValue(TEXT("Blend"), Rottenness);
-			}
 		}
 		else if (DisapearDelay > 0)
 			DisapearDelay -= GetWorld()->DeltaTimeSeconds;
 		else
 			PlantState = EPlantState::Disapearing;
+	}
+	else if (PlantState == EPlantState::InteruptedGrowth)
+	{
+		InteruptedGrowthRotDelay -= GetWorld()->DeltaTimeSeconds;
+
+		if (InteruptedGrowthRotDelay < 0)
+		{
+			PlantState = EPlantState::InteruptedGrowthRotten;
+		}
+	}
+	else if (PlantState == EPlantState::InteruptedGrowthRotten)
+	{
+		if (Rottenness < 1.0f)
+		{
+			Rottenness += 0.3f * GetWorld()->DeltaTimeSeconds;
+			for (UMaterialInstanceDynamic* DynamicMaterial : DynamicMaterials)
+				DynamicMaterial->SetScalarParameterValue(TEXT("Blend"), Rottenness);
+		}
+
+		SetActorScale3D(GetActorScale3D() - FVector(0, 0, 0.25f * GetWorld()->DeltaTimeSeconds));
+		if (GetActorScale3D().Z <= 0)
+		{
+			if (!Sol) { return; }
+			Sol->ClearPlants();
+			Destroy();
+		}
 	}
 	else if (PlantState == EPlantState::Disapearing)
 	{
@@ -127,4 +150,9 @@ void APlantSkeletalMeshActor::SetPlantState(EPlantState State)
 void APlantSkeletalMeshActor::SetSol(ASol* NewSol)
 {
 	Sol = NewSol;
+}
+
+void APlantSkeletalMeshActor::SetInteruptedGrowthRotDelay(float value)
+{
+	InteruptedGrowthRotDelay = value;
 }
