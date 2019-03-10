@@ -17,6 +17,7 @@
 #include "WateringCan.h"
 #include "Basket.h"
 #include "HarvestedPlant.h"
+#include "MyGameStateBase.h"
 
 #include "Classes/Kismet/GameplayStatics.h"
 #include "Classes/GameFramework/PlayerController.h"
@@ -82,6 +83,8 @@ void AUnnamedCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerI
 void AUnnamedCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+
+	GameState = dynamic_cast<AMyGameStateBase*>(GetWorld()->GetGameState());
 
 	PositionX = GetActorLocation().X;
 	Detector = AActor::FindComponentByClass<class UInteractionDetectorComponent>();
@@ -179,6 +182,9 @@ void AUnnamedCharacter::SetInteractionTarget(AActor* Target)
 	AngleRotation = RotationTowardsTarget.Yaw;
 }
 
+/*
+ * Fonction appelée quand on appuie sur ESPACE
+*/
 void AUnnamedCharacter::Interact()
 {
 	AActor* UsedItem = nullptr;
@@ -202,9 +208,20 @@ void AUnnamedCharacter::Interact()
 	}
 	else if (Sol->GetPlantNumber() == 0)
 	{
-		SetInteractionTarget(Sol);
-		PlantThePlant(Sol);
-		Sow();
+		if (CheckIfCanPlantSeed())
+		{
+			SetInteractionTarget(Sol);
+			PlantThePlant(Sol);
+			Sow();
+		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Tu ne peux pas planter %s"), *SeedString);
+			NotificationString = SeedString + " can't be planted in " + GameState->GetMonthString();
+			NotifyCantPlant();
+			SetInteractionTarget(Sol);
+			Water();
+		}
 	} 
 
 	AShop* Shop = dynamic_cast<AShop*>(UsedItem);
@@ -259,6 +276,21 @@ void AUnnamedCharacter::PlantThePlant(ASol* Sol)
 
 	Plant->SetPosition(Sol->GetActorLocation());
 	Sol->AddPlant(Plant);
+}
+
+/*
+ * Fonction qui vérifie si on peut planter la semence qu'on a choisi durant le mois courrant
+*/
+bool AUnnamedCharacter::CheckIfCanPlantSeed()
+{
+	if (Seed == ESeed::Corn)
+		return GameState->GetCornSeason();
+	else if (Seed == ESeed::Wheat)
+		return GameState->GetWheatSeason();
+	else if (Seed == ESeed::Pumpkin)
+		return GameState->GetPumpkinSeason();
+	else
+		return false;
 }
 
 void AUnnamedCharacter::ActivateWateringCan()

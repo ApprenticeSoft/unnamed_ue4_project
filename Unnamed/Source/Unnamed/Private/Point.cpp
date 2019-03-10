@@ -25,7 +25,8 @@ void APoint::BeginPlay()
 	if (!Text)
 		UE_LOG(LogTemp, Warning, TEXT("Pas de UTextRenderComponent!"));
 
-	Text->SetText(FString::FromInt(PointValue));
+	//Text->SetText(FString::FromInt(PointValue));
+	Text->SetText(FText::AsNumber(PointValue));
 
 	Character = dynamic_cast<AUnnamedCharacter*>(GetWorld()->GetFirstPlayerController()->GetPawn());
 }

@@ -15,6 +15,7 @@ enum class ESeed : uint8
 	Sunflower
 };
 
+class AMyGameStateBase;
 class UInteractionDetectorComponent;
 class APlayerController;
 class APlantSkeletalMeshActor;
@@ -46,6 +47,7 @@ protected:
 	void DisplacementOnX();
 	void MoveUp();
 	void MoveDown();
+	bool CheckIfCanPlantSeed();
 
 	//UFUNCTION(Blueprintcallable)
 	AActor* FindTarget();
@@ -87,6 +89,10 @@ protected:
 	float AngleRotation = 0;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "State")
 	ESeed Seed = ESeed::Corn;
+	UPROPERTY(BlueprintReadWrite)
+	FString SeedString = "Corn";
+	UPROPERTY(BlueprintReadWrite)
+	FString NotificationString = "";
 
 	UPROPERTY(EditDefaultsOnly, Category = Setup)
 	//UClass* ProjectileBluePrint;		// UClass* va afficher la totalités des classes disponibles dans le blueprint alors que TSubclassOf<> n'affiche que la classe choisie
@@ -98,6 +104,7 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = Setup)
 	TSubclassOf<APlantSkeletalMeshActor> PumpkinBlueprint;
 
+	AMyGameStateBase* GameState;
 	// Référence position sur l'écran
 	APlayerController* Controller;
 	int32 ViewportSizeX, ViewportSizeY;
@@ -137,6 +144,8 @@ public:
 	void InteractWithPlant();
 	UFUNCTION(BlueprintImplementableEvent, Category = "Interactions")
 	void InteractWithShop();
+	UFUNCTION(BlueprintImplementableEvent, Category = "Notifications")
+	void NotifyCantPlant();
 	void GetScreenToWorldPosition(float ScreenPositionX, float ScreenPositionY, FVector& WorldLocation, FVector& WorldDirection);
 	FVector2D GetScreenSize();
 

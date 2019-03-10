@@ -97,9 +97,10 @@ void ALeaves::SpawnLeaves()
 		if (GetActorScale3D().X <= 0)
 		{
 			SetActorScale3D(FVector(0));
-			ColorBlend = 0;
 			DisapearDelay = 10;
 			ColorChangeDelay = 10;
+			ColorBlend = 0;
+			DynamicMaterial->SetScalarParameterValue(TEXT("Blend"), ColorBlend);
 		}
 	}
 }
