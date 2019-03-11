@@ -184,7 +184,8 @@ void AUnnamedCharacter::SetInteractionTarget(AActor* Target)
 
 /*
  * Fonction appelée quand on appuie sur ESPACE
-*/
+ * Cette fonction détermine l'action appropriée à effectuée en fonction de la cible de l'intéraction.
+ */
 void AUnnamedCharacter::Interact()
 {
 	if (!IsBusy) 
@@ -200,8 +201,16 @@ void AUnnamedCharacter::Interact()
 		}
 		else if (Sol->IsReadyToHarvest())
 		{
-			SetInteractionTarget(Sol->PopPlant());
-			InteractWithPlant();
+			if (Basket->GetCropNumber() < Basket->GetBasketSize())
+			{
+				SetInteractionTarget(Sol->PopPlant());
+				InteractWithPlant();
+			}
+			else
+			{
+				NotificationString = "The basket is full !";
+				SendNotificationToPlayer();
+			}
 		}
 		else if (Sol->GetSoilState() == ESoilState::Dry)
 		{
@@ -241,12 +250,14 @@ void AUnnamedCharacter::Interact()
 	}
 }
 
-FString AUnnamedCharacter::GetNotificationString()
+void AUnnamedCharacter::SetNotificationString()
 {
 	NotificationString = SeedString + " can't be planted in " + GameState->GetMonthString();
-	return NotificationString;
 }
 
+/*
+ * Fonction qui ajoute une plante sur la parcelle de sol cible de l'action
+ */
 void AUnnamedCharacter::PlantThePlant(ASol* Sol)
 {
 	APlantSkeletalMeshActor* Plant;
@@ -291,7 +302,7 @@ void AUnnamedCharacter::PlantThePlant(ASol* Sol)
 
 /*
  * Fonction qui vérifie si on peut planter la semence qu'on a choisi durant le mois courrant
-*/
+ */
 bool AUnnamedCharacter::CheckIfCanPlantSeed()
 {
 	if (Seed == ESeed::Corn)
@@ -342,7 +353,6 @@ void AUnnamedCharacter::PickPlants(AActor * Plante)
 {
 	if (!Plante) { return; }
 	
-
 	auto HandSocket = GetMesh()->GetSocketByName(FName("Hand_LSocket"));
 	if (HandSocket) {
 		auto PlantSocket = Plante->FindComponentByClass<class USkeletalMeshComponent>()->GetSocketByName(FName("Socket"));
@@ -368,6 +378,10 @@ void AUnnamedCharacter::PickPlants(AActor * Plante)
 	}
 }
 
+/*
+ * Fonction qui détruit la plante complète dans la main du personnage
+ * et la remplace par la version cuellie, plus petite
+ */
 void AUnnamedCharacter::GetCrop(AActor* Plante)
 {
 	AHarvestedPlant* Crop;
@@ -380,11 +394,18 @@ void AUnnamedCharacter::GetCrop(AActor* Plante)
 	Plante->Destroy();
 }
 
+/*
+ * Fonction qui permet de jeter le légume dans le panier
+ */
 void AUnnamedCharacter::ThrowCrop(AActor* Crop)
 {
 	dynamic_cast<AHarvestedPlant*>(Crop)->SetThrown(true);
 }
 
+/*
+ * Fonction qui détermine la position de la main
+ * et jette une graine à partir de cette position
+ */
 void AUnnamedCharacter::LaunchSeeds()
 {
 	// On détermine la position de la main avant de lancer les graines
@@ -436,7 +457,7 @@ bool AUnnamedCharacter::MoveToLocation(AActor * Target, float Treshold, bool Col
 	return Distance > Treshold;
 }
 
-ABasket* AUnnamedCharacter::GetBasket()
+ABasket* AUnnamedCharacter::GetBasket() const
 {
 	return Basket;
 }

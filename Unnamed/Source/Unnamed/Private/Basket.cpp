@@ -160,11 +160,26 @@ void ABasket::AddCrop(AHarvestedPlant * Crop)
 	}
 }
 
+/*
+ * Fonction qui retourne le nombre de légumes dans le panier
+ */
 int32 ABasket::GetCropNumber()
 {
 	return HarvestedPlants.Num();
 }
 
+/*
+ * Fonction qui retourne le nombre de légumes qui peut être mis dans le panier
+ */
+int32 ABasket::GetBasketSize()
+{
+	return SocketArray.Num();
+}
+
+
+/*
+ * Fonction déclenche la libération des légumes du panier
+ */
 void ABasket::ReleaseCrop()
 {
 	IsReleasingCrops = true;

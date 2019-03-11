@@ -96,7 +96,7 @@ protected:
 	UPROPERTY(BlueprintReadWrite)
 	FString NotificationString = "";
 	UFUNCTION(BlueprintCallable)
-	FString GetNotificationString();
+	void SetNotificationString();
 	UPROPERTY(BlueprintReadWrite)
 	bool IsBusy = false;
 
@@ -150,10 +150,10 @@ public:
 	void InteractWithPlant();
 	UFUNCTION(BlueprintImplementableEvent, Category = "Interactions")
 	void InteractWithShop();
-	//UFUNCTION(BlueprintImplementableEvent, Category = "Notifications")
-	//void NotifyCantPlant();
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "Notifications")
+	void SendNotificationToPlayer();
 	void GetScreenToWorldPosition(float ScreenPositionX, float ScreenPositionY, FVector& WorldLocation, FVector& WorldDirection);
 	FVector2D GetScreenSize();
 
-	ABasket* GetBasket();
+	ABasket* GetBasket() const;
 };

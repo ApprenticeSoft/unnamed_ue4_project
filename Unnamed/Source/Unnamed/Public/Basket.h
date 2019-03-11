@@ -51,4 +51,5 @@ public:
 	void AddCrop(AHarvestedPlant* Crop);
 	void ReleaseCrop();
 	int32 GetCropNumber();
+	int32 GetBasketSize();
 };
