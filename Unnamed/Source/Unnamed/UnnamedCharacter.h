@@ -97,6 +97,8 @@ protected:
 	FString NotificationString = "";
 	UFUNCTION(BlueprintCallable)
 	FString GetNotificationString();
+	UPROPERTY(BlueprintReadWrite)
+	bool IsBusy = false;
 
 	UPROPERTY(EditDefaultsOnly, Category = Setup)
 	//UClass* ProjectileBluePrint;		// UClass* va afficher la totalités des classes disponibles dans le blueprint alors que TSubclassOf<> n'affiche que la classe choisie

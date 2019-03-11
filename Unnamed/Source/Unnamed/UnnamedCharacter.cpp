@@ -187,53 +187,57 @@ void AUnnamedCharacter::SetInteractionTarget(AActor* Target)
 */
 void AUnnamedCharacter::Interact()
 {
-	AActor* UsedItem = nullptr;
-	UsedItem = FindTarget();
-	if (!UsedItem) { return; }
+	if (!IsBusy) 
+	{
+		AActor* UsedItem = nullptr;
+		UsedItem = FindTarget();
+		if (!UsedItem) { return; }
 
-	ASol* Sol = dynamic_cast<ASol*>(UsedItem);
-	if (!Sol) 
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Ce n'est pas un sol!!"));
-	}
-	else if (Sol->IsReadyToHarvest())
-	{
-		SetInteractionTarget(Sol->PopPlant());
-		InteractWithPlant();
-	}
-	else if (Sol->GetSoilState() == ESoilState::Dry)
-	{
-		SetInteractionTarget(Sol);
-		Water();
-	}
-	else if (Sol->GetPlantNumber() == 0)
-	{
-		if (CheckIfCanPlantSeed())
+		ASol* Sol = dynamic_cast<ASol*>(UsedItem);
+		if (!Sol)
 		{
-			SetInteractionTarget(Sol);
-			PlantThePlant(Sol);
-			Sow();
+			UE_LOG(LogTemp, Warning, TEXT("Ce n'est pas un sol!!"));
 		}
-		else
+		else if (Sol->IsReadyToHarvest())
 		{
-			//UE_LOG(LogTemp, Warning, TEXT("Tu ne peux pas planter %s"), *SeedString);
-			//NotificationString = SeedString + " can't be planted in " + GameState->GetMonthString();
-			//NotifyCantPlant();
+			SetInteractionTarget(Sol->PopPlant());
+			InteractWithPlant();
+		}
+		else if (Sol->GetSoilState() == ESoilState::Dry)
+		{
 			SetInteractionTarget(Sol);
 			Water();
 		}
-	} 
+		else if (Sol->GetPlantNumber() == 0)
+		{
+			if (CheckIfCanPlantSeed())
+			{
+				SetInteractionTarget(Sol);
+				PlantThePlant(Sol);
+				Sow();
+			}
+			else
+			{
+				SetInteractionTarget(Sol);
+				Water();
+			}
+		}
 
-	AShop* Shop = dynamic_cast<AShop*>(UsedItem);
-	if (!Shop)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Ce n'est pas un shop!!"));
+		AShop* Shop = dynamic_cast<AShop*>(UsedItem);
+		if (!Shop)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Ce n'est pas un shop!!"));
+		}
+		else
+		{
+			SetInteractionTarget(Shop);
+			if (Basket->GetCropNumber() > 0)
+				InteractWithShop();
+		}
 	}
 	else
 	{
-		SetInteractionTarget(Shop);
-		if(Basket->GetCropNumber() > 0)
-			InteractWithShop();
+		UE_LOG(LogTemp, Warning, TEXT("I'm busy!!!"));
 	}
 }
 
