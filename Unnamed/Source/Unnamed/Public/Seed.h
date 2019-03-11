@@ -17,15 +17,16 @@ public:
 	// Sets default values for this actor's properties
 	ASeed();
 	void LaunchSeed(float Speed);
+	UFUNCTION(BlueprintCallable)
+	void SetDisappear(bool value);
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-
-	UProjectileMovementComponent* ProjectileMovement = nullptr;
-
-public:	
-	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	void Disappear();
+	UProjectileMovementComponent* ProjectileMovement = nullptr;
+	bool IsDisappearing = false;
+	float DisappearDelay = 0.5f;
 };

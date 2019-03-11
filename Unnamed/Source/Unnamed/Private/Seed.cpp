@@ -3,6 +3,7 @@
 #include "Seed.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "Classes/Engine/World.h"
 
 // Sets default values
 ASeed::ASeed()
@@ -27,6 +28,7 @@ void ASeed::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 	//UE_LOG(LogTemp, Warning, TEXT("Seed"));
 
+	Disappear();
 }
 
 void ASeed::LaunchSeed(float Speed)
@@ -36,5 +38,26 @@ void ASeed::LaunchSeed(float Speed)
 	//ProjectileMovement->SetVelocityInLocalSpace(FVector(Direction.X, Direction.Y, 0) * Speed);
 	ProjectileMovement->SetVelocityInLocalSpace(FVector(1, 0, 0) * Speed);
 	ProjectileMovement->Activate();
+}
+
+void ASeed::SetDisappear(bool value)
+{
+	IsDisappearing = value;
+}
+
+void ASeed::Disappear()
+{
+	if (IsDisappearing)
+	{
+		DisappearDelay -= GetWorld()->DeltaTimeSeconds;
+
+		if (DisappearDelay < 0)
+		{
+			SetActorLocation(GetActorLocation() - FVector(0, 0, 0.1f));
+
+			if (GetActorLocation().Z < 95)
+				Destroy();
+		}
+	}
 }
 
