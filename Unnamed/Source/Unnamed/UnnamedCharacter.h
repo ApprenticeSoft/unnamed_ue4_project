@@ -49,7 +49,7 @@ protected:
 	void MoveUp();
 	void MoveDown();
 
-	//UFUNCTION(Blueprintcallable)
+	AMyGameStateBase* GameState;
 	AActor* FindTarget();
 	void SetInteractionTarget(AActor* Target);
 	void Interact();
@@ -110,7 +110,6 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = Setup)
 	TSubclassOf<APlantSkeletalMeshActor> PumpkinBlueprint;
 
-	AMyGameStateBase* GameState;
 	// Référence position sur l'écran
 	APlayerController* Controller;
 	int32 ViewportSizeX, ViewportSizeY;

@@ -59,6 +59,9 @@ void APlantSkeletalMeshActor::Tick(float DeltaTime)
 	}
 	else if (PlantState == EPlantState::Growing)
 	{
+		// Besoin en eau de la plante
+		Sol->SetHumidity(-WaterNeeds * 0.01f);
+
 		if (Sol->GetHumidity() <= 0)
 			SetPlantState(EPlantState::InteruptedGrowth);
 

@@ -8,6 +8,7 @@
 #include "Math/Color.h"
 #include "GameFramework/PlayerController.h"
 #include "UnnamedCharacter.h"
+#include "MyGameStateBase.h"
 
 // Sets default values
 ASol::ASol()
@@ -21,6 +22,9 @@ ASol::ASol()
 void ASol::BeginPlay()
 {
 	Super::BeginPlay();
+
+	GameState = dynamic_cast<AMyGameStateBase*>(GetWorld()->GetGameState());
+
 	// Retourne le premier components de la class voulue
 	auto Plane = FindComponentByClass<UStaticMeshComponent>();
 	auto material = Plane->GetMaterial(0);
@@ -70,7 +74,7 @@ void ASol::ClearPlants()
 
 void ASol::UpdateHumidity()
 {
-	Humidity -= 1 * GetWorld()->DeltaTimeSeconds;
+	Humidity -= EvaporationFactor * GameState->GetSunIntensity() * GetWorld()->DeltaTimeSeconds;
 	if (Humidity < 0)
 	{
 		Humidity = 0;
@@ -106,6 +110,16 @@ void ASol::SetHumidity(float value)
 float ASol::GetHumidity() const
 {
 	return Humidity;
+}
+
+float ASol::GetEvaporationFactor() const
+{
+	return EvaporationFactor;
+}
+
+void ASol::SetEvaporationFactor(float value)
+{
+	EvaporationFactor = value;
 }
 
 bool ASol::IsReadyToHarvest()

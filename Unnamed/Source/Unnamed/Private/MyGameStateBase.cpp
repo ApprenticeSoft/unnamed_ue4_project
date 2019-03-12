@@ -185,9 +185,11 @@ void AMyGameStateBase::DetermineMonth()
 			CheckPlantingMonth(Month);
 		}
 	}
+
+	setSunIntensity(SunIntensity);
 }
 
-int32 AMyGameStateBase::GetCornNumber()
+int32 AMyGameStateBase::GetCornNumber() const
 {
 	return CornNumber;
 }
@@ -197,7 +199,7 @@ void AMyGameStateBase::SetCornNumber(int32 Number)
 	CornNumber = Number;
 }
 
-int32 AMyGameStateBase::GetWheatNumber()
+int32 AMyGameStateBase::GetWheatNumber() const
 {
 	return WheatNumber;
 }
@@ -207,17 +209,17 @@ void AMyGameStateBase::SetWheatNumber(int32 Number)
 	WheatNumber = Number;
 }
 
-ECurrentSeason AMyGameStateBase::GetSeason()
+ECurrentSeason AMyGameStateBase::GetSeason() const
 {
 	return Season;
 }
 
-ECurrentMonth AMyGameStateBase::GetMonth()
+ECurrentMonth AMyGameStateBase::GetMonth() const
 {
 	return Month;
 }
 
-FString AMyGameStateBase::GetMonthString()
+FString AMyGameStateBase::GetMonthString() const
 {
 	return MonthString;
 }
@@ -230,20 +232,30 @@ float AMyGameStateBase::GetSunAngle()
 		return 360 + ((Time - 3*SeasonDuration) * 180) / SeasonDuration;
 }
 
-float AMyGameStateBase::GetSunIntensity()
+float AMyGameStateBase::GetSunLightIntensity()
 {
 	float Intensity = 0.0f;
 
 	if (Time < SeasonDuration * 3)
-		Intensity = SunIntensityMax * (1.05f + FMath::Sin(2 * PI*GetSunAngle() / 360 - PI)) / 2;
+		Intensity = SunLightIntensityMax * SunIntensity;
 	else if (Time < SeasonDuration * 3.1f)
-		Intensity = 0.5f * SunIntensityMax * (3.1 * SeasonDuration - Time) / (0.1f * SeasonDuration);
+		Intensity = 0.5f * SunLightIntensityMax * (3.1 * SeasonDuration - Time) / (0.1f * SeasonDuration);
 	else if (Time < SeasonDuration * 3.9f)
 		Intensity = 0.01f;
 	else
-		Intensity = 0.5f * SunIntensityMax * (Time - 3.9f * SeasonDuration) / (0.1f * SeasonDuration);
+		Intensity = 0.5f * SunLightIntensityMax * (Time - 3.9f * SeasonDuration) / (0.1f * SeasonDuration);
 
 	return Intensity;
+}
+
+float AMyGameStateBase::GetSunIntensity() const
+{
+	return SunIntensity;
+}
+
+void AMyGameStateBase::setSunIntensity(float & SunIntensity)
+{
+	SunIntensity = (1.05 + FMath::Sin(2 * PI*GetSunAngle() / 360 - PI)) / 2;
 }
 
 float AMyGameStateBase::GetNightLightBlend()

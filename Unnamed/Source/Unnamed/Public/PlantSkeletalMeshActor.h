@@ -74,6 +74,8 @@ protected:
 	float InteruptedGrowthRotDelay = 20;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = Delay)
 	float DisapearDelay = 10.0f;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = Setup)
+	float WaterNeeds = 1.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Enum)
 	EPlantState PlantState = EPlantState::Seed;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Enum)

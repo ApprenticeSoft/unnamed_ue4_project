@@ -55,30 +55,32 @@ protected:
 	void CreateCalendar();
 	void CheckPlantingMonth(ECurrentMonth CurrentMonth);
 	bool CheckPlantingMonth(EPlantType PlantType, ECurrentMonth CurrentMonth);
+	void setSunIntensity(float &SunIntensity);
 
 
 public:
 	UFUNCTION(BlueprintCallable)
-	int32 GetCornNumber();
+	int32 GetCornNumber() const;
 	void SetCornNumber(int32 Number);
 	UFUNCTION(BlueprintCallable)
-	int32 GetWheatNumber();
+	int32 GetWheatNumber() const;
 	void SetWheatNumber(int32 Number);
 	UFUNCTION(BlueprintCallable)
-	ECurrentSeason GetSeason();
+	ECurrentSeason GetSeason() const;
 	UFUNCTION(BlueprintCallable)
-	ECurrentMonth GetMonth();
+	ECurrentMonth GetMonth() const;
 	UFUNCTION(BlueprintCallable)
-	FString GetMonthString();
+	FString GetMonthString() const;
 	UFUNCTION(BlueprintCallable)
 	float GetSunAngle();
 	UFUNCTION(BlueprintCallable)
-	float GetSunIntensity();
+	float GetSunLightIntensity();
 	UFUNCTION(BlueprintCallable)
 	float GetNightLightBlend();
 	bool GetCornSeason() const;
 	bool GetWheatSeason() const;
 	bool GetPumpkinSeason() const;
+	float GetSunIntensity() const;
 
 protected:
 	UPROPERTY(BlueprintReadOnly, Category = "State")
@@ -89,7 +91,7 @@ protected:
 	UPROPERTY(BlueprintReadOnly, Category = "State")
 	float Time = 0.0f;
 	UPROPERTY(BlueprintReadOnly, Category = "State")
-	float SunIntensityMax = 2.5f;
+	float SunLightIntensityMax = 2.5f;
 	UPROPERTY(BlueprintReadOnly, Category = "State")
 	bool CornSeason = true;
 	UPROPERTY(BlueprintReadOnly, Category = "State")
@@ -101,6 +103,7 @@ protected:
 	int32 WheatNumber = 0;
 	float SeasonDuration = 60.0f;
 	float MonthDuration = SeasonDuration / 3;
+	float SunIntensity;
 	TArray<ECurrentMonth> CornPlantingCalendar;
 	TArray<ECurrentMonth> WheatPlantingCalendar;
 	TArray<ECurrentMonth> PumpkinPlantingCalendar;

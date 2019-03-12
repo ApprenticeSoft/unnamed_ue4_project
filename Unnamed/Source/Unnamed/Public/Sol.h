@@ -16,6 +16,7 @@ enum class ESoilState : uint8
 
 class APlantSkeletalMeshActor;
 class UMaterialInstanceDynamic;
+class AMyGameStateBase;
 
 UCLASS()
 class UNNAMED_API ASol : public AActor
@@ -33,6 +34,8 @@ public:
 
 	void SetHumidity(float value);
 	float GetHumidity() const;
+	float GetEvaporationFactor() const;
+	void SetEvaporationFactor(float value);
 	bool IsReadyToHarvest();
 
 	ESoilState GetSoilState();
@@ -42,6 +45,7 @@ protected:
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
 	ESoilState SoilState = ESoilState::Wet;
+	AMyGameStateBase* GameState;
 
 private:
 	UPROPERTY(EditDefaultsOnly, Category = Setup)
@@ -51,6 +55,7 @@ private:
 	UMaterialInstanceDynamic* DynamicMaterial;
 	float const HumidityMax = 100.0f;
 	float Humidity = 100.0f;
+	float EvaporationFactor = 1.5f;
 	void UpdateHumidity();
 	void NotifyDryness();
 	float DrynessWarningIndex = 0;

@@ -231,6 +231,11 @@ void AUnnamedCharacter::Interact()
 				Water();
 			}
 		}
+		else
+		{
+			SetInteractionTarget(Sol);
+			Water();
+		}
 
 		AShop* Shop = dynamic_cast<AShop*>(UsedItem);
 		if (!Shop)
