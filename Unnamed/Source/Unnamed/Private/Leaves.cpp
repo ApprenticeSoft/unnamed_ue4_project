@@ -59,9 +59,9 @@ void ALeaves::ChangeColor()
 	{
 		ColorChangeDelay -= GetWorld()->DeltaTimeSeconds;
 
-		if(ColorChangeDelay < 0 && ColorBlend < 1)
+		if(ColorChangeDelay <= 0 && ColorBlend < 1)
 		{
-			ColorBlend += 0.1f * GetWorld()->DeltaTimeSeconds;
+			ColorBlend += 0.12f * GetWorld()->DeltaTimeSeconds;
 			DynamicMaterial->SetScalarParameterValue(TEXT("Blend"), ColorBlend);
 		}
 	}

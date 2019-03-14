@@ -27,7 +27,7 @@ protected:
 	UMaterialInstanceDynamic* DynamicMaterial;
 	AMyGameStateBase* GameState;
 	float ColorBlend = 0.0f;
-	float ColorChangeDelay = 10.0f;
+	float ColorChangeDelay = 9.0f;
 	float DisapearDelay = 10.0f;
 	void Grow();
 	void ChangeColor();
