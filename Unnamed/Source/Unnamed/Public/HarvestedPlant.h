@@ -7,8 +7,18 @@
 #include "HarvestedPlant.generated.h"
 
 class UProjectileMovementComponent;
+class AMyGameStateBase;
 class ABasket;
 class APoint;
+
+UENUM(BlueprintType)
+enum class ECropType : uint8
+{
+	Corn,
+	Wheat,
+	Pumpkin,
+	Sunflower
+};
 
 UCLASS()
 class UNNAMED_API AHarvestedPlant : public AActor
@@ -31,6 +41,11 @@ protected:
 	float DisappearDelay = 4.0f;
 	float Scale = 1.0f;
 	float NewScale = 1.0f;
+
+	AMyGameStateBase* GameState;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Enum)
+	ECropType CropType = ECropType::Corn;
+	void UpdateObjective();
 
 	// Test UProjectileMovementComponent. Peut être à enlever
 	UProjectileMovementComponent* ProjectileMovement = nullptr;

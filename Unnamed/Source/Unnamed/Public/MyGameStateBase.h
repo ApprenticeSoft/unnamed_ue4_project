@@ -82,6 +82,14 @@ public:
 	bool GetPumpkinSeason() const;
 	float GetSunIntensity() const;
 
+	// TEST Objectifs
+	void SetCornObjective(int32 value);
+	void SetWheatObjective(int32 value);
+	void SetPumpkinObjective(int32 value);
+	int32 GetCornObjective() const;
+	int32 GetWheatObjective() const;
+	int32 GetPumpkinObjective() const;
+
 protected:
 	UPROPERTY(BlueprintReadOnly, Category = "State")
 	ECurrentSeason Season = ECurrentSeason::Spring;
@@ -108,4 +116,10 @@ protected:
 	TArray<ECurrentMonth> WheatPlantingCalendar;
 	TArray<ECurrentMonth> PumpkinPlantingCalendar;
 	std::map < EPlantType, TArray<ECurrentMonth>> CropCalendar;
+
+	// TEST Objectif
+	int32 CornObjective = 4;
+	int32 WheatObjective = 0;
+	int32 PumpkinObjective = 0;
+
 };

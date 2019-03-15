@@ -289,3 +289,38 @@ bool AMyGameStateBase::GetPumpkinSeason() const
 	return PumpkinSeason;
 }
 
+void AMyGameStateBase::SetCornObjective(int32 value)
+{
+	CornObjective = value;
+	if (CornObjective < 0)
+		CornObjective = 0;
+}
+
+void AMyGameStateBase::SetWheatObjective(int32 value)
+{
+	WheatObjective = value;
+	if (WheatObjective < 0)
+		WheatObjective = 0;
+}
+
+void AMyGameStateBase::SetPumpkinObjective(int32 value)
+{
+	PumpkinObjective = value;
+	if (PumpkinObjective < 0)
+		PumpkinObjective = 0;
+}
+
+int32 AMyGameStateBase::GetCornObjective() const
+{
+	return CornObjective;
+}
+
+int32 AMyGameStateBase::GetWheatObjective() const
+{
+	return WheatObjective;
+}
+
+int32 AMyGameStateBase::GetPumpkinObjective() const
+{
+	return PumpkinObjective;
+}

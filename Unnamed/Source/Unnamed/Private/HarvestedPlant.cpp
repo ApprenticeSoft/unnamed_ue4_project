@@ -8,6 +8,7 @@
 #include "UnnamedCharacter.h"
 #include "Basket.h"
 #include "Point.h"
+#include "MyGameStateBase.h"
 
 // Sets default values
 AHarvestedPlant::AHarvestedPlant()
@@ -23,6 +24,8 @@ AHarvestedPlant::AHarvestedPlant()
 void AHarvestedPlant::BeginPlay()
 {
 	Super::BeginPlay();
+
+	GameState = dynamic_cast<AMyGameStateBase*>(GetWorld()->GetGameState());
 
 	auto Mesh = FindComponentByClass<UStaticMeshComponent>();
 	Mesh->SetNotifyRigidBodyCollision(true);	// Permet d'activer l'option "Simulation Generates Hit Events" du blueprint
@@ -100,6 +103,7 @@ void AHarvestedPlant::Resize()
 				APoint* Point = GetWorld()->SpawnActor<APoint>(	PointBlueprint,
 																GetActorLocation(),
 																FRotator(0, 0, 0));
+				UpdateObjective();
 				Destroy();
 			}
 		}
@@ -126,5 +130,15 @@ void AHarvestedPlant::Resize()
 void AHarvestedPlant::SetScale(float value)
 {
 	NewScale = value;
+}
+
+void AHarvestedPlant::UpdateObjective()
+{
+	if (CropType == ECropType::Corn)
+		GameState->SetCornObjective(GameState->GetCornObjective() - 1);
+	else if (CropType == ECropType::Wheat)
+		GameState->SetWheatObjective(GameState->GetWheatObjective() - 1);
+	else if (CropType == ECropType::Pumpkin)
+		GameState->SetPumpkinObjective(GameState->GetPumpkinObjective() - 1);
 }
 

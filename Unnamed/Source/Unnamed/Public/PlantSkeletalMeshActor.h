@@ -8,6 +8,7 @@
 
 class UMaterialInstanceDynamic;
 class AHarvestedPlant;
+class ASol;
 
 /**
  * 
@@ -33,8 +34,6 @@ enum class EPlantType : uint8
 	Pumpkin,
 	Sunflower
 };
-
-class ASol;
 
 UCLASS()
 class UNNAMED_API APlantSkeletalMeshActor : public ASkeletalMeshActor
