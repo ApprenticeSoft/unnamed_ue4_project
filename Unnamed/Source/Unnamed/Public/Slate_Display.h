@@ -38,12 +38,13 @@ protected:
 	ETargetedPlant TargetedPlant = ETargetedPlant::Corn;
 
 	int32 Objective = 0;
-	void SetObjective();
 
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 	void SetText(int32 value);
 	FString GetText() const;
+	int32 GetObjective() const;
+	void SetObjective();
 
 };

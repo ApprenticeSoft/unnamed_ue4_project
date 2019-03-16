@@ -32,7 +32,7 @@ void ASlate_Display::BeginPlay()
 void ASlate_Display::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	SetObjective();
+	//SetObjective();
 }
 
 void ASlate_Display::SetText(int32 value)
@@ -43,6 +43,11 @@ void ASlate_Display::SetText(int32 value)
 FString ASlate_Display::GetText() const
 {
 	return Text->Text.ToString();
+}
+
+int32 ASlate_Display::GetObjective() const
+{
+	return Objective;
 }
 
 void ASlate_Display::SetObjective()

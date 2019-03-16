@@ -6,6 +6,9 @@
 #include "GameFramework/Character.h"
 #include "Merchant.generated.h"
 
+class ASlate_Display;
+class AMyGameStateBase;
+
 UCLASS()
 class UNNAMED_API AMerchant : public ACharacter
 {
@@ -15,13 +18,25 @@ public:
 	// Sets default values for this character's properties
 	AMerchant();
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Interaction)
-	AActor* ActorTarget = nullptr;
+	ASlate_Display* CornSlate = nullptr;
 
 protected:
-	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+	AMyGameStateBase* GameState;
+	void CheckCornObjective();
+
+	UPROPERTY(BlueprintReadWrite)
+	bool IsBusy = false;
+	UPROPERTY(BlueprintReadWrite)
+	float AngleRotation = 0;
+	UPROPERTY(BlueprintReadWrite)
+	AActor* InteractionTarget = nullptr;
+	UFUNCTION(BlueprintCallable)
+	void PickSlate(ASlate_Display * Slate);
+	UFUNCTION(BlueprintImplementableEvent, Category = "Interactions")
+	void UpdateSlate();
 
 public:	
 
