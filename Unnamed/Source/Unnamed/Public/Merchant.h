@@ -19,13 +19,17 @@ public:
 	AMerchant();
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Interaction)
 	ASlate_Display* CornSlate = nullptr;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Interaction)
+	ASlate_Display* WheatSlate = nullptr;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Interaction)
+	ASlate_Display* PumpkinSlate = nullptr;
 
 protected:
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
 
 	AMyGameStateBase* GameState;
-	void CheckCornObjective();
+	void CheckObjective();
 
 	UPROPERTY(BlueprintReadWrite)
 	bool IsBusy = false;

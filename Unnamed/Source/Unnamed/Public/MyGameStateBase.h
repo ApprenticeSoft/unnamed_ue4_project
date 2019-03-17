@@ -119,7 +119,7 @@ protected:
 
 	// TEST Objectif
 	int32 CornObjective = 4;
-	int32 WheatObjective = 0;
-	int32 PumpkinObjective = 0;
+	int32 WheatObjective = 6;
+	int32 PumpkinObjective = 3;
 
 };

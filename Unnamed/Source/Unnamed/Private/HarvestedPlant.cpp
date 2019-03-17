@@ -85,6 +85,8 @@ void AHarvestedPlant::LaunchCrop(FVector Direction, float Speed)
 
 void AHarvestedPlant::TriggerDisappear()
 {
+	if (!IsDisappearing)
+		UpdateObjective();
 	IsDisappearing = true;
 }
 
@@ -103,7 +105,7 @@ void AHarvestedPlant::Resize()
 				APoint* Point = GetWorld()->SpawnActor<APoint>(	PointBlueprint,
 																GetActorLocation(),
 																FRotator(0, 0, 0));
-				UpdateObjective();
+				//UpdateObjective();
 				Destroy();
 			}
 		}

@@ -26,13 +26,11 @@ void AMerchant::BeginPlay()
 	GameState = dynamic_cast<AMyGameStateBase*>(GetWorld()->GetGameState());
 
 	if (!CornSlate)
-	{
 		UE_LOG(LogTemp, Warning, TEXT("Pas de CornSlate!!"));
-	}
-	else
-	{
-		UE_LOG(LogTemp, Warning, TEXT("CornSlate: %s"), *CornSlate->GetFullName());
-	}
+	if (!WheatSlate)
+		UE_LOG(LogTemp, Warning, TEXT("Pas de WheatSlate!!"));
+	if (!PumpkinSlate)
+		UE_LOG(LogTemp, Warning, TEXT("Pas de PumpkinSlate!!"));
 
 
 }
@@ -41,15 +39,9 @@ void AMerchant::BeginPlay()
 void AMerchant::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
-	/*
-	if(CornSlate)
-		MoveToLocation(CornSlate);
-	*/
-
 	if (!IsBusy)
 	{
-		CheckCornObjective();
+		CheckObjective();
 	}
 }
 
@@ -73,21 +65,24 @@ bool AMerchant::MoveToLocation(AActor * Target, float Treshold, bool ColideWithT
 	return Distance > Treshold;
 }
 
-void AMerchant::CheckCornObjective()
+void AMerchant::CheckObjective()
 {
 	if (GameState->GetCornObjective() != CornSlate->GetObjective())
 	{
 		InteractionTarget = CornSlate;
 		UpdateSlate();
-
-		/*
-		if (!MoveToLocation(CornSlate, 70))
-		{
-			UE_LOG(LogTemp, Warning, TEXT("FINI"));
-			UpdateSlate();
-		}
-		*/
 	}
+	else if (GameState->GetWheatObjective() != WheatSlate->GetObjective())
+	{
+		InteractionTarget = WheatSlate;
+		UpdateSlate();
+	}
+	else if (GameState->GetPumpkinObjective() != PumpkinSlate->GetObjective())
+	{
+		InteractionTarget = PumpkinSlate;
+		UpdateSlate();
+	}
+
 }
 
 void AMerchant::PickSlate(ASlate_Display * Slate)
