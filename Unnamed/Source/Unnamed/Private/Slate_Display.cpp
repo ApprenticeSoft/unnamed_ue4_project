@@ -26,6 +26,7 @@ void ASlate_Display::BeginPlay()
 		UE_LOG(LogTemp, Warning, TEXT("Pas de text!!!"));
 
 	SetObjective();
+	DefaultLocation = GetActorLocation();
 }
 
 // Called every frame
@@ -60,5 +61,10 @@ void ASlate_Display::SetObjective()
 		Objective = GameState->GetPumpkinObjective();
 
 	SetText(Objective);
+}
+
+FVector ASlate_Display::GetDefaultLocation()
+{
+	return DefaultLocation;
 }
 

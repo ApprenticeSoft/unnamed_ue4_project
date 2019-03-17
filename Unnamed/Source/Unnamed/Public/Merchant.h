@@ -35,6 +35,10 @@ protected:
 	AActor* InteractionTarget = nullptr;
 	UFUNCTION(BlueprintCallable)
 	void PickSlate(ASlate_Display * Slate);
+	UFUNCTION(BlueprintCallable)
+	void PutSlateBack(ASlate_Display * Slate);
+	UFUNCTION(BlueprintCallable)
+	void UpdateSlateText(ASlate_Display * Slate);
 	UFUNCTION(BlueprintImplementableEvent, Category = "Interactions")
 	void UpdateSlate();
 

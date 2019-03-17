@@ -37,6 +37,7 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Enum)
 	ETargetedPlant TargetedPlant = ETargetedPlant::Corn;
 
+	FVector DefaultLocation;
 	int32 Objective = 0;
 
 public:	
@@ -46,5 +47,6 @@ public:
 	FString GetText() const;
 	int32 GetObjective() const;
 	void SetObjective();
+	FVector GetDefaultLocation();
 
 };

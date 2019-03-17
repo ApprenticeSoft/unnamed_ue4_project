@@ -94,39 +94,40 @@ void AMerchant::PickSlate(ASlate_Display * Slate)
 {
 	if (!Slate) { return; }
 
+	// Position de la main
 	auto HandSocket = GetMesh()->GetSocketByName(FName("Hand_LSocket"));
-	if (HandSocket) {
-		auto SlateSocket = Slate->FindComponentByClass<class UStaticMeshComponent>()->GetSocketByName(FName("Socket"));
-		if (SlateSocket) {
-			// Détermination de la position local du socket de l'ardoise (Position du socket par rapport à la plante)
-			
-			FTransform SlateSocketTransform;
-			SlateSocket->GetSocketTransform(SlateSocketTransform, Slate->FindComponentByClass<class UStaticMeshComponent>());
-			FVector SlateSocketLocation = SlateSocketTransform.GetLocation();
+	FTransform HandSocketTransform = HandSocket->GetSocketTransform(GetMesh());
+	FVector HandSocketLocation = HandSocketTransform.GetLocation();
 
-			// Détermination de l'échelle de l'ardoise
-			FVector SlateScale = SlateSocketTransform.GetScale3D();
+	// Position de l'ardoise
+	auto SlateSocket = Slate->FindComponentByClass<class UStaticMeshComponent>()->GetSocketByName(FName("Socket"));
+	FTransform SlateSocketTransform;
+	SlateSocket->GetSocketTransform(SlateSocketTransform, Slate->FindComponentByClass<class UStaticMeshComponent>());
+	FVector SlateSocketLocation = SlateSocketTransform.GetLocation();
 
-			UE_LOG(LogTemp, Warning, TEXT("SlateSocketLocation: %s"), *SlateSocketLocation.ToString());
-			UE_LOG(LogTemp, Warning, TEXT("Slate->GetActorLocation(): %s"), *Slate->GetActorLocation().ToString());
-			//UE_LOG(LogTemp, Warning, TEXT("Offset: %s"), *Offset.ToString());
+	// Position relative de l'ardoise par rapport à la main
+	FVector Offset = HandSocketLocation - SlateSocketLocation;
+	FTransform HandRelativeTransform = Slate->GetTransform().GetRelativeTransform(HandSocketTransform);
 
+	//DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+	Slate->AttachToComponent(GetMesh(),
+		FAttachmentTransformRules::FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true),
+		FName("Hand_LSocket")
+	);
+	Slate->SetActorRelativeTransform(HandRelativeTransform);
+	Slate->AddActorWorldOffset(Offset);
+}
 
-			// On attache la plante au socket dans la main du personnage
-			Slate->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, FName("Hand_LSocket"));
-			Slate->SetActorEnableCollision(false);
+void AMerchant::PutSlateBack(ASlate_Display * Slate)
+{
+	if (!Slate) { return; }
+	Slate->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+	Slate->SetActorLocation(Slate->GetDefaultLocation());
+}
 
-
-			auto Offset = SlateSocketLocation - Slate->GetActorLocation();
-			// On déplace repositione la plante dans la main en prenant en compte la position du socket et l'échelle de la plante
-			//Slate->SetActorRelativeLocation(FVector(0, 0, SlateSocketLocation.Y) * SlateScale);
-			Slate->SetActorRelativeLocation(Offset);
-			Slate->SetActorRelativeRotation(FRotator(180,0,0));
-			
-		}
-		else {
-			UE_LOG(LogTemp, Warning, TEXT("Pas Socket!!"));
-		}
-	}
+void AMerchant::UpdateSlateText(ASlate_Display * Slate)
+{
+	if (!Slate) { return; }
+	Slate->SetObjective();
 }
 

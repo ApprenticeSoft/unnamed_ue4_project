@@ -9,7 +9,6 @@
 #include "Classes/GameFramework/Pawn.h"
 #include "Classes/Components/SkeletalMeshComponent.h"
 #include "Engine/SkeletalMeshSocket.h"
-#include "Classes/Components/StaticMeshComponent.h"
 
 // Sets default values
 ABasket::ABasket()
