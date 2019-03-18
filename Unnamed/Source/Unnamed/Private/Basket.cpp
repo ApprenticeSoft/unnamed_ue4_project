@@ -122,7 +122,7 @@ void ABasket::AttachToHand()
 	);
 	SetActorRelativeTransform(HandRelativeTransform);
 }
-
+/*
 void ABasket::AddCrop(APlantSkeletalMeshActor* Crop)
 {
 	AHarvestedPlant* plant;
@@ -148,7 +148,7 @@ void ABasket::AddCrop(APlantSkeletalMeshActor* Crop)
 
 	UE_LOG(LogTemp, Warning, TEXT("Nombre de récolte: %i"), HarvestedPlants.Num());
 }
-
+*/
 void ABasket::AddCrop(AHarvestedPlant * Crop)
 {
 	if (SocketIndex < SocketArray.Num())
@@ -162,7 +162,7 @@ void ABasket::AddCrop(AHarvestedPlant * Crop)
 /*
  * Fonction qui retourne le nombre de légumes dans le panier
  */
-int32 ABasket::GetCropNumber()
+int32 ABasket::GetCropNumber() const
 {
 	return HarvestedPlants.Num();
 }
@@ -170,7 +170,7 @@ int32 ABasket::GetCropNumber()
 /*
  * Fonction qui retourne le nombre de légumes qui peut être mis dans le panier
  */
-int32 ABasket::GetBasketSize()
+int32 ABasket::GetBasketSize() const
 {
 	return SocketArray.Num();
 }

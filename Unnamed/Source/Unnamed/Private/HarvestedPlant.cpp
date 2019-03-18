@@ -67,7 +67,8 @@ void AHarvestedPlant::ThrownInBasket()
 {
 	if (Thrown)
 	{
-		SetScale(0.3f);
+		//SetScale(0.3f);
+		SetScale((1 + (float)Basket->GetCropNumber())/(float)Basket->GetBasketSize());
 		Thrown = MoveToLocation(Basket->GetActorLocation(), 10);
 		if (!Thrown)
 		{

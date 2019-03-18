@@ -47,9 +47,9 @@ public:
 	virtual void Tick(float DeltaTime) override;
 	void AttachToBack();
 	void AttachToHand();
-	void AddCrop(APlantSkeletalMeshActor* Crop);
+	//void AddCrop(APlantSkeletalMeshActor* Crop);
 	void AddCrop(AHarvestedPlant* Crop);
 	void ReleaseCrop();
-	int32 GetCropNumber();
-	int32 GetBasketSize();
+	int32 GetCropNumber() const;
+	int32 GetBasketSize() const;
 };
