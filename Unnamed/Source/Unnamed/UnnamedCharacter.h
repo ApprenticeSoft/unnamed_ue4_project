@@ -42,6 +42,7 @@ class AUnnamedCharacter : public ACharacter
 protected:
 	/** Called for side to side input */
 	void MoveRight(float Val);
+	void MoveBackward(float Val);
 
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
@@ -62,6 +63,8 @@ protected:
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Anims")
 	UAnimSequence *MyAnimSequence;
 
+	UFUNCTION(BlueprintCallable)
+	void SetRotationAngleTowardsTarget();
 	UFUNCTION(BlueprintCallable)
 	void PickPlants(AActor * Plante);
 	UFUNCTION(BlueprintCallable)
@@ -141,6 +144,8 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	bool MoveToLocation(AActor* Target, float Treshold = 10.0f, bool ColideWithTarget = false);
+	UFUNCTION(BlueprintCallable)
+	bool PositionNearSoilTarget(AActor* Target, float Treshold = 120.0f, bool ColideWithTarget = true);
 	UFUNCTION(BlueprintImplementableEvent, Category = "Interactions")
 	void Sow();
 	UFUNCTION(BlueprintImplementableEvent, Category = "Interactions")

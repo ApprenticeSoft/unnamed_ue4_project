@@ -69,6 +69,7 @@ void AUnnamedCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerI
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
 	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
 	PlayerInputComponent->BindAxis("MoveRight", this, &AUnnamedCharacter::MoveRight);
+	PlayerInputComponent->BindAxis("MoveBackward", this, &AUnnamedCharacter::MoveBackward);
 
 	// Personal actions
 	PlayerInputComponent->BindAction("MoveUp", IE_Pressed, this, &AUnnamedCharacter::MoveUp);
@@ -114,7 +115,7 @@ void AUnnamedCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	DisplacementOnX();
+	// DisplacementOnX();
 
 	if (Detector != nullptr)
 	{
@@ -137,6 +138,12 @@ void AUnnamedCharacter::MoveRight(float Value)
 {
 	// add movement in that direction
 	AddMovementInput(FVector(0.f, -1.f, 0.f), Value);
+}
+
+void AUnnamedCharacter::MoveBackward(float Value)
+{
+	// add movement in that direction
+	AddMovementInput(FVector(-1.f, 0.f, 0.f), Value);
 }
 
 void AUnnamedCharacter::MoveUp()
@@ -178,6 +185,10 @@ void AUnnamedCharacter::SetInteractionTarget(AActor* Target)
 {
 	if (!Target) { return; }
 	InteractionTarget = Target;
+}
+
+void AUnnamedCharacter::SetRotationAngleTowardsTarget()
+{
 	RotationTowardsTarget = UKismetMathLibrary::FindLookAtRotation(this->GetActorLocation(), InteractionTarget->GetActorLocation());
 	AngleRotation = RotationTowardsTarget.Yaw;
 }
@@ -460,6 +471,21 @@ bool AUnnamedCharacter::MoveToLocation(AActor * Target, float Treshold, bool Col
 		AddMovementInput(UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), Target->GetActorLocation()).Vector());
 
 	return Distance > Treshold;
+}
+
+bool AUnnamedCharacter::PositionNearSoilTarget(AActor * Target, float Treshold, bool ColideWithTarget)
+{
+	if (!Target) { return false; }
+	Target->SetActorEnableCollision(ColideWithTarget);
+
+	float Distance = FVector::Distance(Target->GetActorLocation(), GetActorLocation());
+	if (Distance < Treshold) 
+	{
+		auto Sign = (FVector(GetActorLocation().X, 0, 0) - FVector(Target->GetActorLocation().X, 0, 0)).GetSignVector();
+		AddMovementInput(UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), Target->GetActorLocation() + FVector(Sign.X*Treshold, 0, 0)).Vector());
+	}
+
+	return Distance < Treshold;
 }
 
 ABasket* AUnnamedCharacter::GetBasket() const
