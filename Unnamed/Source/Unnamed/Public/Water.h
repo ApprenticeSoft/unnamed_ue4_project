@@ -7,6 +7,7 @@
 #include "Water.generated.h"
 
 class UProjectileMovementComponent;
+class USkeletalMeshComponent;
 
 UCLASS()
 class UNNAMED_API AWater : public AActor
@@ -17,15 +18,16 @@ public:
 	// Sets default values for this actor's properties
 	AWater();
 	void LaunchWater(float Speed);
+	UFUNCTION(BlueprintCallable)
+	void SetDisappear(bool value);
 
 protected:
-	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-
-	UProjectileMovementComponent* ProjectileMovement = nullptr;
-
-public:	
-	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+	void Disappear();
+	UProjectileMovementComponent* ProjectileMovement = nullptr;
+	USkeletalMeshComponent* SkeletalMeshComponent = nullptr;
+	bool IsDisappearing = false;
 
 };
