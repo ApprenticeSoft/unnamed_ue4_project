@@ -119,8 +119,10 @@ void AUnnamedCharacter::Tick(float DeltaTime)
 
 	if (Detector != nullptr)
 	{
-		setPossibleInteractionName(Detector->getInteractionName());
+		// setPossibleInteractionName(Detector->getInteractionName());
 		// UE_LOG(LogTemp, Warning, TEXT("Nom de l'acteur: %s"), *getPossibleInteractionName());
+		if(!IsBusy)
+			FindTarget(ClosestTarget);
 	}
 }
 
@@ -156,9 +158,11 @@ void AUnnamedCharacter::MoveDown()
 	PositionX += 150;
 }
 
-AActor* AUnnamedCharacter::FindTarget()
+AActor* AUnnamedCharacter::FindTarget(AActor* &ClosestTarget)
 {
-	AActor* UsedItem = nullptr;
+	if (LastSolTarget)
+		LastSolTarget->SetUnselected();
+	/*AActor* */ ClosestTarget = nullptr;
 
 	auto ItemsInReach = Detector->getOverlappingActors();
 	float ItemDistance = 1000;
@@ -173,12 +177,18 @@ AActor* AUnnamedCharacter::FindTarget()
 			if (FVector::Distance(Actor->GetActorLocation(), GetActorLocation()) < ItemDistance)
 			{
 				ItemDistance = FVector::Distance(Actor->GetActorLocation(), GetActorLocation());
-				UsedItem = const_cast<AActor*>(Actor); // const_cast permet de convertir un const AActor* en AActor*
+				ClosestTarget = const_cast<AActor*>(Actor); // const_cast permet de convertir un const AActor* en AActor*
 			}
 		}
 	}
 
-	return UsedItem;
+	LastSolTarget = dynamic_cast<ASol*>(ClosestTarget);
+	if (LastSolTarget)
+	{
+		LastSolTarget->SetSelected();
+	}
+
+	return ClosestTarget;
 }
 
 void AUnnamedCharacter::SetInteractionTarget(AActor* Target)
@@ -201,17 +211,18 @@ void AUnnamedCharacter::Interact()
 {
 	if (!IsBusy) 
 	{
-		AActor* UsedItem = nullptr;
-		UsedItem = FindTarget();
-		if (!UsedItem) { return; }
+		//AActor* UsedItem = nullptr;
+		//UsedItem = FindTarget();
+		//if (!UsedItem) { return; }
+		if (!ClosestTarget) { return; }
 
-		ASol* Sol = dynamic_cast<ASol*>(UsedItem);
+		ASol* Sol = dynamic_cast<ASol*>(ClosestTarget);
 		if (!Sol)
 		{
 			UE_LOG(LogTemp, Warning, TEXT("Ce n'est pas un sol!!"));
 		}
 		else if (Sol->IsReadyToHarvest())
-		{
+		{ 
 			if (Basket->GetCropNumber() < Basket->GetBasketSize())
 			{
 				SetInteractionTarget(Sol->PopPlant());
@@ -248,7 +259,7 @@ void AUnnamedCharacter::Interact()
 			Water();
 		}
 
-		AShop* Shop = dynamic_cast<AShop*>(UsedItem);
+		AShop* Shop = dynamic_cast<AShop*>(ClosestTarget);
 		if (!Shop)
 		{
 			UE_LOG(LogTemp, Warning, TEXT("Ce n'est pas un shop!!"));

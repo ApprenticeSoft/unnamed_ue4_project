@@ -33,10 +33,15 @@ public:
 	void ClearPlants();
 
 	void SetHumidity(float value);
+	UFUNCTION(BlueprintCallable)
 	float GetHumidity() const;
 	float GetEvaporationFactor() const;
 	void SetEvaporationFactor(float value);
 	bool IsReadyToHarvest();
+	UFUNCTION(BlueprintImplementableEvent, Category = "Interactions")
+	void SetSelected();
+	UFUNCTION(BlueprintImplementableEvent, Category = "Interactions")
+	void SetUnselected();
 
 	ESoilState GetSoilState();
 	void SetSoilState(ESoilState State);

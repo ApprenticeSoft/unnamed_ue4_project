@@ -51,7 +51,7 @@ protected:
 	void MoveDown();
 
 	AMyGameStateBase* GameState;
-	AActor* FindTarget();
+	AActor* FindTarget(AActor* &ClosestTarget);
 	void SetInteractionTarget(AActor* Target);
 	void Interact();
 	float XVector = 5.f;
@@ -90,6 +90,7 @@ protected:
 	void PlantThePlant(ASol* Sol);
 	UPROPERTY(BlueprintReadWrite)
 	AActor* InteractionTarget = nullptr;
+	AActor* ClosestTarget = nullptr;
 	UPROPERTY(BlueprintReadWrite)
 	float AngleRotation = 0;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "State")
@@ -102,6 +103,7 @@ protected:
 	void SetNotificationString();
 	UPROPERTY(BlueprintReadWrite)
 	bool IsBusy = false;
+	ASol* LastSolTarget = nullptr;
 
 	UPROPERTY(EditDefaultsOnly, Category = Setup)
 	//UClass* ProjectileBluePrint;		// UClass* va afficher la totalités des classes disponibles dans le blueprint alors que TSubclassOf<> n'affiche que la classe choisie
