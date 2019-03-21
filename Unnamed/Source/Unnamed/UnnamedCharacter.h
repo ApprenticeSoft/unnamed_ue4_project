@@ -140,6 +140,8 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	FString PossibleInteractions = "";
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	bool IsAtShop = false;
 
 	void setPossibleInteractionName(FString Name);
 	FString getPossibleInteractionName();

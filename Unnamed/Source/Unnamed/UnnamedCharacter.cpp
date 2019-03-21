@@ -269,6 +269,11 @@ void AUnnamedCharacter::Interact()
 			SetInteractionTarget(Shop);
 			if (Basket->GetCropNumber() > 0)
 				InteractWithShop();
+			else
+			{
+				Shop->OpenShop();
+				UE_LOG(LogTemp, Warning, TEXT("Magasin!!!"));
+			}
 		}
 	}
 	else
