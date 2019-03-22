@@ -27,6 +27,7 @@ void AMyGameStateBase::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	TimeTracking();
+	Pulse();
 }
 
 void AMyGameStateBase::CreateCalendar()
@@ -323,4 +324,17 @@ int32 AMyGameStateBase::GetWheatObjective() const
 int32 AMyGameStateBase::GetPumpkinObjective() const
 {
 	return PumpkinObjective;
+}
+
+void AMyGameStateBase::Pulse()
+{
+	PulseCounter += 8 * GetWorld()->DeltaTimeSeconds;
+	if (PulseCounter > 2 * PI)
+		PulseCounter -= 2 * PI;
+	PulseValue = (1 + FMath::Cos(PulseCounter)) / 2;
+}
+
+float AMyGameStateBase::GetPulseValue() const
+{
+	return PulseValue;
 }

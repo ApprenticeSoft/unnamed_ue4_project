@@ -85,8 +85,9 @@ void ASol::UpdateHumidity()
 
 void ASol::NotifyDryness()
 {
-	DrynessWarningIndex += 8*GetWorld()->DeltaTimeSeconds;
-	DynamicMaterial->SetScalarParameterValue(TEXT("Blend_Dry_Warning"), (1 + FMath::Cos(DrynessWarningIndex))/2);
+	//DrynessWarningIndex += 8*GetWorld()->DeltaTimeSeconds;
+	//DynamicMaterial->SetScalarParameterValue(TEXT("Blend_Dry_Warning"), (1 + FMath::Cos(DrynessWarningIndex))/2);
+	DynamicMaterial->SetScalarParameterValue(TEXT("Blend_Dry_Warning"), GameState->GetPulseValue());
 }
 
 void ASol::SetHumidity(float value)

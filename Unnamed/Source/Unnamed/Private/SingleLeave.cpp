@@ -32,7 +32,7 @@ void ASingleLeave::BeginPlay()
 	// Couleur aléatoire
 	DynamicMaterial->SetScalarParameterValue(TEXT("Blend"), UKismetMathLibrary::RandomFloatInRange(0.0f, 1.0f));
 
-	DisapearDelay = UKismetMathLibrary::RandomFloatInRange(3.0, 5.0f);
+	DisapearDelay = UKismetMathLibrary::RandomFloatInRange(1.0, 10.0f);
 }
 
 // Called every frame

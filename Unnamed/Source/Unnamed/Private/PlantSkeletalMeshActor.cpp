@@ -65,12 +65,14 @@ void APlantSkeletalMeshActor::Tick(float DeltaTime)
 		if (Sol->GetHumidity() <= 0)
 			SetPlantState(EPlantState::InteruptedGrowth);
 
-		if (GetSkeletalMeshComponent()->GetMorphTarget(FName("Key 1")) == 0.0f)
+		//if (GetSkeletalMeshComponent()->GetMorphTarget(FName("Key 1")) == 0.0f)
+		if (GetSkeletalMeshComponent()->GetMorphTarget(FName("Key 1")) < FinalMorphTargetRipeTriggerValue)
 			PlantState = EPlantState::Ripe;
 	}
 	else if (PlantState == EPlantState::Ripe)
 	{
-		RotDelay -= GetWorld()->DeltaTimeSeconds;
+		if (GetSkeletalMeshComponent()->GetMorphTarget(FName("Key 1")) == 0.0f)
+			RotDelay -= GetWorld()->DeltaTimeSeconds;
 		if (RotDelay < 0) 
 		{
 			GetSkeletalMeshComponent()->SetGenerateOverlapEvents(false);

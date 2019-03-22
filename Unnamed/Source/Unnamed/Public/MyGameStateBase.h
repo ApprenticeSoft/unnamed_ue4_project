@@ -81,6 +81,7 @@ public:
 	bool GetWheatSeason() const;
 	bool GetPumpkinSeason() const;
 	float GetSunIntensity() const;
+	float GetPulseValue() const;
 
 	// TEST Objectifs
 	void SetCornObjective(int32 value);
@@ -106,6 +107,9 @@ protected:
 	bool WheatSeason = false;
 	UPROPERTY(BlueprintReadOnly, Category = "State")
 	bool PumpkinSeason = false;
+	float PulseValue = 0;
+	float PulseCounter = 0;
+	void Pulse();
 
 	int32 CornNumber = 0;
 	int32 WheatNumber = 0;
