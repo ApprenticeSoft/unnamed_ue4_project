@@ -62,7 +62,7 @@ FString UInteractionDetectorComponent::getInteractionName()
 }
 
 TArray<AActor*> UInteractionDetectorComponent::getOverlappingActors() {
-	UE_LOG(LogTemp, Warning, TEXT("Size: %i"), OverlappingActors.Num())
+	//UE_LOG(LogTemp, Warning, TEXT("Size: %i"), OverlappingActors.Num())
 	return OverlappingActors;
 }
 

@@ -25,7 +25,7 @@ protected:
 	float Scale = 0.1f;
 	float NewScale = 0.1f;
 	bool IsPouring = false;
-	int32 PourDelay = 5;
+	int32 PourDelay = 6;
 	int32 PourTimer = 0;
 
 	UPROPERTY(EditDefaultsOnly, Category = Setup)

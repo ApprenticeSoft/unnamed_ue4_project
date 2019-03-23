@@ -76,6 +76,12 @@ void AWateringCan::Deactivate()
 	IsPouring = false;
 }
 
+/*
+*Fonction qui fait apparaitre de l'eau à partir des sockets de l'arrosoir.
+*L'eau n'est pas créée à chaque image:
+*À chaque image, le PourTimer est augmenté de 1.
+*Si le PourTimer est divisible par le PourDelay, l'eau créée.
+*/
 void AWateringCan::PourWater()
 {
 	if (IsPouring) 

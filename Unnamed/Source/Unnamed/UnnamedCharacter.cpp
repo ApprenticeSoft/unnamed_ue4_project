@@ -119,8 +119,6 @@ void AUnnamedCharacter::Tick(float DeltaTime)
 
 	if (Detector != nullptr)
 	{
-		// setPossibleInteractionName(Detector->getInteractionName());
-		// UE_LOG(LogTemp, Warning, TEXT("Nom de l'acteur: %s"), *getPossibleInteractionName());
 		if(!IsBusy)
 			FindTarget(ClosestTarget);
 	}
@@ -172,7 +170,7 @@ AActor* AUnnamedCharacter::FindTarget(AActor* &ClosestTarget)
 		{
 			if (Actor == nullptr) { return nullptr; }
 			float Distance = FVector::Distance(Actor->GetActorLocation(), GetActorLocation());
-			UE_LOG(LogTemp, Warning, TEXT("Distance avec %s: %f"), *Actor->GetName(), Distance);
+			//UE_LOG(LogTemp, Warning, TEXT("Distance avec %s: %f"), *Actor->GetName(), Distance);
 
 			if (FVector::Distance(Actor->GetActorLocation(), GetActorLocation()) < ItemDistance)
 			{
@@ -211,9 +209,6 @@ void AUnnamedCharacter::Interact()
 {
 	if (!IsBusy) 
 	{
-		//AActor* UsedItem = nullptr;
-		//UsedItem = FindTarget();
-		//if (!UsedItem) { return; }
 		if (!ClosestTarget) { return; }
 
 		ASol* Sol = dynamic_cast<ASol*>(ClosestTarget);
@@ -305,19 +300,16 @@ void AUnnamedCharacter::PlantThePlant(ASol* Sol)
 		Plant = GetWorld()->SpawnActor<APlantSkeletalMeshActor>(WheatBlueprint,
 																FVector(0, 0, -200),
 																FRotator(0, 0, 0));
-		UE_LOG(LogTemp, Warning, TEXT("Plant wheat!!!"));
 		break;
 	case ESeed::Sunflower:
 		Plant = GetWorld()->SpawnActor<APlantSkeletalMeshActor>(CornBlueprint,
 																FVector(0, 0, -200),
 																FRotator(0, 260, 0));
-		UE_LOG(LogTemp, Warning, TEXT("Plant Sunflower!!!"));
 		break;
 	case ESeed::Pumpkin:
 		Plant = GetWorld()->SpawnActor<APlantSkeletalMeshActor>(PumpkinBlueprint,
 																FVector(0, 0, -200),
 																FRotator(0, 260, 0));
-		UE_LOG(LogTemp, Warning, TEXT("Plant Pumpkin!!!"));
 		break;
 	default:
 		Plant = GetWorld()->SpawnActor<APlantSkeletalMeshActor>(CornBlueprint,

@@ -33,7 +33,7 @@ void ASeed::Tick(float DeltaTime)
 
 void ASeed::LaunchSeed(float Speed)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Projectile fires at %f"), Speed);
+	//UE_LOG(LogTemp, Warning, TEXT("Projectile fires at %f"), Speed);
 	auto Direction = UKismetMathLibrary::RandomUnitVectorInConeInDegrees(FVector(1, 0, 0), 40);
 	//ProjectileMovement->SetVelocityInLocalSpace(FVector(Direction.X, Direction.Y, 0) * Speed);
 	ProjectileMovement->SetVelocityInLocalSpace(FVector(1, 0, 0) * Speed);

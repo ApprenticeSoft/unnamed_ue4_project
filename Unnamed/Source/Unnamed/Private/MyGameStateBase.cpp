@@ -280,7 +280,7 @@ float AMyGameStateBase::GetNightLightBlend()
 	else
 		Blend = (4 * SeasonDuration - Time) / (0.2f * SeasonDuration);
 
-	return Blend;
+	return Blend * 0.7f;
 }
 
 bool AMyGameStateBase::GetCornSeason() const

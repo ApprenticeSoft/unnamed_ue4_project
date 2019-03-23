@@ -79,7 +79,7 @@ void AHarvestedPlant::ThrownInBasket()
 
 void AHarvestedPlant::LaunchCrop(FVector Direction, float Speed)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Projectile fires at %f"), Speed);
+	//UE_LOG(LogTemp, Warning, TEXT("Projectile fires at %f"), Speed);
 	ProjectileMovement->SetVelocityInLocalSpace(Direction * Speed);
 	ProjectileMovement->Activate();
 }
