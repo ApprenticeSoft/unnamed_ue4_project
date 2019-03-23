@@ -347,40 +347,61 @@ bool AUnnamedCharacter::CheckIfCanPlantSeed()
 		return false;
 }
 
+/*
+* Fonction qui fait apparaitre l'arrosoir
+*/
 void AUnnamedCharacter::ActivateWateringCan()
 {
 	if (Watering_can)
 		Watering_can->Activate();
 }
 
+/*
+* Fonction qui fait disparaitre l'arrosoir
+*/
 void AUnnamedCharacter::DeactivateWateringCan()
 {
 	if (Watering_can)
 		Watering_can->Deactivate();
 }
 
+/*
+* Fonction qui attache le panier à la main du personnage
+*/
 void AUnnamedCharacter::PutBasketInHand()
 {
 	Basket->AttachToHand();
 }
 
+/*
+* Fonction qui attache le panier au dos du personnage
+*/
 void AUnnamedCharacter::PutBasketOnBack()
 {
 	Basket->AttachToBack();
 }
 
+/*
+* Fonction qui appelle la fonction du panier permettant de détacher les légumes qui sont fixés à des sockets du panier.
+*/
 void AUnnamedCharacter::EmptyBasket()
 {
 	Basket->ReleaseCrop();
 }
 
+/*
+* Fonction qui augment l'humidité du sol d'une valeur "value" en une seconde
+*/
 void AUnnamedCharacter::IncreaseHumidity(float value)
 {
 	ASol* Sol = dynamic_cast<ASol*>(InteractionTarget);
 	if(Sol)
-		Sol->SetHumidity(value);
+		Sol->SetHumidity(value * GetWorld()->DeltaTimeSeconds);
 }
 
+/*
+* Fonction qui permet de cueillir une plante et de la fixer au socket de la main
+*/
 void AUnnamedCharacter::PickPlants(AActor * Plante)
 {
 	if (!Plante) { return; }

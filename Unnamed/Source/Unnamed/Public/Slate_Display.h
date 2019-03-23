@@ -38,6 +38,7 @@ protected:
 	ETargetedPlant TargetedPlant = ETargetedPlant::Corn;
 
 	FVector DefaultLocation;
+	FRotator DefaultRotation;
 	int32 Objective = 0;
 
 public:	
@@ -48,5 +49,6 @@ public:
 	int32 GetObjective() const;
 	void SetObjective();
 	FVector GetDefaultLocation();
+	FRotator GetDefaultRotation();
 
 };

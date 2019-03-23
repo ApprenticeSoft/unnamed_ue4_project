@@ -62,9 +62,6 @@ public:
 	UFUNCTION(BlueprintCallable)
 	int32 GetPointNumber() const;
 	void SetPointNumber(int32 Number);
-	//UFUNCTION(BlueprintCallable)
-	//int32 GetWheatNumber() const;
-	//void SetWheatNumber(int32 Number);
 	UFUNCTION(BlueprintCallable)
 	ECurrentSeason GetSeason() const;
 	UFUNCTION(BlueprintCallable)
@@ -116,7 +113,6 @@ protected:
 	void Pulse();
 
 	int32 PointNumber = 0;
-	//int32 WheatNumber = 0;
 	float SeasonDuration = 60.0f;
 	float MonthDuration = SeasonDuration / 3;
 	float SunIntensity;

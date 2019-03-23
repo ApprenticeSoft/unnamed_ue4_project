@@ -217,17 +217,7 @@ void AMyGameStateBase::SetPointNumber(int32 Number)
 {
 	PointNumber = Number;
 }
-/*
-int32 AMyGameStateBase::GetWheatNumber() const
-{
-	return WheatNumber;
-}
 
-void AMyGameStateBase::SetWheatNumber(int32 Number)
-{
-	WheatNumber = Number;
-}
-*/
 ECurrentSeason AMyGameStateBase::GetSeason() const
 {
 	return Season;

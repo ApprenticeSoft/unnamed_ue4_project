@@ -39,5 +39,6 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 	void SetScale(float value);
+	void SetFallColor(float value);
 
 };

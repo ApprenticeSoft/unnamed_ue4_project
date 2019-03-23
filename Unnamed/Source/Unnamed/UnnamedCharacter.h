@@ -84,7 +84,7 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	void EmptyBasket();
 	UFUNCTION(BlueprintCallable)
-	void IncreaseHumidity(float value = 1.0f);
+	void IncreaseHumidity(float value = 100.0f);
 	UFUNCTION(BlueprintCallable)
 	bool CheckIfCanPlantSeed();
 	void PlantThePlant(ASol* Sol);

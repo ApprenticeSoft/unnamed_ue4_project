@@ -27,6 +27,7 @@ void ASlate_Display::BeginPlay()
 
 	SetObjective();
 	DefaultLocation = GetActorLocation();
+	DefaultRotation = GetActorRotation();
 }
 
 // Called every frame
@@ -66,5 +67,10 @@ void ASlate_Display::SetObjective()
 FVector ASlate_Display::GetDefaultLocation()
 {
 	return DefaultLocation;
+}
+
+FRotator ASlate_Display::GetDefaultRotation()
+{
+	return DefaultRotation;
 }
 

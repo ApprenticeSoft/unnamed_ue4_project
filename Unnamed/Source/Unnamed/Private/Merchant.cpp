@@ -108,6 +108,9 @@ void AMerchant::CheckObjective()
 
 }
 
+/*
+* Fonction que attache l'ardoise à la main de la marchande.
+*/
 void AMerchant::PickSlate(ASlate_Display * Slate)
 {
 	if (!Slate) { return; }
@@ -136,15 +139,19 @@ void AMerchant::PickSlate(ASlate_Display * Slate)
 	Slate->AddActorWorldOffset(Offset);
 }
 
+/*
+* Fonction qui repositionne l'ardoise à sa position d'origine.
+* Si le montant écrit sur l'ardoise est de "0", l'ardoise fait apparatire des points
+*/
 void AMerchant::PutSlateBack(ASlate_Display * Slate)
 {
 	if (!Slate) { return; }
 	Slate->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
 	Slate->SetActorLocation(Slate->GetDefaultLocation());
+	Slate->SetActorRotation(Slate->GetDefaultRotation());
 
 	if (Slate->GetObjective() == 0)
 		SpawnPoints(10, FVector(249, 244, 0), 1.6, Slate->GetActorLocation());
-		//SpawnPoints(10, FVector(242, 177, 52), 1.6, Slate->GetActorLocation());
 }
 
 void AMerchant::UpdateSlateText(ASlate_Display * Slate)

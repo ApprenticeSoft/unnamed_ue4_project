@@ -65,7 +65,6 @@ void ALeaves::ChangeColor()
 			DynamicMaterial->SetScalarParameterValue(TEXT("Blend"), ColorBlend);
 		}
 	}
-
 }
 
 void ALeaves::SpawnLeaves()
@@ -108,5 +107,10 @@ void ALeaves::SpawnLeaves()
 void ALeaves::SetScale(float value)
 {
 	Scale = value;
+}
+
+void ALeaves::SetFallColor(float value)
+{
+	DynamicMaterial->SetScalarParameterValue(TEXT("FallColorBlend"), value);
 }
 

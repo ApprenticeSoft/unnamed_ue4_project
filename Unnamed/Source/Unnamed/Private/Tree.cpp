@@ -33,14 +33,17 @@ void ATree::Tick(float DeltaTime)
 
 void ATree::CreateLeaves()
 {
+	float FallColorBlend = UKismetMathLibrary::RandomFloatInRange(0.0f, 1.0f);
+
 	auto SocketArray = FindComponentByClass<class UStaticMeshComponent>()->GetAllSocketNames();
 	for (int i = 0; i < SocketArray.Num(); i++)
 	{
 		auto SocketTransform = FindComponentByClass<class UStaticMeshComponent>()->GetSocketTransform(SocketArray[i]);
-		auto Leave = GetWorld()->SpawnActor<ALeaves>(	LeavesBluePrint,
+		auto Leaves = GetWorld()->SpawnActor<ALeaves>(	LeavesBluePrint,
 														SocketTransform.GetLocation(),
 														UKismetMathLibrary::RandomRotator());
 
-		Leave->SetScale(SocketTransform.GetScale3D().X/GetActorScale3D().X);
+		Leaves->SetScale(SocketTransform.GetScale3D().X/GetActorScale3D().X);
+		Leaves->SetFallColor(FallColorBlend);
 	}
 }
