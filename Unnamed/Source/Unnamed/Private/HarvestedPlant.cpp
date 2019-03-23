@@ -110,8 +110,9 @@ void AHarvestedPlant::Resize()
 				if (IsInDemand)
 				{
 					Point->SetPointValue(3);
-					Point->SetColor(237, 85, 59);
-					Point->SetActorScale3D(FVector(1.5, 1.5, 1.5));
+					//Point->SetColor(237, 85, 59);
+					Point->SetColor(227, 0, 127);
+					Point->SetActorScale3D(FVector(1.5, 1.5, 1.3));
 				}
 				Destroy();
 			}

@@ -25,9 +25,9 @@ void APoint::BeginPlay()
 	if (!Text)
 		UE_LOG(LogTemp, Warning, TEXT("Pas de UTextRenderComponent!"));
 
-	//Text->SetText(FString::FromInt(PointValue));
 	Text->SetText(FText::AsNumber(PointValue));
-	SetColor(17, 47, 65);
+	//SetColor(17, 47, 65);
+	SetColor(0, 178, 236);
 	Character = dynamic_cast<AUnnamedCharacter*>(GetWorld()->GetFirstPlayerController()->GetPawn());
 }
 
@@ -67,6 +67,8 @@ bool APoint::MoveToLocation(FVector Location, float Treshold)
 		FVector Direction = FVector(Location - GetActorLocation()) / 10;
 		SetActorLocation(GetActorLocation() + Direction);
 	}
+	else if (MoveDelay > 0.4f)
+		SetActorLocation(GetActorLocation() + FVector(0, 0, 50*GetWorld()->DeltaTimeSeconds));
 	
 	return Distance > Treshold;
 }
@@ -74,7 +76,7 @@ bool APoint::MoveToLocation(FVector Location, float Treshold)
 void APoint::AddPoints()
 {
 	auto GameState = dynamic_cast<AMyGameStateBase*>(GetWorld()->GetGameState());
-	GameState->SetCornNumber(GameState->GetCornNumber() + PointValue);
+	GameState->SetPointNumber(GameState->GetPointNumber() + PointValue);
 	Destroy();
 }
 

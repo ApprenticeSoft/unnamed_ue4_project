@@ -33,7 +33,7 @@ void AMerchant::BeginPlay()
 	if (!PumpkinSlate)
 		UE_LOG(LogTemp, Warning, TEXT("Pas de PumpkinSlate!!"));
 
-
+	StartLocation = GetActorLocation();
 }
 
 // Called every frame
@@ -43,6 +43,8 @@ void AMerchant::Tick(float DeltaTime)
 	if (!IsBusy)
 	{
 		CheckObjective();
+
+		RandomMovement();
 	}
 }
 
@@ -53,8 +55,19 @@ void AMerchant::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 }
 
+void AMerchant::RandomMovement()
+{
+	RandomMovementDelay -= GetWorld()->DeltaTimeSeconds;
 
-bool AMerchant::MoveToLocation(AActor * Target, float Treshold, bool ColideWithTarget)
+	if (RandomMovementDelay < 0)
+	{
+		RandomMovementDelay = UKismetMathLibrary::RandomFloatInRange(5.0f, 20.0f);
+		NewLocation = StartLocation + FVector(UKismetMathLibrary::RandomIntegerInRange(0, 100), UKismetMathLibrary::RandomIntegerInRange(0, 100), 0);
+		Move();
+	}
+}
+
+bool AMerchant::MoveToTarget(AActor * Target, float Treshold, bool ColideWithTarget)
 {
 	if (!Target) { return false; }
 	Target->SetActorEnableCollision(ColideWithTarget);
@@ -62,6 +75,15 @@ bool AMerchant::MoveToLocation(AActor * Target, float Treshold, bool ColideWithT
 	float Distance = FVector::Distance(Target->GetActorLocation(), GetActorLocation());
 	if (Distance > Treshold)
 		AddMovementInput(UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), Target->GetActorLocation()).Vector());
+
+	return Distance > Treshold;
+}
+
+bool AMerchant::MoveToLocation(FVector Location, float Treshold)
+{
+	float Distance = FVector::Distance(Location, GetActorLocation());
+	if (Distance > Treshold)
+		AddMovementInput(UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), Location).Vector());
 
 	return Distance > Treshold;
 }
@@ -121,7 +143,8 @@ void AMerchant::PutSlateBack(ASlate_Display * Slate)
 	Slate->SetActorLocation(Slate->GetDefaultLocation());
 
 	if (Slate->GetObjective() == 0)
-		SpawnPoints(10, FVector(242, 177, 52), 2, Slate->GetActorLocation());
+		SpawnPoints(10, FVector(249, 244, 0), 1.6, Slate->GetActorLocation());
+		//SpawnPoints(10, FVector(242, 177, 52), 1.6, Slate->GetActorLocation());
 }
 
 void AMerchant::UpdateSlateText(ASlate_Display * Slate)

@@ -88,6 +88,18 @@ void AMyGameStateBase::DetermineMonth()
 			MonthString = "February";
 
 			CheckPlantingMonth(Month);
+
+			// Nouvel objectif: Mais, Citrouille
+			if (CornObjective == 0) 
+			{
+				CornObjectiveIndex += 1;
+				CornObjective = 3 * CornObjectiveIndex;
+			}
+			if (PumpkinObjective == 0)
+			{
+				PumpkinObjectiveIndex += 1;
+				PumpkinObjective = 2 * PumpkinObjectiveIndex + 3;
+			}
 		}
 	}
 	else if (Time > MonthDuration * 9) {
@@ -144,6 +156,12 @@ void AMyGameStateBase::DetermineMonth()
 			MonthString = "August";
 
 			CheckPlantingMonth(Month);
+
+			// Nouvel objectif: blé
+			if (WheatObjective == 0) {
+				WheatObjectiveIndex += 1;
+				WheatObjective = 2 * WheatObjectiveIndex + 2;
+			}
 		}
 	}
 	else if (Time > MonthDuration * 3) {
@@ -190,16 +208,16 @@ void AMyGameStateBase::DetermineMonth()
 	setSunIntensity(SunIntensity);
 }
 
-int32 AMyGameStateBase::GetCornNumber() const
+int32 AMyGameStateBase::GetPointNumber() const
 {
-	return CornNumber;
+	return PointNumber;
 }
 
-void AMyGameStateBase::SetCornNumber(int32 Number)
+void AMyGameStateBase::SetPointNumber(int32 Number)
 {
-	CornNumber = Number;
+	PointNumber = Number;
 }
-
+/*
 int32 AMyGameStateBase::GetWheatNumber() const
 {
 	return WheatNumber;
@@ -209,7 +227,7 @@ void AMyGameStateBase::SetWheatNumber(int32 Number)
 {
 	WheatNumber = Number;
 }
-
+*/
 ECurrentSeason AMyGameStateBase::GetSeason() const
 {
 	return Season;
@@ -326,6 +344,18 @@ bool AMyGameStateBase::SetPumpkinObjective(int32 value)
 	return false;
 }
 
+bool AMyGameStateBase::SetObjective(int32 &Objective, int32 value)
+{
+	Objective = value;
+
+	if (value >= 0)
+		return true;
+	else if (Objective < 0)
+		Objective = 0;
+
+	return false;
+}
+
 int32 AMyGameStateBase::GetCornObjective() const
 {
 	return CornObjective;
@@ -337,6 +367,21 @@ int32 AMyGameStateBase::GetWheatObjective() const
 }
 
 int32 AMyGameStateBase::GetPumpkinObjective() const
+{
+	return PumpkinObjective;
+}
+
+int32& AMyGameStateBase::GetCornObjectiveReference()
+{
+	return CornObjective;
+}
+
+int32& AMyGameStateBase::GetWheatObjectiveReference()
+{
+	return WheatObjective;
+}
+
+int32& AMyGameStateBase::GetPumpkinObjectiveReference()
 {
 	return PumpkinObjective;
 }

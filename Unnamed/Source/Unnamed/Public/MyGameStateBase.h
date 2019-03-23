@@ -60,11 +60,11 @@ protected:
 
 public:
 	UFUNCTION(BlueprintCallable)
-	int32 GetCornNumber() const;
-	void SetCornNumber(int32 Number);
-	UFUNCTION(BlueprintCallable)
-	int32 GetWheatNumber() const;
-	void SetWheatNumber(int32 Number);
+	int32 GetPointNumber() const;
+	void SetPointNumber(int32 Number);
+	//UFUNCTION(BlueprintCallable)
+	//int32 GetWheatNumber() const;
+	//void SetWheatNumber(int32 Number);
 	UFUNCTION(BlueprintCallable)
 	ECurrentSeason GetSeason() const;
 	UFUNCTION(BlueprintCallable)
@@ -83,10 +83,14 @@ public:
 	float GetSunIntensity() const;
 	float GetPulseValue() const;
 
-	// TEST Objectifs
+	// Gestion des Objectifs
 	bool SetCornObjective(int32 value);
 	bool SetWheatObjective(int32 value);
 	bool SetPumpkinObjective(int32 value);
+	bool SetObjective(int32 &Objective, int32 value);
+	int32& GetCornObjectiveReference();
+	int32& GetWheatObjectiveReference();
+	int32& GetPumpkinObjectiveReference();
 	int32 GetCornObjective() const;
 	int32 GetWheatObjective() const;
 	int32 GetPumpkinObjective() const;
@@ -111,8 +115,8 @@ protected:
 	float PulseCounter = 0;
 	void Pulse();
 
-	int32 CornNumber = 0;
-	int32 WheatNumber = 0;
+	int32 PointNumber = 0;
+	//int32 WheatNumber = 0;
 	float SeasonDuration = 60.0f;
 	float MonthDuration = SeasonDuration / 3;
 	float SunIntensity;
@@ -123,7 +127,10 @@ protected:
 
 	// TEST Objectif
 	int32 CornObjective = 4;
-	int32 WheatObjective = 6;
+	int32 WheatObjective = 0;
 	int32 PumpkinObjective = 3;
+	int32 CornObjectiveIndex = 0;
+	int32 WheatObjectiveIndex = 0;
+	int32 PumpkinObjectiveIndex = 0;
 
 };

@@ -49,7 +49,15 @@ protected:
 	void UpdateSlateText(ASlate_Display * Slate);
 	UFUNCTION(BlueprintImplementableEvent, Category = "Interactions")
 	void UpdateSlate();
+	UFUNCTION(BlueprintImplementableEvent, Category = "Interactions")
+	void Move();
 	void SpawnPoints(int32 value, FVector Color, float scale, FVector Location);
+
+	void RandomMovement();
+	FVector StartLocation;
+	UPROPERTY(BlueprintReadWrite)
+	FVector NewLocation;
+	float RandomMovementDelay = 10.0f;
 
 public:	
 
@@ -57,6 +65,8 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	UFUNCTION(BlueprintCallable)
-	bool MoveToLocation(AActor* Target, float Treshold = 10.0f, bool ColideWithTarget = false);
+	bool MoveToTarget(AActor* Target, float Treshold = 10.0f, bool ColideWithTarget = false);
+	UFUNCTION(BlueprintCallable)
+	bool MoveToLocation(FVector Location, float Treshold = 10.0f);
 
 };
