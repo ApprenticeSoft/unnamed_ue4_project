@@ -107,6 +107,12 @@ void AHarvestedPlant::Resize()
 																GetActorLocation(),
 																FRotator(0, 0, 0));
 				//UpdateObjective();
+				if (IsInDemand)
+				{
+					Point->SetPointValue(3);
+					Point->SetColor(237, 85, 59);
+					Point->SetActorScale3D(FVector(1.5, 1.5, 1.5));
+				}
 				Destroy();
 			}
 		}
@@ -138,10 +144,10 @@ void AHarvestedPlant::SetScale(float value)
 void AHarvestedPlant::UpdateObjective()
 {
 	if (CropType == ECropType::Corn)
-		GameState->SetCornObjective(GameState->GetCornObjective() - 1);
+		IsInDemand = GameState->SetCornObjective(GameState->GetCornObjective() - 1);
 	else if (CropType == ECropType::Wheat)
-		GameState->SetWheatObjective(GameState->GetWheatObjective() - 1);
+		IsInDemand = GameState->SetWheatObjective(GameState->GetWheatObjective() - 1);
 	else if (CropType == ECropType::Pumpkin)
-		GameState->SetPumpkinObjective(GameState->GetPumpkinObjective() - 1);
+		IsInDemand = GameState->SetPumpkinObjective(GameState->GetPumpkinObjective() - 1);
 }
 

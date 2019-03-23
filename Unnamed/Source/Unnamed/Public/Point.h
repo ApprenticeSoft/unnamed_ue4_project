@@ -36,6 +36,7 @@ public:
 	virtual void Tick(float DeltaTime) override;
 	int32 GetPointValue();
 	void SetPointValue(int32 value);
+	void SetColor(uint8 R, uint8 G, uint8 B);
 	bool MoveToLocation(FVector Location, float Treshold);
 
 };

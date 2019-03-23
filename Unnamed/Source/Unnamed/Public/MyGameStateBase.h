@@ -84,9 +84,9 @@ public:
 	float GetPulseValue() const;
 
 	// TEST Objectifs
-	void SetCornObjective(int32 value);
-	void SetWheatObjective(int32 value);
-	void SetPumpkinObjective(int32 value);
+	bool SetCornObjective(int32 value);
+	bool SetWheatObjective(int32 value);
+	bool SetPumpkinObjective(int32 value);
 	int32 GetCornObjective() const;
 	int32 GetWheatObjective() const;
 	int32 GetPumpkinObjective() const;

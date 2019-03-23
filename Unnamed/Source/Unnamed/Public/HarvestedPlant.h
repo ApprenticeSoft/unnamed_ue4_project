@@ -38,6 +38,7 @@ protected:
 	void TriggerDisappear();
 	void Resize();
 	bool IsDisappearing = false;
+	bool IsInDemand = false;
 	float DisappearDelay = 4.0f;
 	float Scale = 1.0f;
 	float NewScale = 1.0f;

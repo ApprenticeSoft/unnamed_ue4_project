@@ -8,6 +8,7 @@
 
 class ASlate_Display;
 class AMyGameStateBase;
+class APoint;
 
 UCLASS()
 class UNNAMED_API AMerchant : public ACharacter
@@ -31,6 +32,9 @@ protected:
 	AMyGameStateBase* GameState;
 	void CheckObjective();
 
+	UPROPERTY(EditDefaultsOnly, Category = Setup)
+	TSubclassOf<APoint> PointBlueprint;
+
 	UPROPERTY(BlueprintReadWrite)
 	bool IsBusy = false;
 	UPROPERTY(BlueprintReadWrite)
@@ -45,6 +49,7 @@ protected:
 	void UpdateSlateText(ASlate_Display * Slate);
 	UFUNCTION(BlueprintImplementableEvent, Category = "Interactions")
 	void UpdateSlate();
+	void SpawnPoints(int32 value, FVector Color, float scale, FVector Location);
 
 public:	
 

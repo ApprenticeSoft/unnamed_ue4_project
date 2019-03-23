@@ -9,6 +9,7 @@
 #include "Engine/StaticMeshSocket.h"
 #include "MyGameStateBase.h"
 #include "Slate_Display.h"
+#include "Point.h"
 
 // Sets default values
 AMerchant::AMerchant()
@@ -118,11 +119,24 @@ void AMerchant::PutSlateBack(ASlate_Display * Slate)
 	if (!Slate) { return; }
 	Slate->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
 	Slate->SetActorLocation(Slate->GetDefaultLocation());
+
+	if (Slate->GetObjective() == 0)
+		SpawnPoints(10, FVector(242, 177, 52), 2, Slate->GetActorLocation());
 }
 
 void AMerchant::UpdateSlateText(ASlate_Display * Slate)
 {
 	if (!Slate) { return; }
 	Slate->SetObjective();
+}
+
+void AMerchant::SpawnPoints(int32 value, FVector Color, float scale, FVector Location)
+{
+	APoint* Point = GetWorld()->SpawnActor<APoint>(	PointBlueprint,
+													Location,
+													FRotator(0, 0, 0));
+	Point->SetPointValue(value);
+	Point->SetColor(Color.X, Color.Y, Color.Z);
+	Point->SetActorScale3D(FVector(scale));
 }
 

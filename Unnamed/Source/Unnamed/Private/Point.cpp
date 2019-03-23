@@ -27,7 +27,7 @@ void APoint::BeginPlay()
 
 	//Text->SetText(FString::FromInt(PointValue));
 	Text->SetText(FText::AsNumber(PointValue));
-
+	SetColor(17, 47, 65);
 	Character = dynamic_cast<AUnnamedCharacter*>(GetWorld()->GetFirstPlayerController()->GetPawn());
 }
 
@@ -49,20 +49,16 @@ int32 APoint::GetPointValue()
 void APoint::SetPointValue(int32 value)
 {
 	PointValue = value;
+	Text->SetText(FText::AsNumber(PointValue));
+}
+
+void APoint::SetColor(uint8 R, uint8 G, uint8 B)
+{
+	Text->SetTextRenderColor(FColor(R, G, B));
 }
 
 bool APoint::MoveToLocation(FVector Location, float Treshold)
 {
-	/*
-	FVector WorldDirection;
-	Character->GetScreenToWorldPosition(Character->GetScreenSize().X * 0.5f, Character->GetScreenSize().Y * 0.8f, PointDestination, WorldDirection);
-
-	float Distance = FVector::Distance(Location, PointDestination);
-
-	FVector Direction = FVector(Location - PointDestination) / 500;
-	SetActorLocation(GetActorLocation() + Direction);
-	*/
-
 	MoveDelay -= GetWorld()->DeltaTimeSeconds;
 
 	float Distance = FVector::Distance(Location, GetActorLocation());
