@@ -5,6 +5,7 @@
 
 #include "map"
 #include "PlantSkeletalMeshActor.h"
+#include "Sol.h"
 
 
 AMyGameStateBase::AMyGameStateBase()
@@ -387,4 +388,11 @@ void AMyGameStateBase::Pulse()
 float AMyGameStateBase::GetPulseValue() const
 {
 	return PulseValue;
+}
+
+void AMyGameStateBase::BuyLand()
+{
+	GetWorld()->SpawnActor<ASol>(	SoilBlueprint,
+									FVector(0, 0, 100.1),
+									FRotator(0, 0, 0));
 }

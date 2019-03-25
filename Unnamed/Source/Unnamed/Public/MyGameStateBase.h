@@ -38,6 +38,8 @@ enum class ECurrentMonth : uint8
 	December
 };
 
+class ASol;
+
 UCLASS()
 class UNNAMED_API AMyGameStateBase : public AGameStateBase
 {
@@ -79,6 +81,10 @@ public:
 	bool GetPumpkinSeason() const;
 	float GetSunIntensity() const;
 	float GetPulseValue() const;
+
+
+	UFUNCTION(BlueprintCallable)
+	void BuyLand();
 
 	// Gestion des Objectifs
 	bool SetCornObjective(int32 value);
@@ -129,4 +135,7 @@ protected:
 	int32 WheatObjectiveIndex = 0;
 	int32 PumpkinObjectiveIndex = 0;
 
+
+	UPROPERTY(EditDefaultsOnly, Category = Setup)
+	TSubclassOf<ASol> SoilBlueprint;
 };
