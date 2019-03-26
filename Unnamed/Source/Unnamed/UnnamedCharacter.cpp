@@ -102,6 +102,10 @@ void AUnnamedCharacter::BeginPlay()
 	if (!Basket)
 		UE_LOG(LogTemp, Warning, TEXT("Pas de panier!!!"));
 	
+	// Camera offset
+	NormalSocketOffset = CameraBoom->SocketOffset;
+	AtShopSocketOffset = FVector(CameraBoom->SocketOffset.X, -200, CameraBoom->SocketOffset.Z);
+
 	//Test
 	Controller = UGameplayStatics::GetPlayerController(GetWorld(), 0);
 	Controller->GetViewportSize(ViewportSizeX, ViewportSizeY);
@@ -109,6 +113,7 @@ void AUnnamedCharacter::BeginPlay()
 	UE_LOG(LogTemp, Warning, TEXT("ViewportSizeY: %i"), ViewportSizeY);
 
 	GetScreenToWorldPosition(ViewportSizeX * 0.5f, ViewportSizeY * 0.2f, WorldLocation, WorldDirection);
+
 }
 
 void AUnnamedCharacter::Tick(float DeltaTime)
@@ -121,6 +126,19 @@ void AUnnamedCharacter::Tick(float DeltaTime)
 	{
 		if(!IsBusy)
 			FindTarget(ClosestTarget);
+
+		// if (dynamic_cast<AShop*>(ClosestTarget))
+		if (IsCloseToShop)
+		{
+			if (SocketOffsetLerpAlpha < 1)
+				SocketOffsetLerpAlpha += 2*GetWorld()->DeltaTimeSeconds;
+		}
+		else
+		{
+			if (SocketOffsetLerpAlpha > 0)
+				SocketOffsetLerpAlpha -= 2*GetWorld()->DeltaTimeSeconds;
+		}
+		CameraBoom->SocketOffset = FMath::InterpSinInOut(NormalSocketOffset, AtShopSocketOffset, SocketOffsetLerpAlpha);
 	}
 }
 
@@ -160,7 +178,7 @@ AActor* AUnnamedCharacter::FindTarget(AActor* &ClosestTarget)
 {
 	if (LastSolTarget)
 		LastSolTarget->SetUnselected();
-	/*AActor* */ ClosestTarget = nullptr;
+	ClosestTarget = nullptr;
 
 	auto ItemsInReach = Detector->getOverlappingActors();
 	float ItemDistance = 1000;

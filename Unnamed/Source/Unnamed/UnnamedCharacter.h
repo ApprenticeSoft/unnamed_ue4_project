@@ -115,6 +115,11 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = Setup)
 	TSubclassOf<APlantSkeletalMeshActor> PumpkinBlueprint;
 
+	// Position de la camera
+	FVector NormalSocketOffset;
+	FVector AtShopSocketOffset;
+	float SocketOffsetLerpAlpha = 0;
+
 	// Référence position sur l'écran
 	APlayerController* Controller;
 	int32 ViewportSizeX, ViewportSizeY;
@@ -142,6 +147,8 @@ public:
 	FString PossibleInteractions = "";
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	bool IsAtShop = false;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	bool IsCloseToShop = false;
 
 	void setPossibleInteractionName(FString Name);
 	FString getPossibleInteractionName();

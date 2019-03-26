@@ -42,6 +42,7 @@ void UInteractionDetectorComponent::TickComponent(float DeltaTime, ELevelTick Ti
 		CapsuleDetector->GetOverlappingActors(OUT OverlappingActors);
 	}
 
+	/*
 	setInteractionName("");
 
 	for (const auto* Actor : OverlappingActors)
@@ -49,6 +50,7 @@ void UInteractionDetectorComponent::TickComponent(float DeltaTime, ELevelTick Ti
 		if (Actor == nullptr) { return; }
 		setInteractionName(getInteractionName() + Actor->GetName() + "\n");
 	}
+	*/
 }
 
 void UInteractionDetectorComponent::setInteractionName(FString Name)
