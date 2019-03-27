@@ -183,6 +183,7 @@ void AUnnamedCharacter::CameraDisplacement()
 void AUnnamedCharacter::SetNewCameraOffset(FVector NewOffset)
 {
 	NewCameraOffset = NewOffset;
+	CurrentCameraOffset = CameraBoom->SocketOffset;
 	SocketOffsetLerpAlpha = 0;
 }
 
