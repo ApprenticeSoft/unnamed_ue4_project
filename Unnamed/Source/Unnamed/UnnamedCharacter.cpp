@@ -103,8 +103,9 @@ void AUnnamedCharacter::BeginPlay()
 		UE_LOG(LogTemp, Warning, TEXT("Pas de panier!!!"));
 	
 	// Camera offset
-	NormalSocketOffset = CameraBoom->SocketOffset;
-	AtShopSocketOffset = FVector(CameraBoom->SocketOffset.X, -200, CameraBoom->SocketOffset.Z);
+	DefaultCameraOffset = CameraBoom->SocketOffset;
+	CurrentCameraOffset = CameraBoom->SocketOffset;
+	NewCameraOffset = CameraBoom->SocketOffset;
 
 	//Test
 	Controller = UGameplayStatics::GetPlayerController(GetWorld(), 0);
@@ -127,18 +128,7 @@ void AUnnamedCharacter::Tick(float DeltaTime)
 		if(!IsBusy)
 			FindTarget(ClosestTarget);
 
-		// if (dynamic_cast<AShop*>(ClosestTarget))
-		if (IsCloseToShop)
-		{
-			if (SocketOffsetLerpAlpha < 1)
-				SocketOffsetLerpAlpha += 2*GetWorld()->DeltaTimeSeconds;
-		}
-		else
-		{
-			if (SocketOffsetLerpAlpha > 0)
-				SocketOffsetLerpAlpha -= 2*GetWorld()->DeltaTimeSeconds;
-		}
-		CameraBoom->SocketOffset = FMath::InterpSinInOut(NormalSocketOffset, AtShopSocketOffset, SocketOffsetLerpAlpha);
+		CameraDisplacement();
 	}
 }
 
@@ -172,6 +162,28 @@ void AUnnamedCharacter::MoveUp()
 void AUnnamedCharacter::MoveDown()
 {	
 	PositionX += 150;
+}
+
+void AUnnamedCharacter::CameraDisplacement()
+{
+	if (NewCameraOffset != CurrentCameraOffset)
+	{
+		if (SocketOffsetLerpAlpha < 1) 
+		{
+			SocketOffsetLerpAlpha += 2 * GetWorld()->DeltaTimeSeconds;
+			CameraBoom->SocketOffset = FMath::Lerp(CurrentCameraOffset, NewCameraOffset, SocketOffsetLerpAlpha);
+		}
+		else
+		{
+			CurrentCameraOffset = NewCameraOffset;
+		}
+	}
+}
+
+void AUnnamedCharacter::SetNewCameraOffset(FVector NewOffset)
+{
+	NewCameraOffset = NewOffset;
+	SocketOffsetLerpAlpha = 0;
 }
 
 AActor* AUnnamedCharacter::FindTarget(AActor* &ClosestTarget)

@@ -46,6 +46,9 @@ protected:
 
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
+	void CameraDisplacement();
+	UFUNCTION(BlueprintCallable)
+	void SetNewCameraOffset(FVector NewOffset);
 	void DisplacementOnX();
 	void MoveUp();
 	void MoveDown();
@@ -116,8 +119,10 @@ protected:
 	TSubclassOf<APlantSkeletalMeshActor> PumpkinBlueprint;
 
 	// Position de la camera
-	FVector NormalSocketOffset;
-	FVector AtShopSocketOffset;
+	UPROPERTY(BlueprintReadOnly)
+	FVector DefaultCameraOffset;
+	FVector CurrentCameraOffset;
+	FVector NewCameraOffset;
 	float SocketOffsetLerpAlpha = 0;
 
 	// Référence position sur l'écran
