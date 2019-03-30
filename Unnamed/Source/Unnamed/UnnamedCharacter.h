@@ -47,8 +47,7 @@ protected:
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
 	void CameraDisplacement();
-	UFUNCTION(BlueprintCallable)
-	void SetNewCameraOffset(FVector NewOffset);
+	void CameraRotation();
 	void DisplacementOnX();
 	void MoveUp();
 	void MoveDown();
@@ -107,6 +106,7 @@ protected:
 	UPROPERTY(BlueprintReadWrite)
 	bool IsBusy = false;
 	ASol* LastSolTarget = nullptr;
+	float dilation;
 
 	UPROPERTY(EditDefaultsOnly, Category = Setup)
 	//UClass* ProjectileBluePrint;		// UClass* va afficher la totalités des classes disponibles dans le blueprint alors que TSubclassOf<> n'affiche que la classe choisie
@@ -124,6 +124,14 @@ protected:
 	FVector CurrentCameraOffset;
 	FVector NewCameraOffset;
 	float SocketOffsetLerpAlpha = 0;
+
+	UPROPERTY(BlueprintReadOnly)
+	FRotator DefaultCameraRotation;
+	FRotator CurrentCameraRotation;
+	FRotator NewCameraRotation;
+	float CameraRotationLerpAlpha = 0;
+
+	FVector StartLocation;
 
 	// Référence position sur l'écran
 	APlayerController* Controller;
@@ -159,6 +167,10 @@ public:
 	FString getPossibleInteractionName();
 
 	UFUNCTION(BlueprintCallable)
+	void SetNewCameraOffset(FVector NewOffset);
+	UFUNCTION(BlueprintCallable)
+	void SetNewCameraRotation(FRotator NewOffset);
+	UFUNCTION(BlueprintCallable)
 	bool MoveToLocation(AActor* Target, float Treshold = 10.0f, bool ColideWithTarget = false);
 	UFUNCTION(BlueprintCallable)
 	bool PositionNearSoilTarget(AActor* Target, float Treshold = 120.0f, bool ColideWithTarget = true);
@@ -172,6 +184,8 @@ public:
 	void InteractWithShop();
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "Notifications")
 	void SendNotificationToPlayer();
+
+	FVector GetStartLocation();
 	void GetScreenToWorldPosition(float ScreenPositionX, float ScreenPositionY, FVector& WorldLocation, FVector& WorldDirection);
 	FVector2D GetScreenSize();
 

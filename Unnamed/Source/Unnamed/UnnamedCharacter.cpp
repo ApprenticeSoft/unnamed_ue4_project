@@ -21,6 +21,7 @@
 
 #include "Classes/Kismet/GameplayStatics.h"
 #include "Classes/GameFramework/PlayerController.h"
+#include <algorithm>
 
 AUnnamedCharacter::AUnnamedCharacter()
 {
@@ -106,6 +107,11 @@ void AUnnamedCharacter::BeginPlay()
 	DefaultCameraOffset = CameraBoom->SocketOffset;
 	CurrentCameraOffset = CameraBoom->SocketOffset;
 	NewCameraOffset = CameraBoom->SocketOffset;
+	// Camera rotation
+	DefaultCameraRotation = CameraBoom->RelativeRotation;
+	CurrentCameraRotation = CameraBoom->RelativeRotation;
+	NewCameraRotation = CameraBoom->RelativeRotation;
+	StartLocation = GetActorLocation();
 
 	//Test
 	Controller = UGameplayStatics::GetPlayerController(GetWorld(), 0);
@@ -129,7 +135,9 @@ void AUnnamedCharacter::Tick(float DeltaTime)
 			FindTarget(ClosestTarget);
 
 		CameraDisplacement();
+		CameraRotation();
 	}
+
 }
 
 void AUnnamedCharacter::DisplacementOnX()
@@ -170,7 +178,7 @@ void AUnnamedCharacter::CameraDisplacement()
 	{
 		if (SocketOffsetLerpAlpha < 1) 
 		{
-			SocketOffsetLerpAlpha += 2 * GetWorld()->DeltaTimeSeconds;
+			SocketOffsetLerpAlpha += (2 / dilation)* GetWorld()->DeltaTimeSeconds;
 			CameraBoom->SocketOffset = FMath::Lerp(CurrentCameraOffset, NewCameraOffset, SocketOffsetLerpAlpha);
 		}
 		else
@@ -182,9 +190,34 @@ void AUnnamedCharacter::CameraDisplacement()
 
 void AUnnamedCharacter::SetNewCameraOffset(FVector NewOffset)
 {
+	dilation = UGameplayStatics::GetGlobalTimeDilation(GetWorld());
 	NewCameraOffset = NewOffset;
 	CurrentCameraOffset = CameraBoom->SocketOffset;
 	SocketOffsetLerpAlpha = 0;
+}
+
+void AUnnamedCharacter::CameraRotation()
+{
+	if (NewCameraRotation != CurrentCameraRotation)
+	{
+		if (CameraRotationLerpAlpha < 1)
+		{
+			CameraRotationLerpAlpha += (2 / dilation)* GetWorld()->DeltaTimeSeconds;
+			CameraBoom->SetRelativeRotation(FMath::Lerp(CurrentCameraRotation, NewCameraRotation, CameraRotationLerpAlpha));
+		}
+		else
+		{
+			CurrentCameraRotation = NewCameraRotation;
+		}
+	}
+}
+
+void AUnnamedCharacter::SetNewCameraRotation(FRotator NewRotation)
+{
+	dilation = UGameplayStatics::GetGlobalTimeDilation(GetWorld());
+	NewCameraRotation = NewRotation;
+	CurrentCameraRotation = CameraBoom->RelativeRotation;
+	CameraRotationLerpAlpha = 0;
 }
 
 AActor* AUnnamedCharacter::FindTarget(AActor* &ClosestTarget)
@@ -551,6 +584,11 @@ bool AUnnamedCharacter::PositionNearSoilTarget(AActor * Target, float Treshold, 
 ABasket* AUnnamedCharacter::GetBasket() const
 {
 	return Basket;
+}
+
+FVector AUnnamedCharacter::GetStartLocation()
+{
+	return StartLocation;
 }
 
 void AUnnamedCharacter::GetScreenToWorldPosition(float ScreenPositionX, float ScreenPositionY, FVector & WorldLocation, FVector & WorldDirection)
