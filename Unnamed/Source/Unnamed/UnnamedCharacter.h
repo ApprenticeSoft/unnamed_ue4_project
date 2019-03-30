@@ -48,6 +48,8 @@ protected:
 	virtual void Tick(float DeltaTime) override;
 	void CameraDisplacement();
 	void CameraRotation();
+	void CameraScroll();
+	bool IsCameraScrollable = false;
 	void DisplacementOnX();
 	void MoveUp();
 	void MoveDown();
@@ -186,6 +188,7 @@ public:
 	void SendNotificationToPlayer();
 
 	FVector GetStartLocation();
+	void SetCameraScrollable(bool value);
 	void GetScreenToWorldPosition(float ScreenPositionX, float ScreenPositionY, FVector& WorldLocation, FVector& WorldDirection);
 	FVector2D GetScreenSize();
 

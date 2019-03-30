@@ -400,4 +400,5 @@ void AMyGameStateBase::BuyLand()
 	AUnnamedCharacter* Player = dynamic_cast<AUnnamedCharacter*>(GetWorld()->GetFirstPlayerController()->GetPawn());
 	Player->SetNewCameraOffset(Player->GetActorLocation() - Player->GetStartLocation() + FVector(-1000, 0, 0));
 	Player->SetNewCameraRotation(FRotator(270, 180, 0));
+	Player->SetCameraScrollable(true);
 }

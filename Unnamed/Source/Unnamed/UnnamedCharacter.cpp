@@ -136,6 +136,7 @@ void AUnnamedCharacter::Tick(float DeltaTime)
 
 		CameraDisplacement();
 		CameraRotation();
+		CameraScroll();
 	}
 
 }
@@ -218,6 +219,33 @@ void AUnnamedCharacter::SetNewCameraRotation(FRotator NewRotation)
 	NewCameraRotation = NewRotation;
 	CurrentCameraRotation = CameraBoom->RelativeRotation;
 	CameraRotationLerpAlpha = 0;
+}
+
+void AUnnamedCharacter::CameraScroll()
+{
+	if (IsCameraScrollable)
+	{
+		float MouseX, MouseY;
+		Controller->GetMousePosition(MouseX, MouseY);
+
+		UE_LOG(LogTemp, Warning, TEXT("X: %f, Y: %f"), MouseX, MouseY);
+
+		if (MouseX < 0.15f * ViewportSizeX)
+			CameraBoom->SocketOffset = CameraBoom->SocketOffset + FVector(0, -(1000/dilation) * GetWorld()->DeltaTimeSeconds, 0);
+		else if(MouseX > 0.85f * ViewportSizeX)
+			CameraBoom->SocketOffset = CameraBoom->SocketOffset + FVector(0, (1000 / dilation) * GetWorld()->DeltaTimeSeconds, 0);
+
+		if (MouseY < 0.15f * ViewportSizeY)
+			CameraBoom->SocketOffset = CameraBoom->SocketOffset + FVector(0, 0, (1000 / dilation) * GetWorld()->DeltaTimeSeconds);
+		else if (MouseY > 0.85f * ViewportSizeY)
+			CameraBoom->SocketOffset = CameraBoom->SocketOffset + FVector(0, 0, -(1000 / dilation) * GetWorld()->DeltaTimeSeconds);
+	}
+
+}
+
+void AUnnamedCharacter::SetCameraScrollable(bool value)
+{
+	IsCameraScrollable = value;
 }
 
 AActor* AUnnamedCharacter::FindTarget(AActor* &ClosestTarget)
