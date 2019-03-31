@@ -393,10 +393,11 @@ float AMyGameStateBase::GetPulseValue() const
 
 void AMyGameStateBase::BuyLand()
 {
+	/*
 	GetWorld()->SpawnActor<ASol>(	SoilBlueprint,
 									FVector(0, 0, 100.1),
 									FRotator(0, 0, 0));
-
+	*/
 	AUnnamedCharacter* Player = dynamic_cast<AUnnamedCharacter*>(GetWorld()->GetFirstPlayerController()->GetPawn());
 	Player->SetNewCameraOffset(Player->GetActorLocation() - Player->GetStartLocation() + FVector(-1000, 0, 0));
 	Player->SetNewCameraRotation(FRotator(270, 180, 0));

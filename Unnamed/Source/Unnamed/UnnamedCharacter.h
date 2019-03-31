@@ -188,6 +188,7 @@ public:
 	void SendNotificationToPlayer();
 
 	FVector GetStartLocation();
+	FVector GetDefaultCameraOffset();
 	void SetCameraScrollable(bool value);
 	void GetScreenToWorldPosition(float ScreenPositionX, float ScreenPositionY, FVector& WorldLocation, FVector& WorldDirection);
 	FVector2D GetScreenSize();

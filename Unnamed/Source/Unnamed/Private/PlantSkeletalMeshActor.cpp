@@ -56,6 +56,7 @@ void APlantSkeletalMeshActor::Tick(float DeltaTime)
 		HatchDelay -= GetWorld()->DeltaTimeSeconds;
 		if (HatchDelay < 0)
 			PlantState = EPlantState::Growing;
+
 	}
 	else if (PlantState == EPlantState::Growing)
 	{

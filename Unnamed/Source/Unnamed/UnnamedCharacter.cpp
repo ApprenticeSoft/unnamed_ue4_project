@@ -228,7 +228,7 @@ void AUnnamedCharacter::CameraScroll()
 		float MouseX, MouseY;
 		Controller->GetMousePosition(MouseX, MouseY);
 
-		UE_LOG(LogTemp, Warning, TEXT("X: %f, Y: %f"), MouseX, MouseY);
+		//UE_LOG(LogTemp, Warning, TEXT("X: %f, Y: %f"), MouseX, MouseY);
 
 		if (MouseX < 0.15f * ViewportSizeX)
 			CameraBoom->SocketOffset = CameraBoom->SocketOffset + FVector(0, -(1000/dilation) * GetWorld()->DeltaTimeSeconds, 0);
@@ -239,6 +239,11 @@ void AUnnamedCharacter::CameraScroll()
 			CameraBoom->SocketOffset = CameraBoom->SocketOffset + FVector(0, 0, (1000 / dilation) * GetWorld()->DeltaTimeSeconds);
 		else if (MouseY > 0.85f * ViewportSizeY)
 			CameraBoom->SocketOffset = CameraBoom->SocketOffset + FVector(0, 0, -(1000 / dilation) * GetWorld()->DeltaTimeSeconds);
+
+		// TEST
+		FVector MouseWorldPosition, MouseWorldDireaction;
+		Controller->DeprojectMousePositionToWorld(MouseWorldPosition, MouseWorldDireaction);
+		UE_LOG(LogTemp, Warning, TEXT("MouseWorldPosition: %s, MouseWorldDireaction: %s"), *MouseWorldPosition.ToString(), *MouseWorldDireaction.ToString());
 	}
 
 }
@@ -617,6 +622,11 @@ ABasket* AUnnamedCharacter::GetBasket() const
 FVector AUnnamedCharacter::GetStartLocation()
 {
 	return StartLocation;
+}
+
+FVector AUnnamedCharacter::GetDefaultCameraOffset()
+{
+	return DefaultCameraOffset;
 }
 
 void AUnnamedCharacter::GetScreenToWorldPosition(float ScreenPositionX, float ScreenPositionY, FVector & WorldLocation, FVector & WorldDirection)
