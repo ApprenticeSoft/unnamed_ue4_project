@@ -42,6 +42,7 @@ public:
 	void SetSelected();
 	UFUNCTION(BlueprintImplementableEvent, Category = "Interactions")
 	void SetUnselected();
+	void Highlight(bool value);
 
 	ESoilState GetSoilState();
 	void SetSoilState(ESoilState State);

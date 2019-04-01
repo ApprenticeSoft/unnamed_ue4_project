@@ -142,3 +142,11 @@ void ASol::SetSoilState(ESoilState State)
 	SoilState = State;
 }
 
+void ASol::Highlight(bool value)
+{
+	if(value)
+		DynamicMaterial->SetScalarParameterValue(TEXT("Blend_Dry_Warning"), 1);
+	else
+		DynamicMaterial->SetScalarParameterValue(TEXT("Blend_Dry_Warning"), 0);
+}
+

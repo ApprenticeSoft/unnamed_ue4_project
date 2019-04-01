@@ -241,9 +241,11 @@ void AUnnamedCharacter::CameraScroll()
 			CameraBoom->SocketOffset = CameraBoom->SocketOffset + FVector(0, 0, -(1000 / dilation) * GetWorld()->DeltaTimeSeconds);
 
 		// TEST
+		/*
 		FVector MouseWorldPosition, MouseWorldDireaction;
 		Controller->DeprojectMousePositionToWorld(MouseWorldPosition, MouseWorldDireaction);
 		UE_LOG(LogTemp, Warning, TEXT("MouseWorldPosition: %s, MouseWorldDireaction: %s"), *MouseWorldPosition.ToString(), *MouseWorldDireaction.ToString());
+		*/
 	}
 
 }
