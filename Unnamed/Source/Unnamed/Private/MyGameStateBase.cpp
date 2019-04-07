@@ -3,6 +3,7 @@
 #include "MyGameStateBase.h"
 #include "Classes/Engine/World.h"
 #include "UnnamedCharacter.h"
+#include "Classes/GameFramework/PlayerController.h"
 
 #include "map"
 #include "PlantSkeletalMeshActor.h"
@@ -399,7 +400,8 @@ void AMyGameStateBase::BuyLand()
 									FRotator(0, 0, 0));
 	*/
 	AUnnamedCharacter* Player = dynamic_cast<AUnnamedCharacter*>(GetWorld()->GetFirstPlayerController()->GetPawn());
-	Player->SetNewCameraOffset(Player->GetActorLocation() - Player->GetStartLocation() + FVector(-1000, 0, 0));
-	Player->SetNewCameraRotation(FRotator(270, 180, 0));
+	Player->SetNewCameraOffset(Player->GetActorLocation() - Player->GetStartLocation() + FVector(-500, 0, 0));
+	Player->SetNewCameraRotation(FRotator(-90, 180, 0));
 	Player->SetCameraScrollable(true);
+	Player->SetMouseActive(true);
 }

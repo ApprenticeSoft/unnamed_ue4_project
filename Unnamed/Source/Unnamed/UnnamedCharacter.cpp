@@ -10,6 +10,7 @@
 #include "PlantSkeletalMeshActor.h"
 #include "Sol.h"
 #include "Shop.h"
+#include "Billboard.h"
 #include "Seed.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Engine/SkeletalMeshSocket.h"
@@ -121,6 +122,7 @@ void AUnnamedCharacter::BeginPlay()
 
 	GetScreenToWorldPosition(ViewportSizeX * 0.5f, ViewportSizeY * 0.2f, WorldLocation, WorldDirection);
 
+	SetMouseActive(false);
 }
 
 void AUnnamedCharacter::Tick(float DeltaTime)
@@ -368,6 +370,16 @@ void AUnnamedCharacter::Interact()
 				Shop->OpenShop();
 				UE_LOG(LogTemp, Warning, TEXT("Magasin!!!"));
 			}
+		}
+
+		ABillboard* Billboard = dynamic_cast<ABillboard*>(ClosestTarget);
+		if (!Billboard)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Ce n'est pas un billboard!!"));
+		}
+		else
+		{
+			Billboard->ReadBillboard();
 		}
 	}
 	else
@@ -643,4 +655,11 @@ FVector2D AUnnamedCharacter::GetScreenSize()
 	return FVector2D(ViewportSizeX, ViewportSizeY);
 }
 
+void AUnnamedCharacter::SetMouseActive(bool value)
+{
+	UE_LOG(LogTemp, Warning, TEXT("Activate mouse"));
+	Controller->bEnableClickEvents = value;
+	Controller->bEnableMouseOverEvents = value;
+	Controller->bShowMouseCursor = value;
+}
 

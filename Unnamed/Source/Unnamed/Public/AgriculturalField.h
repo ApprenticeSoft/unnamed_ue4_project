@@ -25,13 +25,15 @@ protected:
 
 
 	//Static Mesh Component to interact with
-	UPROPERTY(VisibleAnywhere)
-	UStaticMeshComponent* CustomMeshComponent;
+	//UPROPERTY(VisibleAnywhere)
+	//UStaticMeshComponent* CustomMeshComponent;
 	//Function to handle the interaction
 	UFUNCTION()
 	void CustomOnBeginMouseOver(UPrimitiveComponent* TouchedComponent);
 	UFUNCTION(BlueprintCallable)
 	void CustomOnEndMouseOver(UPrimitiveComponent* TouchedComponent);
+	UFUNCTION(BlueprintCallable)
+	void CustomOnClick(UPrimitiveComponent* ClickedComp, FKey ButtonPressed);
 
 public:	
 	void SetOwned(bool value);

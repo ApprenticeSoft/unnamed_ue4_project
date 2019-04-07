@@ -169,6 +169,8 @@ public:
 	FString getPossibleInteractionName();
 
 	UFUNCTION(BlueprintCallable)
+	void SetMouseActive(bool value);
+	UFUNCTION(BlueprintCallable)
 	void SetNewCameraOffset(FVector NewOffset);
 	UFUNCTION(BlueprintCallable)
 	void SetNewCameraRotation(FRotator NewOffset);
@@ -186,6 +188,7 @@ public:
 	void InteractWithShop();
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "Notifications")
 	void SendNotificationToPlayer();
+
 
 	FVector GetStartLocation();
 	FVector GetDefaultCameraOffset();
