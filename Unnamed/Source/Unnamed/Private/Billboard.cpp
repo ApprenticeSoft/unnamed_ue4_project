@@ -4,6 +4,7 @@
 #include "Classes/Engine/World.h"
 #include "UnnamedCharacter.h"
 #include "Classes/GameFramework/PlayerController.h"
+#include "Classes/Kismet/GameplayStatics.h"
 
 // Sets default values
 ABillboard::ABillboard()
@@ -31,9 +32,9 @@ void ABillboard::Tick(float DeltaTime)
 void ABillboard::ReadBillboard()
 {
 	UE_LOG(LogTemp, Warning, TEXT("Qu'il y a-t-il d'écrit sur ce panneau ?"));
+	UGameplayStatics::SetGlobalTimeDilation(GetWorld(), 0.001);
 	AUnnamedCharacter* Player = dynamic_cast<AUnnamedCharacter*>(GetWorld()->GetFirstPlayerController()->GetPawn());
-	Player->SetNewCameraOffset(Player->GetActorLocation() - GetActorLocation() + FVector(400, 0, 0));
+	Player->SetNewCameraOffset(Player->GetActorLocation() - GetActorLocation() + FVector(390, 0, -30));
 	Player->SetMouseActive(true);
-	ActivateWidget();
 }
 

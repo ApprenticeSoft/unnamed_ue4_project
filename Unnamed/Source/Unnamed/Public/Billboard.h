@@ -21,7 +21,5 @@ protected:
 
 public:	
 	void ReadBillboard();
-	UFUNCTION(BlueprintImplementableEvent, Category = "Interactions")
-	void ActivateWidget();
 
 };

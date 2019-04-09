@@ -181,7 +181,7 @@ void AUnnamedCharacter::CameraDisplacement()
 	{
 		if (SocketOffsetLerpAlpha < 1) 
 		{
-			SocketOffsetLerpAlpha += (2 / dilation)* GetWorld()->DeltaTimeSeconds;
+			SocketOffsetLerpAlpha += FMath::Clamp((2 / dilation)* GetWorld()->DeltaTimeSeconds, 0.0f, 0.05f);
 			CameraBoom->SocketOffset = FMath::Lerp(CurrentCameraOffset, NewCameraOffset, SocketOffsetLerpAlpha);
 		}
 		else
@@ -205,7 +205,7 @@ void AUnnamedCharacter::CameraRotation()
 	{
 		if (CameraRotationLerpAlpha < 1)
 		{
-			CameraRotationLerpAlpha += (2 / dilation)* GetWorld()->DeltaTimeSeconds;
+			CameraRotationLerpAlpha += FMath::Clamp((2 / dilation)* GetWorld()->DeltaTimeSeconds, 0.0f, 0.05f);
 			CameraBoom->SetRelativeRotation(FMath::Lerp(CurrentCameraRotation, NewCameraRotation, CameraRotationLerpAlpha));
 		}
 		else
@@ -380,6 +380,7 @@ void AUnnamedCharacter::Interact()
 		else
 		{
 			Billboard->ReadBillboard();
+			ReadBillboard();
 		}
 	}
 	else
@@ -448,6 +449,12 @@ bool AUnnamedCharacter::CheckIfCanPlantSeed()
 		return GameState->GetPumpkinSeason();
 	else
 		return false;
+}
+
+bool AUnnamedCharacter::BuyLand()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Buy Land"));
+	return true;
 }
 
 /*

@@ -186,8 +186,12 @@ public:
 	void InteractWithPlant();
 	UFUNCTION(BlueprintImplementableEvent, Category = "Interactions")
 	void InteractWithShop();
-	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "Notifications")
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "Widget")
 	void SendNotificationToPlayer();
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "Widget")
+	void ReadBillboard();
+	UFUNCTION(BlueprintCallable, Category = "Widget")
+	bool BuyLand();
 
 
 	FVector GetStartLocation();
