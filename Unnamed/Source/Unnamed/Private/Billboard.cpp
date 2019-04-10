@@ -30,11 +30,15 @@ void ABillboard::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	Disapear();
 }
 
+/*
+* Fonction ralentissant le temps et déplaçant la caméra au niveau du panneau pour pouvoir le lire.
+* Affiche aussi le curseur de la sourie pour pouvoir intéragir avec le HUD.
+*/
 void ABillboard::ReadBillboard()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Qu'il y a-t-il d'écrit sur ce panneau ?"));
 	UGameplayStatics::SetGlobalTimeDilation(GetWorld(), 0.001);
 	AUnnamedCharacter* Player = dynamic_cast<AUnnamedCharacter*>(GetWorld()->GetFirstPlayerController()->GetPawn());
 	Player->SetNewCameraOffset(Player->GetActorLocation() - GetActorLocation() + FVector(390, 0, -30));
@@ -62,10 +66,41 @@ void ABillboard::BuyField()
 
 	// Activation de la simulation physique du panneau 
 	FindComponentByClass<UStaticMeshComponent>()->SetSimulatePhysics(true);
+	//FindComponentByClass<UStaticMeshComponent>()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
 	// Inclinaison du panneau pour initier sa chute
 	FRotator ActorRotation = GetActorRotation();
 	ActorRotation.Pitch += 15;
 	SetActorRotation(ActorRotation);
+
+	// Initiation de la fonction pour faire disparaitre le panneau
+	IsBought = true;
+}
+
+/*
+* Fonction appelée pour faire disparaitre le panneau une fois que le champs a été acheté
+*/
+void ABillboard::Disapear()
+{
+	if (IsBought) 
+	{
+		DisapearDelay -= GetWorld()->DeltaTimeSeconds;
+
+		if (DisapearDelay < 0)
+		{
+			if (FindComponentByClass<UStaticMeshComponent>()->IsSimulatingPhysics())
+			{
+				FindComponentByClass<UStaticMeshComponent>()->SetSimulatePhysics(false);
+				FindComponentByClass<UStaticMeshComponent>()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+			}
+
+			SetActorLocation(GetActorLocation() + FVector(0, 0, -0.2f));
+
+			if (GetActorLocation().Z < 90.0f)
+			{
+				Destroy();
+			}
+		}
+	}
 }
 
