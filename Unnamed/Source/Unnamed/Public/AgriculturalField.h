@@ -20,7 +20,9 @@ protected:
 	virtual void Tick(float DeltaTime) override;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = Setup)
-	bool IsOwned = false;
+	bool IsOwned = false; 
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = Setup)
+	int32 Price = 20;
 	TArray<AActor*> Children;
 
 
@@ -39,4 +41,5 @@ public:
 	void SetOwned(bool value);
 	bool GetOwned();
 	void Buy();
+	int32 GetPrice() const;
 };

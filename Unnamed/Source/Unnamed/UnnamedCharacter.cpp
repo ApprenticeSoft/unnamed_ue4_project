@@ -379,6 +379,7 @@ void AUnnamedCharacter::Interact()
 		}
 		else
 		{
+			SetInteractionTarget(Billboard);
 			Billboard->ReadBillboard();
 			ReadBillboard();
 		}
@@ -451,9 +452,32 @@ bool AUnnamedCharacter::CheckIfCanPlantSeed()
 		return false;
 }
 
+/*
+* Fonction appelée quand on appuis sur le bouton "Buy" pour acheter un champs.
+* La fonction vérifie si on a assez de point pour acheter le champs,
+* puis détermine l'action appropriée.
+*/
 bool AUnnamedCharacter::BuyLand()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Buy Land"));
+	auto Billboard = dynamic_cast<ABillboard*>(InteractionTarget);
+
+	if (Billboard)
+	{
+		if (GameState->GetPointNumber() > Billboard->GetPrice() - 1)
+		{
+			Billboard->BuyField();
+		}
+		else
+		{
+			NotificationString = "You don't have enough money to buy this field";
+			SendNotificationToPlayer();
+		}
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Pas de billboard"));
+	}
+
 	return true;
 }
 

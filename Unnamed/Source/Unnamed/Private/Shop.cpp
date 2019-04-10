@@ -16,9 +16,6 @@ AShop::AShop()
 
 	Shop->OnComponentBeginOverlap.AddDynamic(this, &AShop::OnOverlapBegin);
 	Shop->OnComponentEndOverlap.AddDynamic(this, &AShop::OnOverlapEnd);
-	
-
-
 }
 
 // Called when the game starts or when spawned

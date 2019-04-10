@@ -4,6 +4,7 @@
 #include "Components/StaticMeshComponent.h"
 #include "Components/BoxComponent.h"
 #include "Sol.h"
+#include "Billboard.h"
 
 // Sets default values
 AAgriculturalField::AAgriculturalField()
@@ -30,8 +31,10 @@ void AAgriculturalField::BeginPlay()
 	if (!IsOwned)
 		for (AActor* Child : Children)
 		{
-			if(dynamic_cast<ASol*>(Child))
+			if (dynamic_cast<ASol*>(Child))
 				Child->SetActorEnableCollision(false);
+			else if (dynamic_cast<ABillboard*>(Child))
+				dynamic_cast<ABillboard*>(Child)->SetPrice(Price);
 		}
 
 	UE_LOG(LogTemp, Warning, TEXT("Children.Num(): %i"), Children.Num());
@@ -79,5 +82,10 @@ void AAgriculturalField::CustomOnEndMouseOver(UPrimitiveComponent* TouchedCompon
 void AAgriculturalField::CustomOnClick(UPrimitiveComponent* ClickedComp, FKey ButtonPressed)
 {
 	UE_LOG(LogTemp, Warning, TEXT("Click C++"));
+}
+
+int32 AAgriculturalField::GetPrice() const
+{
+	return Price;
 }
 

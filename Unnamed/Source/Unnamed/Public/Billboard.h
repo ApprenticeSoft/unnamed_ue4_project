@@ -18,8 +18,12 @@ public:
 protected:
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
+	int32 Price = 0;
 
 public:	
 	void ReadBillboard();
+	int32 GetPrice() const;
+	void SetPrice(int32 value);
+	void BuyField();
 
 };
