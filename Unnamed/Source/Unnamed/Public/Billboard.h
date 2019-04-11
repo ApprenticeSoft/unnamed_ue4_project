@@ -6,6 +6,8 @@
 #include "GameFramework/Actor.h"
 #include "Billboard.generated.h"
 
+class UTextRenderComponent;
+
 UCLASS()
 class UNNAMED_API ABillboard : public AActor
 {
@@ -18,8 +20,9 @@ public:
 protected:
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
+	UTextRenderComponent* TextPrice = nullptr;
 	int32 Price = 0;
-	float DisapearDelay = 3.0f;
+	float DisapearDelay = 2.0f;
 	bool IsBought = false;
 
 	void Disapear();

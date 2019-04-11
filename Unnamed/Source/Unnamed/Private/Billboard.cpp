@@ -8,6 +8,7 @@
 #include "Classes/GameFramework/PlayerController.h"
 #include "Classes/Kismet/GameplayStatics.h"
 #include "Components/StaticMeshComponent.h"
+#include "Classes/Components/TextRenderComponent.h"
 
 // Sets default values
 ABillboard::ABillboard()
@@ -21,7 +22,10 @@ ABillboard::ABillboard()
 void ABillboard::BeginPlay()
 {
 	Super::BeginPlay();
-	UE_LOG(LogTemp, Warning, TEXT("Parent actor: %s"), *GetParentActor()->GetName());
+
+
+	
+	//UE_LOG(LogTemp, Warning, TEXT("Prix: %s"), *TextPrice->Text.ToString());
 	
 }
 
@@ -53,6 +57,13 @@ int32 ABillboard::GetPrice() const
 void ABillboard::SetPrice(int32 value)
 {
 	Price = value;
+
+	// Modification du text
+	auto TextArray = GetComponentsByClass(UTextRenderComponent::StaticClass());
+	TextPrice = (UTextRenderComponent*)TextArray[1];
+	FString test(TEXT("Price: ") + FString::FromInt(Price));
+	//FText test = FText::AsNumber(Price);
+	TextPrice->SetText(test);
 }
 
 void ABillboard::BuyField()
@@ -96,7 +107,7 @@ void ABillboard::Disapear()
 
 			SetActorLocation(GetActorLocation() + FVector(0, 0, -0.2f));
 
-			if (GetActorLocation().Z < 90.0f)
+			if (GetActorLocation().Z < 40.0f)
 			{
 				Destroy();
 			}
