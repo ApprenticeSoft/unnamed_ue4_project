@@ -12,11 +12,13 @@
 #include "Shop.h"
 #include "Billboard.h"
 #include "Seed.h"
+#include "Bush.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Engine/SkeletalMeshSocket.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "WateringCan.h"
 #include "Basket.h"
+#include "Machete.h"
 #include "HarvestedPlant.h"
 #include "MyGameStateBase.h"
 
@@ -97,12 +99,14 @@ void AUnnamedCharacter::BeginPlay()
 	GetAttachedActors(tempChildActors);
 	tempChildActors.FindItemByClass<class AWateringCan>(&Watering_can);
 	tempChildActors.FindItemByClass<class ABasket>(&Basket);
+	tempChildActors.FindItemByClass<class AMachete>(&Machete);
 
 	if (!Watering_can)
 		UE_LOG(LogTemp, Warning, TEXT("Pas d'arrosoir!!!"));
-	
 	if (!Basket)
 		UE_LOG(LogTemp, Warning, TEXT("Pas de panier!!!"));
+	if (!Machete)
+		UE_LOG(LogTemp, Warning, TEXT("Pas de machete!!!"));
 	
 	// Camera offset
 	DefaultCameraOffset = CameraBoom->SocketOffset;
@@ -270,6 +274,13 @@ AActor* AUnnamedCharacter::FindTarget(AActor* &ClosestTarget)
 		for (const auto* Actor : ItemsInReach)
 		{
 			if (Actor == nullptr) { return nullptr; }
+			// Si un buisson est présent dans la liste, on donne la priorité au buisson
+			if (dynamic_cast<ABush*>(const_cast<AActor*>(Actor))) 
+			{
+				ClosestTarget = const_cast<AActor*>(Actor);
+				return ClosestTarget;
+			}
+
 			float Distance = FVector::Distance(Actor->GetActorLocation(), GetActorLocation());
 			//UE_LOG(LogTemp, Warning, TEXT("Distance avec %s: %f"), *Actor->GetName(), Distance);
 
@@ -311,6 +322,13 @@ void AUnnamedCharacter::Interact()
 	if (!IsBusy) 
 	{
 		if (!ClosestTarget) { return; }
+
+		ABush* Bush = dynamic_cast<ABush*>(ClosestTarget);
+		if (Bush)
+		{
+			SetInteractionTarget(Bush);
+			InteractWithBush();
+		}
 
 		ASol* Sol = dynamic_cast<ASol*>(ClosestTarget);
 		if (!Sol)
@@ -500,6 +518,24 @@ void AUnnamedCharacter::DeactivateWateringCan()
 }
 
 /*
+* Fonction qui fait apparaitre la  machette
+*/
+void AUnnamedCharacter::ActivateMachete()
+{
+	if (Machete)
+		Machete->Activate();
+}
+
+/*
+* Fonction qui fait disparaitre la  machette
+*/
+void AUnnamedCharacter::DeactivateMachete()
+{
+	if (Machete)
+		Machete->Deactivate();
+}
+
+/*
 * Fonction qui attache le panier à la main du personnage
 */
 void AUnnamedCharacter::PutBasketInHand()
@@ -521,6 +557,15 @@ void AUnnamedCharacter::PutBasketOnBack()
 void AUnnamedCharacter::EmptyBasket()
 {
 	Basket->ReleaseCrop();
+}
+
+void AUnnamedCharacter::ResetState()
+{
+	Controller->ResetIgnoreMoveInput();
+	EnableInput(Controller);
+	GetMesh()->SetAnimationMode(EAnimationMode::AnimationBlueprint);
+	IsBusy = false;
+	DeactivateMachete();
 }
 
 /*

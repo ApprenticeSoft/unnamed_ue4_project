@@ -63,7 +63,7 @@ void ABillboard::SetPrice(int32 value)
 	TextPrice = (UTextRenderComponent*)TextArray[1];
 	FString test(TEXT("Price: ") + FString::FromInt(Price));
 	//FText test = FText::AsNumber(Price);
-	TextPrice->SetText(test);
+	TextPrice->SetText(FText::FromString(test));
 }
 
 void ABillboard::BuyField()

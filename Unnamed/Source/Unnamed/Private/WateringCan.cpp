@@ -3,7 +3,6 @@
 #include "WateringCan.h"
 #include "Components/StaticMeshComponent.h"
 #include "Engine/SkeletalMeshSocket.h"
-#include "Components/StaticMeshComponent.h"
 #include "Engine/StaticMeshSocket.h"
 #include "Water.h"
 

@@ -24,6 +24,7 @@ class UAnimSequence;
 class ASeed;
 class AWateringCan;
 class ABasket;
+class AMachete;
 class ASol;
 
 UCLASS(config=Game)
@@ -64,6 +65,7 @@ protected:
 	UInteractionDetectorComponent* Detector = nullptr;
 	AWateringCan* Watering_can = nullptr;
 	ABasket* Basket = nullptr;
+	AMachete* Machete = nullptr;
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Anims")
 	UAnimSequence *MyAnimSequence;
 
@@ -81,6 +83,10 @@ protected:
 	void ActivateWateringCan();
 	UFUNCTION(BlueprintCallable)
 	void DeactivateWateringCan();
+	UFUNCTION(BlueprintCallable)
+	void ActivateMachete();
+	UFUNCTION(BlueprintCallable)
+	void DeactivateMachete();
 	UFUNCTION(BlueprintCallable)
 	void PutBasketInHand();
 	UFUNCTION(BlueprintCallable)
@@ -178,6 +184,8 @@ public:
 	bool MoveToLocation(AActor* Target, float Treshold = 10.0f, bool ColideWithTarget = false);
 	UFUNCTION(BlueprintCallable)
 	bool PositionNearSoilTarget(AActor* Target, float Treshold = 120.0f, bool ColideWithTarget = true);
+	UFUNCTION(BlueprintCallable)
+	void ResetState();
 	UFUNCTION(BlueprintImplementableEvent, Category = "Interactions")
 	void Sow();
 	UFUNCTION(BlueprintImplementableEvent, Category = "Interactions")
@@ -186,6 +194,8 @@ public:
 	void InteractWithPlant();
 	UFUNCTION(BlueprintImplementableEvent, Category = "Interactions")
 	void InteractWithShop();
+	UFUNCTION(BlueprintImplementableEvent, Category = "Interactions")
+	void InteractWithBush();
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "Widget")
 	void SendNotificationToPlayer();
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "Widget")
