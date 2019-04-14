@@ -6,6 +6,9 @@
 #include "GameFramework/Actor.h"
 #include "Bush.generated.h"
 
+class UActorComponent;
+class ASingleLeave;
+
 UCLASS()
 class UNNAMED_API ABush : public AActor
 {
@@ -18,6 +21,17 @@ public:
 protected:
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
+
+	UPROPERTY(EditDefaultsOnly, Category = Setup)
+	TSubclassOf<ASingleLeave> SingleLeaveBluePrint;
+
+	TArray<UActorComponent*> Meshes;
+	bool IsLeaning = false;
+	FRotator DefaultRotator, NewRotator;
+	float LeaningAlfa = 0;
+	void Impact();
+	void RotateBack();
+	void SpawnLeaves(FVector Location, FVector ImpulseDirection);
 
 public:	
 	UFUNCTION(BlueprintCallable)

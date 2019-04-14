@@ -26,6 +26,9 @@ protected:
 	void Disapear();
 	float DisapearDelay = 5.0f;
 
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = Setup)
+	bool IsBushLeave = false;
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;

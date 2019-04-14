@@ -21,16 +21,19 @@ void ASingleLeave::BeginPlay()
 
 	GameState = dynamic_cast<AMyGameStateBase*>(GetWorld()->GetGameState());
 
-	// Retourne le premier components de la class voulue
-	auto Mesh = FindComponentByClass<UStaticMeshComponent>();
-	auto material = Mesh->GetMaterial(0);
+	if (!IsBushLeave)
+	{
+		// Retourne le premier components de la class voulue
+		auto Mesh = FindComponentByClass<UStaticMeshComponent>();
+		auto material = Mesh->GetMaterial(0);
 
-	// Création du Dynamic Material Instance
-	DynamicMaterial = UMaterialInstanceDynamic::Create(material, NULL);
-	Mesh->SetMaterial(0, DynamicMaterial);
+		// Création du Dynamic Material Instance
+		DynamicMaterial = UMaterialInstanceDynamic::Create(material, NULL);
+		Mesh->SetMaterial(0, DynamicMaterial);
 
-	// Couleur aléatoire
-	DynamicMaterial->SetScalarParameterValue(TEXT("Blend"), UKismetMathLibrary::RandomFloatInRange(0.0f, 1.0f));
+		// Couleur aléatoire
+		DynamicMaterial->SetScalarParameterValue(TEXT("Blend"), UKismetMathLibrary::RandomFloatInRange(0.0f, 1.0f));
+	}
 
 	DisapearDelay = UKismetMathLibrary::RandomFloatInRange(1.0, 10.0f);
 }
@@ -45,17 +48,30 @@ void ASingleLeave::Tick(float DeltaTime)
 
 void ASingleLeave::Disapear()
 {
-	if (GameState->GetMonth() == ECurrentMonth::December)
+	if (!IsBushLeave)
 	{
-		DisapearDelay -= GetWorld()->DeltaTimeSeconds;
+		if (GameState->GetMonth() == ECurrentMonth::December)
+		{
+			DisapearDelay -= GetWorld()->DeltaTimeSeconds;
+			if (DisapearDelay < 0)
+			{
+				SetActorScale3D(GetActorScale3D() - 0.3f * GetWorld()->DeltaTimeSeconds);
+
+				if (GetActorScale3D().X < 0)
+					Destroy();
+			}
+		}
+	}
+	else
+	{
+		DisapearDelay -= 0.5f * GetWorld()->DeltaTimeSeconds;
 		if (DisapearDelay < 0)
 		{
-			SetActorScale3D(GetActorScale3D() - 0.3f * GetWorld()->DeltaTimeSeconds);
+			SetActorScale3D(GetActorScale3D() - 0.4f * GetWorld()->DeltaTimeSeconds);
 
 			if (GetActorScale3D().X < 0)
 				Destroy();
 		}
 	}
-
 }
 
