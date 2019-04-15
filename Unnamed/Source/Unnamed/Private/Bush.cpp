@@ -56,9 +56,7 @@ void ABush::ClearBush()
 void ABush::Impact()
 {
 	FVector ActorDirection = GetActorLocation() - GetWorld()->GetFirstPlayerController()->GetPawn()->GetActorLocation();
-	UE_LOG(LogTemp, Warning, TEXT("ActorDirection.ToString(): %s"), *ActorDirection.ToString());
 	FVector2D ActorDirection2D(ActorDirection.X, ActorDirection.Y);
-	UE_LOG(LogTemp, Warning, TEXT("ActorDirection2D.Size(): %f"), ActorDirection2D.Size());
 	ActorDirection2D.Normalize();
 
 	FVector2D DifferenceVector = ActorDirection2D - FVector2D(-1, 0);
@@ -72,30 +70,13 @@ void ABush::Impact()
 	IsLeaning = true;
 
 
-	// TEST pour faire apparaitre des feuilles
+	// Apparition des feuilles
 	ActorDirection2D = FVector2D(ActorDirection.X, ActorDirection.Y);
 
 	SpawnLeaves(	FVector(ActorDirection2D.X / UKismetMathLibrary::RandomFloatInRange(1.0, 2.0),
 							ActorDirection2D.Y / UKismetMathLibrary::RandomFloatInRange(1.0, 2.0),
 							50.0),
 					ActorDirection);
-
-	/*
-	for (int i = 0; i < 6; i++)
-	{
-		auto Leave = GetWorld()->SpawnActor<ASingleLeave>(	SingleLeaveBluePrint,
-															GetActorLocation() + FVector(	ActorDirection2D.X / UKismetMathLibrary::RandomFloatInRange(1.0,2.0), 
-																							ActorDirection2D.Y / UKismetMathLibrary::RandomFloatInRange(1.0, 2.0), 
-																							50.0),
-															UKismetMathLibrary::RandomRotator());
-		auto mesh = Leave->FindComponentByClass<UStaticMeshComponent>();
-	
-		mesh->AddImpulse(	UKismetMathLibrary::RandomUnitVectorInConeInDegrees(ActorDirection, 120.0)*500,
-							NAME_None,
-							true);
-		UE_LOG(LogTemp, Warning, TEXT("Launch"));
-	}
-	*/
 }
 
 void ABush::RotateBack()
@@ -120,18 +101,11 @@ void ABush::SpawnLeaves(FVector Location, FVector ImpulseDirection)
 		auto Leave = GetWorld()->SpawnActor<ASingleLeave>(	SingleLeaveBluePrint,
 															GetActorLocation() + Location, 
 															UKismetMathLibrary::RandomRotator());
-		auto mesh = Leave->FindComponentByClass<UStaticMeshComponent>();
-		/*
-		mesh->AddImpulse(	FVector(	UKismetMathLibrary::RandomIntegerInRange(2,6) * ActorDirection2D.X,
-										UKismetMathLibrary::RandomIntegerInRange(2, 6) * ActorDirection2D.Y,
-										80.0),
+		auto Mesh = Leave->FindComponentByClass<UStaticMeshComponent>();
+
+		Mesh->AddImpulse(	UKismetMathLibrary::RandomUnitVectorInConeInDegrees(ImpulseDirection, 120.0) * 500,
 							NAME_None,
 							true);
-		*/
-		mesh->AddImpulse(	UKismetMathLibrary::RandomUnitVectorInConeInDegrees(ImpulseDirection, 120.0) * 500,
-							NAME_None,
-							true);
-		UE_LOG(LogTemp, Warning, TEXT("Launch"));
 	}
 }
 
