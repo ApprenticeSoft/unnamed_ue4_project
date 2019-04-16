@@ -8,6 +8,7 @@
 
 class UActorComponent;
 class ASingleLeave;
+class ASol;
 
 UCLASS()
 class UNNAMED_API ABush : public AActor
@@ -32,8 +33,10 @@ protected:
 	void Impact();
 	void RotateBack();
 	void SpawnLeaves(FVector Location, FVector ImpulseDirection);
+	ASol* Soil;
 
 public:	
 	UFUNCTION(BlueprintCallable)
 	void ClearBush();
+	void SetSoil(ASol* NewSoil);
 };

@@ -9,6 +9,7 @@
 #include "GameFramework/PlayerController.h"
 #include "UnnamedCharacter.h"
 #include "MyGameStateBase.h"
+#include "Bush.h"
 
 // Sets default values
 ASol::ASol()
@@ -33,6 +34,11 @@ void ASol::BeginPlay()
 	DynamicMaterial = UMaterialInstanceDynamic::Create(material, NULL);
 	Plane->SetMaterial(0, DynamicMaterial);
 	
+	auto Bush = GetWorld()->SpawnActor<ABush>(	BushBlueprint,
+												GetActorLocation(),
+												FRotator(0, 0, 0));
+	BushArray.Add(Bush);
+	Bush->SetSoil(this);
 }
 
 // Called every frame
@@ -74,6 +80,7 @@ void ASol::ClearPlants()
 
 void ASol::UpdateHumidity()
 {
+	UE_LOG(LogTemp, Warning, TEXT("Humidity: %f"), Humidity);
 	Humidity -= EvaporationFactor * GameState->GetSunIntensity() * GetWorld()->DeltaTimeSeconds;
 	if (Humidity < 0)
 	{
@@ -92,6 +99,7 @@ void ASol::NotifyDryness()
 
 void ASol::SetHumidity(float value)
 {
+	UE_LOG(LogTemp, Warning, TEXT("Activate!"));
 	Humidity += value;
 	if (Humidity > 100)
 		Humidity = 100;

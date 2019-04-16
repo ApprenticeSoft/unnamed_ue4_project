@@ -11,12 +11,14 @@ UENUM(BlueprintType)
 enum class ESoilState : uint8
 {
 	Dry,
-	Wet
+	Wet,
+	Bush
 };
 
 class APlantSkeletalMeshActor;
 class UMaterialInstanceDynamic;
 class AMyGameStateBase;
+class ABush;
 
 UCLASS()
 class UNNAMED_API ASol : public AActor
@@ -50,13 +52,14 @@ public:
 protected:
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
-	ESoilState SoilState = ESoilState::Wet;
+	ESoilState SoilState = ESoilState::Bush;
 	AMyGameStateBase* GameState;
 
 private:
 	UPROPERTY(EditDefaultsOnly, Category = Setup)
 	//UClass* ProjectileBluePrint;		// UClass* va afficher la totalités des classes disponibles dans le blueprint alors que TSubclassOf<> n'affiche que la classe choisie
-	TSubclassOf<APlantSkeletalMeshActor> MaisBlueprint;
+	TSubclassOf<ABush> BushBlueprint;
+	TArray<ABush*> BushArray;
 	TArray<APlantSkeletalMeshActor*> PlanteSurLeSol;
 	UMaterialInstanceDynamic* DynamicMaterial;
 	float const HumidityMax = 100.0f;

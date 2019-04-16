@@ -7,6 +7,7 @@
 #include "SingleLeave.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Components/PrimitiveComponent.h"
+#include "Sol.h"
 
 // Sets default values
 ABush::ABush()
@@ -25,7 +26,6 @@ void ABush::BeginPlay()
 
 	Meshes = GetComponentsByClass(UStaticMeshComponent::StaticClass());
 	UE_LOG(LogTemp, Warning, TEXT("Meshes.Num(): %i"), Meshes.Num());
-
 }
 
 // Called every frame
@@ -49,6 +49,7 @@ void ABush::ClearBush()
 	else
 	{
 		SpawnLeaves(FVector(0,0,0), FVector(1,1,1));
+		Soil->SetHumidity(100);
 		Destroy();
 	}
 }
@@ -107,5 +108,10 @@ void ABush::SpawnLeaves(FVector Location, FVector ImpulseDirection)
 							NAME_None,
 							true);
 	}
+}
+
+void ABush::SetSoil(ASol* NewSoil)
+{
+	Soil = NewSoil;
 }
 
