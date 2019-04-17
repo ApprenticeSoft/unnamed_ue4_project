@@ -327,7 +327,16 @@ void AUnnamedCharacter::Interact()
 		if (Bush)
 		{
 			SetInteractionTarget(Bush);
-			InteractWithBush();
+
+			if (Bush->IsInteractionEnabled())
+			{
+				InteractWithBush();
+			}
+			else
+			{
+				NotificationString = "You need to buy this field";
+				SendNotificationToPlayer();
+			}
 		}
 
 		ASol* Sol = dynamic_cast<ASol*>(ClosestTarget);

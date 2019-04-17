@@ -4,6 +4,7 @@
 #include "Components/StaticMeshComponent.h"
 #include "Components/BoxComponent.h"
 #include "Sol.h"
+#include "Bush.h"
 #include "Billboard.h"
 
 // Sets default values
@@ -31,7 +32,7 @@ void AAgriculturalField::BeginPlay()
 	if (!IsOwned)
 		for (AActor* Child : Children)
 		{
-			if (dynamic_cast<ASol*>(Child))
+			if (dynamic_cast<ASol*>(Child) || dynamic_cast<ABush*>(Child))
 				Child->SetActorEnableCollision(false);
 			else if (dynamic_cast<ABillboard*>(Child))
 				dynamic_cast<ABillboard*>(Child)->SetPrice(Price);

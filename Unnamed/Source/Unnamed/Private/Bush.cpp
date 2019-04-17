@@ -34,6 +34,12 @@ void ABush::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	RotateBack();
+
+	if (Soil)
+	{
+		if (GetActorEnableCollision() != Soil->GetActorEnableCollision())
+			SetActorEnableCollision(Soil->GetActorEnableCollision());
+	}
 }
 
 void ABush::ClearBush()
@@ -44,12 +50,12 @@ void ABush::ClearBush()
 
 		Meshes[0]->DestroyComponent();
 		Meshes.RemoveAt(0);
-
 	}
 	else
 	{
 		SpawnLeaves(FVector(0,0,0), FVector(1,1,1));
-		Soil->SetHumidity(100);
+		if(Soil != nullptr)
+			Soil->SetHumidity(100);
 		Destroy();
 	}
 }
@@ -113,5 +119,20 @@ void ABush::SpawnLeaves(FVector Location, FVector ImpulseDirection)
 void ABush::SetSoil(ASol* NewSoil)
 {
 	Soil = NewSoil;
+}
+
+ASol* ABush::GetSoil() const
+{
+	return Soil;
+}
+
+bool ABush::IsInteractionEnabled()
+{
+	if (Soil != nullptr)
+	{
+		if (!Soil->GetActorEnableCollision())
+			return false;
+	}
+	return true;
 }
 

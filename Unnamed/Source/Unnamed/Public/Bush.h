@@ -33,10 +33,12 @@ protected:
 	void Impact();
 	void RotateBack();
 	void SpawnLeaves(FVector Location, FVector ImpulseDirection);
-	ASol* Soil;
+	ASol* Soil = nullptr;
 
 public:	
 	UFUNCTION(BlueprintCallable)
 	void ClearBush();
 	void SetSoil(ASol* NewSoil);
+	ASol* GetSoil() const;
+	bool IsInteractionEnabled();
 };

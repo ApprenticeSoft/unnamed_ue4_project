@@ -9,6 +9,7 @@
 #include "GameFramework/PlayerController.h"
 #include "UnnamedCharacter.h"
 #include "MyGameStateBase.h"
+#include "Kismet/KismetMathLibrary.h"
 #include "Bush.h"
 
 // Sets default values
@@ -34,10 +35,9 @@ void ASol::BeginPlay()
 	DynamicMaterial = UMaterialInstanceDynamic::Create(material, NULL);
 	Plane->SetMaterial(0, DynamicMaterial);
 	
-	auto Bush = GetWorld()->SpawnActor<ABush>(	BushBlueprint,
+	ABush* Bush = GetWorld()->SpawnActor<ABush>(BushBlueprint,
 												GetActorLocation(),
-												FRotator(0, 0, 0));
-	BushArray.Add(Bush);
+												FRotator(0, (float)(UKismetMathLibrary::RandomIntegerInRange(10,180)), 0));
 	Bush->SetSoil(this);
 }
 
@@ -52,35 +52,54 @@ void ASol::Tick(float DeltaTime)
 		NotifyDryness();
 }
 
+/*
+* Fonction qui retourne le nombre de plantes présentent sur le sol.
+*/
 int32 ASol::GetPlantNumber()
 {
 	return PlanteSurLeSol.Num();
 }
 
+/*
+* Fonction qui permet d'ajouter une plante sur le sol.
+*/
 void ASol::AddPlant(APlantSkeletalMeshActor* Plant)
 {
 	if (!Plant) { return; }
 	PlanteSurLeSol.Add(Plant);
 }
 
+/*
+* Fonction qui enlève et retourne une plante du sol.
+*/
 APlantSkeletalMeshActor* ASol::PopPlant()
 {
 	return PlanteSurLeSol.Pop();
 }
 
+/*
+* Fonction qui retourne la première plante du sol.
+*/
 APlantSkeletalMeshActor* ASol::GetPlant()
 {
 	return PlanteSurLeSol[0];
 }
 
+/*
+* Fonction qui éfface toutes les plantes présentent sur le sol.
+*/
 void ASol::ClearPlants()
 {
 	PlanteSurLeSol.Empty();
 }
 
+/*
+* Fonction qui met à jour le niveau d'humidité en fonction
+* du temps, de l'intensité du soleil, et 
+* d'un facteur d'évaporation qui dépend de la plante présente sur le sol.
+*/
 void ASol::UpdateHumidity()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Humidity: %f"), Humidity);
 	Humidity -= EvaporationFactor * GameState->GetSunIntensity() * GetWorld()->DeltaTimeSeconds;
 	if (Humidity < 0)
 	{
@@ -90,16 +109,19 @@ void ASol::UpdateHumidity()
 	DynamicMaterial->SetScalarParameterValue(TEXT("Blend_Humidity"), Humidity / HumidityMax);
 }
 
+/*
+* Fonction qui permet de signaler visuellement la sécheresse du sol.
+*/
 void ASol::NotifyDryness()
 {
-	//DrynessWarningIndex += 8*GetWorld()->DeltaTimeSeconds;
-	//DynamicMaterial->SetScalarParameterValue(TEXT("Blend_Dry_Warning"), (1 + FMath::Cos(DrynessWarningIndex))/2);
 	DynamicMaterial->SetScalarParameterValue(TEXT("Blend_Dry_Warning"), GameState->GetPulseValue());
 }
 
+/*
+* Fonction qui permet d'ajouter une valeur donnée au niveau d'humidité
+*/
 void ASol::SetHumidity(float value)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Activate!"));
 	Humidity += value;
 	if (Humidity > 100)
 		Humidity = 100;
@@ -116,21 +138,33 @@ void ASol::SetHumidity(float value)
 	DynamicMaterial->SetScalarParameterValue(TEXT("Blend_Dry_Warning"), 0);
 }
 
+/*
+* Fonction qui retourne le niveau d'humidité du sol.
+*/
 float ASol::GetHumidity() const
 {
 	return Humidity;
 }
 
+/*
+* Fonction qui retourne le facteur d'évaporation du sol.
+*/
 float ASol::GetEvaporationFactor() const
 {
 	return EvaporationFactor;
 }
 
+/*
+* Fonction qui permet de modifier le facteur d'évaporation.
+*/
 void ASol::SetEvaporationFactor(float value)
 {
 	EvaporationFactor = value;
 }
 
+/*
+* Fonction qui retourne "true" si la première plante sur le sol est mûre.
+*/
 bool ASol::IsReadyToHarvest()
 {
 	if (PlanteSurLeSol.Num() > 0)
@@ -140,16 +174,26 @@ bool ASol::IsReadyToHarvest()
 	return  false;
 }
 
+/*
+* Fonction qui retourne l'état du sol (Wet, Dry, Bush).
+*/
 ESoilState ASol::GetSoilState()
 {
 	return SoilState;
 }
 
+/*
+* Fonction qui permet de modifier l'état du sol.
+*/
 void ASol::SetSoilState(ESoilState State)
 {
 	SoilState = State;
 }
 
+/*
+* Fonction qui permet mettre en lumière le sol, par l'intermédiaire
+* du paramètre scalaire Blend_Dry_Warning.
+*/
 void ASol::Highlight(bool value)
 {
 	if(value)

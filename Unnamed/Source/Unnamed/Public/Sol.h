@@ -59,7 +59,6 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = Setup)
 	//UClass* ProjectileBluePrint;		// UClass* va afficher la totalités des classes disponibles dans le blueprint alors que TSubclassOf<> n'affiche que la classe choisie
 	TSubclassOf<ABush> BushBlueprint;
-	TArray<ABush*> BushArray;
 	TArray<APlantSkeletalMeshActor*> PlanteSurLeSol;
 	UMaterialInstanceDynamic* DynamicMaterial;
 	float const HumidityMax = 100.0f;
