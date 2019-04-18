@@ -35,7 +35,7 @@ void ASol::BeginPlay()
 	DynamicMaterial = UMaterialInstanceDynamic::Create(material, NULL);
 	Plane->SetMaterial(0, DynamicMaterial);
 	
-	ABush* Bush = GetWorld()->SpawnActor<ABush>(BushBlueprint,
+	Bush = GetWorld()->SpawnActor<ABush>(BushBlueprint,
 												GetActorLocation(),
 												FRotator(0, (float)(UKismetMathLibrary::RandomIntegerInRange(10,180)), 0));
 	Bush->SetSoil(this);
@@ -200,5 +200,23 @@ void ASol::Highlight(bool value)
 		DynamicMaterial->SetScalarParameterValue(TEXT("Blend_Dry_Warning"), 1);
 	else
 		DynamicMaterial->SetScalarParameterValue(TEXT("Blend_Dry_Warning"), 0);
+}
+
+/*
+* Fonction qui permet modifier le bool IsOwned lors de l'achat d'un champs
+* Désactive aussi les évènements de recouvrement du buisson
+*/
+void ASol::SetOwned(bool value)
+{
+	IsOwned = value;
+	Bush->GenerateOverlapEvents(value);
+}
+
+/*
+* Fonction qui retourne un bool pour vérifier si le sol est déjà acheté
+*/
+bool ASol::IsSoilOwned()
+{
+	return IsOwned;
 }
 

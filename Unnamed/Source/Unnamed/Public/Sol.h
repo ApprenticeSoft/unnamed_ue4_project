@@ -45,6 +45,8 @@ public:
 	UFUNCTION(BlueprintImplementableEvent, Category = "Interactions")
 	void SetUnselected();
 	void Highlight(bool value);
+	void SetOwned(bool value);
+	bool IsSoilOwned();
 
 	ESoilState GetSoilState();
 	void SetSoilState(ESoilState State);
@@ -59,12 +61,14 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = Setup)
 	//UClass* ProjectileBluePrint;		// UClass* va afficher la totalités des classes disponibles dans le blueprint alors que TSubclassOf<> n'affiche que la classe choisie
 	TSubclassOf<ABush> BushBlueprint;
+	ABush* Bush = nullptr;
 	TArray<APlantSkeletalMeshActor*> PlanteSurLeSol;
 	UMaterialInstanceDynamic* DynamicMaterial;
 	float const HumidityMax = 100.0f;
 	float Humidity = 100.0f;
-	float EvaporationFactor = 1.5f;
+	float EvaporationFactor = 1.3f;
 	void UpdateHumidity();
 	void NotifyDryness();
 	float DrynessWarningIndex = 0;
+	bool IsOwned = true;
 };

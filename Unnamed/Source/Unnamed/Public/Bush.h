@@ -41,4 +41,5 @@ public:
 	void SetSoil(ASol* NewSoil);
 	ASol* GetSoil() const;
 	bool IsInteractionEnabled();
+	void GenerateOverlapEvents(bool value);
 };

@@ -32,13 +32,13 @@ void AAgriculturalField::BeginPlay()
 	if (!IsOwned)
 		for (AActor* Child : Children)
 		{
-			if (dynamic_cast<ASol*>(Child) || dynamic_cast<ABush*>(Child))
-				Child->SetActorEnableCollision(false);
+			if (dynamic_cast<ABush*>(Child))
+				dynamic_cast<ABush*>(Child)->GenerateOverlapEvents(false);
+			else if (dynamic_cast<ASol*>(Child))
+				dynamic_cast<ASol*>(Child)->SetOwned(false);
 			else if (dynamic_cast<ABillboard*>(Child))
 				dynamic_cast<ABillboard*>(Child)->SetPrice(Price);
 		}
-
-	UE_LOG(LogTemp, Warning, TEXT("Children.Num(): %i"), Children.Num());
 }
 
 // Called every frame
@@ -62,8 +62,13 @@ void AAgriculturalField::Buy()
 {
 	IsOwned = true;
 
-	for (AActor* Child : Children)
-		Child->SetActorEnableCollision(true);
+	for (AActor* Child : Children) 
+	{
+		if (dynamic_cast<ASol*>(Child))
+			dynamic_cast<ASol*>(Child)->SetOwned(true);
+		else if (dynamic_cast<ABush*>(Child))
+			dynamic_cast<ABush*>(Child)->GenerateOverlapEvents(true);
+	}
 }
 
 void AAgriculturalField::CustomOnBeginMouseOver(UPrimitiveComponent* TouchedComponent)

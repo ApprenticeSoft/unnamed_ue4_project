@@ -344,6 +344,11 @@ void AUnnamedCharacter::Interact()
 		{
 			UE_LOG(LogTemp, Warning, TEXT("Ce n'est pas un sol!!"));
 		}
+		else if (!Sol->IsSoilOwned())
+		{
+			NotificationString = "You need to buy this field";
+			SendNotificationToPlayer();
+		}
 		else if (Sol->IsReadyToHarvest())
 		{ 
 			if (Basket->GetCropNumber() < Basket->GetBasketSize())

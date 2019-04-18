@@ -8,6 +8,7 @@
 #include "Kismet/KismetMathLibrary.h"
 #include "Components/PrimitiveComponent.h"
 #include "Sol.h"
+#include "Components/CapsuleComponent.h"
 
 // Sets default values
 ABush::ABush()
@@ -34,12 +35,6 @@ void ABush::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	RotateBack();
-
-	if (Soil)
-	{
-		if (GetActorEnableCollision() != Soil->GetActorEnableCollision())
-			SetActorEnableCollision(Soil->GetActorEnableCollision());
-	}
 }
 
 void ABush::ClearBush()
@@ -136,3 +131,16 @@ bool ABush::IsInteractionEnabled()
 	return true;
 }
 
+void ABush::GenerateOverlapEvents(bool value)
+{
+	auto Capsule = FindComponentByClass<UCapsuleComponent>();
+	if (Capsule)
+	{
+		Capsule->SetGenerateOverlapEvents(value);
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Pas de capsule!!!"));
+	}
+
+}

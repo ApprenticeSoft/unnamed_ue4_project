@@ -107,7 +107,7 @@ void ABillboard::Disapear()
 
 			SetActorLocation(GetActorLocation() + FVector(0, 0, -0.2f));
 
-			if (GetActorLocation().Z < 40.0f)
+			if (GetActorLocation().Z < 20.0f)
 			{
 				Destroy();
 			}
