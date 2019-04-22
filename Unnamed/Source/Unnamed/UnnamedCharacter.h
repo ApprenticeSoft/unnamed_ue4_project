@@ -125,6 +125,8 @@ protected:
 	TSubclassOf<APlantSkeletalMeshActor> WheatBlueprint;
 	UPROPERTY(EditDefaultsOnly, Category = Setup)
 	TSubclassOf<APlantSkeletalMeshActor> PumpkinBlueprint;
+	UPROPERTY(EditDefaultsOnly, Category = Setup)
+	TSubclassOf<APlantSkeletalMeshActor> SunflowerBlueprint;
 
 	// Position de la camera
 	UPROPERTY(BlueprintReadOnly)

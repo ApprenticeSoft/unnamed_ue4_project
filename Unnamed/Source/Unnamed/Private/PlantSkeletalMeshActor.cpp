@@ -11,12 +11,27 @@ APlantSkeletalMeshActor::APlantSkeletalMeshActor()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
+
 	GetSkeletalMeshComponent()->SetMorphTarget(FName("Key 1"), 1);
 	GetSkeletalMeshComponent()->SetMorphTarget(FName("Key 2"), 1);
 	GetSkeletalMeshComponent()->SetMorphTarget(FName("Key 3"), 1);
 	GetSkeletalMeshComponent()->SetMorphTarget(FName("Key 4"), 1);
 	GetSkeletalMeshComponent()->SetMorphTarget(FName("Key 5"), 1);
 	GetSkeletalMeshComponent()->SetMorphTarget(FName("Key 6"), 1);
+	GetSkeletalMeshComponent()->SetMorphTarget(FName("Key 7"), 1);
+	GetSkeletalMeshComponent()->SetMorphTarget(FName("Key 8"), 1);
+	GetSkeletalMeshComponent()->SetMorphTarget(FName("Key 9"), 1);
+	GetSkeletalMeshComponent()->SetMorphTarget(FName("Key 10"), 1);
+
+	/*
+	auto map = GetSkeletalMeshComponent()->GetMorphTargetCurves();
+	TArray<FName> array;
+	map.GenerateKeyArray(array);
+	UE_LOG(LogTemp, Warning, TEXT("Morph target map num: %i"), map.Num());
+
+	for(int i = 0; i < array.Num(); i++)
+		UE_LOG(LogTemp, Warning, TEXT("Key: %s"), *array[i].ToString());
+	*/
 }
 
 // Called when the game starts or when spawned

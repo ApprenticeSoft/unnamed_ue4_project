@@ -79,6 +79,7 @@ public:
 	bool GetCornSeason() const;
 	bool GetWheatSeason() const;
 	bool GetPumpkinSeason() const;
+	bool GetSunflowerSeason() const;
 	float GetSunIntensity() const;
 	float GetPulseValue() const;
 
@@ -114,6 +115,8 @@ protected:
 	bool WheatSeason = false;
 	UPROPERTY(BlueprintReadOnly, Category = "State")
 	bool PumpkinSeason = false;
+	UPROPERTY(BlueprintReadOnly, Category = "State")
+	bool SunflowerSeason = true;
 	float PulseValue = 0;
 	float PulseCounter = 0;
 	void Pulse();
@@ -125,6 +128,7 @@ protected:
 	TArray<ECurrentMonth> CornPlantingCalendar;
 	TArray<ECurrentMonth> WheatPlantingCalendar;
 	TArray<ECurrentMonth> PumpkinPlantingCalendar;
+	TArray<ECurrentMonth> SunflowerPlantingCalendar;
 	std::map < EPlantType, TArray<ECurrentMonth>> CropCalendar;
 
 	// TEST Objectif
