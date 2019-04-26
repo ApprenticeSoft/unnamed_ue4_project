@@ -81,7 +81,6 @@ void ABasket::Tick(float DeltaTime)
 				HarvestedPlants[i]->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
 				HarvestedPlants[i]->SetActorEnableCollision(true);
 				HarvestedPlants[i]->FindComponentByClass<class UStaticMeshComponent>()->SetSimulatePhysics(true);
-				//HarvestedPlants[i]->LaunchCrop(GetActorRotation().RotateVector(FVector(0, 0, 1)), 180);
 				HarvestedPlants[i]->FindComponentByClass<class UStaticMeshComponent>()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 				HarvestedPlants[i]->SetScale(1);
 				HarvestedPlants.RemoveAt(i);

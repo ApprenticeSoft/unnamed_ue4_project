@@ -3,7 +3,6 @@
 #include "HarvestedPlant.h"
 #include "Classes/Engine/World.h"
 #include "Classes/GameFramework/PlayerController.h"
-#include "GameFramework/ProjectileMovementComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "UnnamedCharacter.h"
 #include "Basket.h"
@@ -16,8 +15,8 @@ AHarvestedPlant::AHarvestedPlant()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>(FName("Projectile Movement"));
-	ProjectileMovement->bAutoActivate = false;
+	Crop = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Crop Mesh"));
+	RootComponent = Crop;
 }
 
 // Called when the game starts or when spawned
@@ -25,10 +24,11 @@ void AHarvestedPlant::BeginPlay()
 {
 	Super::BeginPlay();
 
-	GameState = dynamic_cast<AMyGameStateBase*>(GetWorld()->GetGameState());
+	// Si les deux lignes suivantes sont mises dans le constructeur, les collisions ne sont pas prises en compte.
+	Crop->OnComponentHit.AddDynamic(this, &AHarvestedPlant::OnCompHit);
+	Crop->SetNotifyRigidBodyCollision(true);
 
-	auto Mesh = FindComponentByClass<UStaticMeshComponent>();
-	Mesh->SetNotifyRigidBodyCollision(true);	// Permet d'activer l'option "Simulation Generates Hit Events" du blueprint
+	GameState = dynamic_cast<AMyGameStateBase*>(GetWorld()->GetGameState());
 
 	Basket = dynamic_cast<AUnnamedCharacter*>(GetWorld()->GetFirstPlayerController()->GetPawn())->GetBasket();
 
@@ -75,13 +75,6 @@ void AHarvestedPlant::ThrownInBasket()
 			Basket->AddCrop(this);
 		}
 	}
-}
-
-void AHarvestedPlant::LaunchCrop(FVector Direction, float Speed)
-{
-	//UE_LOG(LogTemp, Warning, TEXT("Projectile fires at %f"), Speed);
-	ProjectileMovement->SetVelocityInLocalSpace(Direction * Speed);
-	ProjectileMovement->Activate();
 }
 
 void AHarvestedPlant::TriggerDisappear()
@@ -152,3 +145,8 @@ void AHarvestedPlant::UpdateObjective()
 		IsInDemand = GameState->SetPumpkinObjective(GameState->GetPumpkinObjective() - 1);
 }
 
+void AHarvestedPlant::OnCompHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
+{
+	if (OtherActor->ActorHasTag(FName("Landscape")))
+		TriggerDisappear();
+}

@@ -6,7 +6,6 @@
 #include "GameFramework/Actor.h"
 #include "HarvestedPlant.generated.h"
 
-class UProjectileMovementComponent;
 class AMyGameStateBase;
 class ABasket;
 class APoint;
@@ -32,9 +31,15 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = Setup)
 	TSubclassOf<APoint> PointBlueprint;
 
+	UPROPERTY(EditAnywhere)
+	UStaticMeshComponent* Crop;
+
 protected:
-	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	UFUNCTION()
+	void OnCompHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
+
 	UFUNCTION(BlueprintCallable)
 	void TriggerDisappear();
 	void Resize();
@@ -49,8 +54,6 @@ protected:
 	ECropType CropType = ECropType::Corn;
 	void UpdateObjective();
 
-	// Test UProjectileMovementComponent. Peut être à enlever
-	UProjectileMovementComponent* ProjectileMovement = nullptr;
 	bool Thrown = false;
 	void ThrownInBasket();
 	ABasket* Basket = nullptr;
@@ -62,7 +65,4 @@ public:
 	bool MoveToLocation(FVector Location, float Treshold);
 	void SetThrown(bool value);
 	void SetScale(float value);
-
-	void LaunchCrop(FVector Direction, float Speed);
-
 };
