@@ -32,14 +32,14 @@ enum class EPlantType : uint8
 	Corn,
 	Wheat,
 	Pumpkin,
-	Sunflower
+	Sunflower,
+	Oat
 };
 
 UCLASS()
 class UNNAMED_API APlantSkeletalMeshActor : public ASkeletalMeshActor
 {
 	GENERATED_BODY()
-	
 
 public:
 	APlantSkeletalMeshActor();

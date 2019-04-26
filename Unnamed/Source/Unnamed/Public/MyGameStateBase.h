@@ -78,6 +78,7 @@ public:
 	float GetNightLightBlend();
 	bool GetCornSeason() const;
 	bool GetWheatSeason() const;
+	bool GetOatSeason() const;
 	bool GetPumpkinSeason() const;
 	bool GetSunflowerSeason() const;
 	float GetSunIntensity() const;
@@ -114,6 +115,8 @@ protected:
 	UPROPERTY(BlueprintReadOnly, Category = "State")
 	bool WheatSeason = false;
 	UPROPERTY(BlueprintReadOnly, Category = "State")
+	bool OatSeason = false;
+	UPROPERTY(BlueprintReadOnly, Category = "State")
 	bool PumpkinSeason = false;
 	UPROPERTY(BlueprintReadOnly, Category = "State")
 	bool SunflowerSeason = true;
@@ -127,6 +130,7 @@ protected:
 	float SunIntensity;
 	TArray<ECurrentMonth> CornPlantingCalendar;
 	TArray<ECurrentMonth> WheatPlantingCalendar;
+	TArray<ECurrentMonth> OatPlantingCalendar;
 	TArray<ECurrentMonth> PumpkinPlantingCalendar;
 	TArray<ECurrentMonth> SunflowerPlantingCalendar;
 	std::map < EPlantType, TArray<ECurrentMonth>> CropCalendar;

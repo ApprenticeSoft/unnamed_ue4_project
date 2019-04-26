@@ -42,6 +42,9 @@ void AMyGameStateBase::CreateCalendar()
 	WheatPlantingCalendar.Add(ECurrentMonth::September);
 	WheatPlantingCalendar.Add(ECurrentMonth::October);
 
+	OatPlantingCalendar.Add(ECurrentMonth::September);
+	OatPlantingCalendar.Add(ECurrentMonth::October);
+
 	PumpkinPlantingCalendar.Add(ECurrentMonth::May);
 	PumpkinPlantingCalendar.Add(ECurrentMonth::June);
 
@@ -50,6 +53,7 @@ void AMyGameStateBase::CreateCalendar()
 
 	CropCalendar[EPlantType::Corn] = CornPlantingCalendar;
 	CropCalendar[EPlantType::Wheat] = WheatPlantingCalendar;
+	CropCalendar[EPlantType::Oat] =OatPlantingCalendar;
 	CropCalendar[EPlantType::Pumpkin] = PumpkinPlantingCalendar;
 	CropCalendar[EPlantType::Sunflower] = SunflowerPlantingCalendar;
 }
@@ -60,6 +64,7 @@ void AMyGameStateBase::CheckPlantingMonth(ECurrentMonth CurrentMonth)
 	WheatSeason = CheckPlantingMonth(EPlantType::Wheat, CurrentMonth);
 	PumpkinSeason = CheckPlantingMonth(EPlantType::Pumpkin, CurrentMonth);
 	SunflowerSeason = CheckPlantingMonth(EPlantType::Sunflower, CurrentMonth);
+	OatSeason = CheckPlantingMonth(EPlantType::Oat, CurrentMonth);
 }
 
 bool AMyGameStateBase::CheckPlantingMonth(EPlantType PlantType, ECurrentMonth CurrentMonth)
@@ -309,6 +314,11 @@ bool AMyGameStateBase::GetPumpkinSeason() const
 bool AMyGameStateBase::GetSunflowerSeason() const
 {
 	return SunflowerSeason;
+}
+
+bool AMyGameStateBase::GetOatSeason() const
+{
+	return OatSeason;
 }
 
 bool AMyGameStateBase::SetCornObjective(int32 value)

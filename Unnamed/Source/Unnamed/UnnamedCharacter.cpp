@@ -456,6 +456,11 @@ void AUnnamedCharacter::PlantThePlant(ASol* Sol)
 																FVector(0, 0, -200),
 																FRotator(0, 260, 0));
 		break;
+	case ESeed::Oat:
+		Plant = GetWorld()->SpawnActor<APlantSkeletalMeshActor>(OatBlueprint,
+																FVector(0, 0, -200),
+																FRotator(0, 260, 0));
+		break;
 	default:
 		Plant = GetWorld()->SpawnActor<APlantSkeletalMeshActor>(CornBlueprint,
 																FVector(0, 0, -200),
@@ -482,6 +487,8 @@ bool AUnnamedCharacter::CheckIfCanPlantSeed()
 		return GameState->GetPumpkinSeason();
 	else if (Seed == ESeed::Sunflower)
 		return GameState->GetSunflowerSeason();
+	else if (Seed == ESeed::Oat)
+		return GameState->GetOatSeason();
 	else
 		return false;
 }
