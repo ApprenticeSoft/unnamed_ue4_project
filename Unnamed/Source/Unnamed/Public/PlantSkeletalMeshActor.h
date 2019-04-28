@@ -33,7 +33,8 @@ enum class EPlantType : uint8
 	Wheat,
 	Pumpkin,
 	Sunflower,
-	Oat
+	Oat,
+	Watermelon
 };
 
 UCLASS()

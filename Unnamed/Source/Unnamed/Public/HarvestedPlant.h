@@ -17,7 +17,8 @@ enum class ECropType : uint8
 	Wheat,
 	Pumpkin,
 	Sunflower,
-	Oat
+	Oat,
+	Watermelon
 };
 
 UCLASS()

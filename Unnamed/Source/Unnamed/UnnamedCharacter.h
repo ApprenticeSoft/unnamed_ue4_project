@@ -14,7 +14,8 @@ enum class ESeed : uint8
 	Wheat,
 	Pumpkin,
 	Sunflower,
-	Oat
+	Oat,
+	Watermelon
 };
 
 class AMyGameStateBase;
@@ -130,6 +131,8 @@ protected:
 	TSubclassOf<APlantSkeletalMeshActor> SunflowerBlueprint;
 	UPROPERTY(EditDefaultsOnly, Category = Setup)
 	TSubclassOf<APlantSkeletalMeshActor> OatBlueprint;
+	UPROPERTY(EditDefaultsOnly, Category = Setup)
+	TSubclassOf<APlantSkeletalMeshActor> WatermelonBlueprint;
 
 	// Position de la camera
 	UPROPERTY(BlueprintReadOnly)
