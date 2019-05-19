@@ -24,6 +24,7 @@ void AMyGameStateBase::BeginPlay()
 	UE_LOG(LogTemp, Warning, TEXT("Game State Base BeginPlay"));
 
 	CreateCalendar();
+	CheckPlantingMonth(Month);
 }
 void AMyGameStateBase::Tick(float DeltaTime)
 {
@@ -71,6 +72,9 @@ void AMyGameStateBase::CheckPlantingMonth(ECurrentMonth CurrentMonth)
 	SunflowerSeason = CheckPlantingMonth(EPlantType::Sunflower, CurrentMonth);
 	OatSeason = CheckPlantingMonth(EPlantType::Oat, CurrentMonth);
 	WatermelonSeason = CheckPlantingMonth(EPlantType::Watermelon, CurrentMonth);
+
+	CallUpdateSeasonEvent();
+	UE_LOG(LogTemp, Warning, TEXT("SEASON"));
 }
 
 bool AMyGameStateBase::CheckPlantingMonth(EPlantType PlantType, ECurrentMonth CurrentMonth)
