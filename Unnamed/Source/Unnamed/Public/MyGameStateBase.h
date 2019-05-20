@@ -85,8 +85,10 @@ public:
 	float GetSunIntensity() const;
 	float GetPulseValue() const;
 
-	UFUNCTION(BlueprintImplementableEvent, Category = "Interactions")
+	UFUNCTION(BlueprintImplementableEvent, Category = "Event Dispatchers")
 	void CallUpdateSeasonEvent();
+	UFUNCTION(BlueprintImplementableEvent, Category = "Event Dispatchers")
+	void CallUpdateScoreEvent();
 
 	UFUNCTION(BlueprintCallable)
 	void BuyLand();

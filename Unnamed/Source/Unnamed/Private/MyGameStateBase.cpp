@@ -24,7 +24,7 @@ void AMyGameStateBase::BeginPlay()
 	UE_LOG(LogTemp, Warning, TEXT("Game State Base BeginPlay"));
 
 	CreateCalendar();
-	CheckPlantingMonth(Month);
+	//CheckPlantingMonth(Month);
 }
 void AMyGameStateBase::Tick(float DeltaTime)
 {
@@ -239,6 +239,7 @@ int32 AMyGameStateBase::GetPointNumber() const
 void AMyGameStateBase::SetPointNumber(int32 Number)
 {
 	PointNumber = Number;
+	CallUpdateScoreEvent();
 }
 
 ECurrentSeason AMyGameStateBase::GetSeason() const
