@@ -424,7 +424,10 @@ void AUnnamedCharacter::Interact()
 
 void AUnnamedCharacter::SetNotificationString()
 {
-	NotificationString = SeedString + " can't be planted in " + GameState->GetMonthString();
+	if(PossessSelectedCrop)
+		NotificationString = SeedString + " can't be planted in " + GameState->GetMonthString();
+	else
+		NotificationString = "You need to buy " + SeedString + " first!";
 }
 
 /*
@@ -484,20 +487,42 @@ void AUnnamedCharacter::PlantThePlant(ASol* Sol)
  */
 bool AUnnamedCharacter::CheckIfCanPlantSeed()
 {
-	if (Seed == ESeed::Corn)
+	switch (Seed)
+	{
+	case ESeed::Corn:
+		PossessSelectedCrop = true;
 		return GameState->GetCornSeason();
-	else if (Seed == ESeed::Wheat)
+		break;
+	case ESeed::Wheat:
+		PossessSelectedCrop = true;
 		return GameState->GetWheatSeason();
-	else if (Seed == ESeed::Pumpkin)
+		break;
+	case ESeed::Pumpkin:
+		PossessSelectedCrop = true;
 		return GameState->GetPumpkinSeason();
-	else if (Seed == ESeed::Sunflower)
+		break;
+	case ESeed::Sunflower:
+		PossessSelectedCrop = PossessSunflower;
+		if (!PossessSelectedCrop)
+			return false;
 		return GameState->GetSunflowerSeason();
-	else if (Seed == ESeed::Oat)
+		break;
+	case ESeed::Oat:
+		PossessSelectedCrop = PossessOat;
+		if (!PossessSelectedCrop)
+			return false;
 		return GameState->GetOatSeason();
-	else if (Seed == ESeed::Watermelon)
+		break;
+	case ESeed::Watermelon:
+		PossessSelectedCrop = PossessWatermelon;
+		if (!PossessSelectedCrop)
+			return false;
 		return GameState->GetWatermelonSeason();
-	else
+		break;
+	default:
 		return false;
+
+	}
 }
 
 /*

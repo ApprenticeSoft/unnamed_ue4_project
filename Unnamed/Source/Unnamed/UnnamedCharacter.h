@@ -134,6 +134,14 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = Setup)
 	TSubclassOf<APlantSkeletalMeshActor> WatermelonBlueprint;
 
+	bool PossessSelectedCrop = true;
+	UPROPERTY(BlueprintReadOnly, Category = "Crops")
+	bool PossessSunflower = false;
+	UPROPERTY(BlueprintReadOnly, Category = "Crops")
+	bool PossessOat = false;
+	UPROPERTY(BlueprintReadOnly, Category = "Crops")
+	bool PossessWatermelon = false;
+
 	// Position de la camera
 	UPROPERTY(BlueprintReadOnly)
 	FVector DefaultCameraOffset;
