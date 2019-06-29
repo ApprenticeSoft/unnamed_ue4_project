@@ -135,11 +135,11 @@ protected:
 	TSubclassOf<APlantSkeletalMeshActor> WatermelonBlueprint;
 
 	bool PossessSelectedCrop = true;
-	UPROPERTY(BlueprintReadOnly, Category = "Crops")
+	UPROPERTY(BlueprintReadWrite, Category = "Crops")
 	bool PossessSunflower = false;
-	UPROPERTY(BlueprintReadOnly, Category = "Crops")
+	UPROPERTY(BlueprintReadWrite, Category = "Crops")
 	bool PossessOat = false;
-	UPROPERTY(BlueprintReadOnly, Category = "Crops")
+	UPROPERTY(BlueprintReadWrite, Category = "Crops")
 	bool PossessWatermelon = false;
 
 	// Position de la camera

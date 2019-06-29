@@ -63,6 +63,7 @@ protected:
 public:
 	UFUNCTION(BlueprintCallable)
 	int32 GetPointNumber() const;
+	UFUNCTION(BlueprintCallable)
 	void SetPointNumber(int32 Number);
 	UFUNCTION(BlueprintCallable)
 	ECurrentSeason GetSeason() const;
